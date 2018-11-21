@@ -1,5 +1,5 @@
 The Haujobb Amiga Framework
-Initial alpha release, 13.11.18
+Second alpha release, 21.11.18
 
 This is still an incomplete release package with regards to the features
 that we already have and the documentation that still needs to be written. 
@@ -14,6 +14,7 @@ Read it, it will take you through:
 - required tool setup for Amiga and PC
 - assembling a minimal example with picture and tune on Amiga
 - compiling and cross-compiling a hello-world.c
+- QtCreator example "stars.pro", builds on Windows, cross-compiles to Amiga
 
 Further documentation and demo-example with Rocket integration coming soon.
 In the meantime, follow the above documentation to get started.
@@ -24,6 +25,5 @@ https://www.youtube.com/watch?v=s1lVS4tW33g
 Cheers,
  Noname
  
-Feedback welcome at lop@gmx.de
 
 
