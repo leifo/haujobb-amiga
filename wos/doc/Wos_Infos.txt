@@ -1,0 +1,493 @@
+;
+;*****************************************************************************
+;* WOS - Wicked Operating System for Demos by Leif 'NoName' Oppermann        *
+;*                                                                           *
+;* this is the version-history and info-file                                 *
+;*****************************************************************************
+
+;Basic notes:
+; · once you are ready with an effect, set the ISREADY-flag,
+;   assemble and save the finished file to disk
+; · the system will be disabled at runtime and reenabled afterwards
+; · no loading should be performed by the effects unless there is 
+;   a given function for this purpose
+; · all effects share the same backbone-routines (c2p,replay,decrunch,...)
+; · the effect will get the Server-Structure (wosbase) in A0.
+;   you must NOT modify the _W#? entries
+; · there are different c2p's for 020/030 and 040/060 but they are handled
+;   transparently for you -> 020/030 will most likely use Blitter
+;   -> don't use the blitter on your own
+; · WickedOS uses tripple-buffering for its realtime-screens
+; · mode 4 and 5 are still not supported (29.11.98)
+
+;01.02.98
+;v0.0 - first steps, takeover ready, started to define the structures
+
+;02.02.98
+;v0.01 - reworked the chunky routines to work together in one source
+
+;10.02.98
+;v0.02 - introducing screenmodes and other basic screen routines
+
+;11.02.98
+;v0.03 - first working version to be included (mode1 only, yet)
+
+;13.02.98
+;v0.032 - worked on mode2
+;v0.033 - worked on mode3
+;v0.04 - added MUSIC, TrackerPacker3.1 support
+
+;16.02.98
+;v0.041 - added NORMB NOLMB NOESC
+
+;20.02.98
+;v0.042 - added MODULE (eg. "MODULE macro
+;                                   incbin dh0:trashcan/testmod2.tp3
+;                                   endm")
+
+;23.02.98
+;v0.1 - changed SetMode and some macros, bumped the version number
+;       now uses WOS_MACROS2.I rather than WOS_MACROS.I
+
+;24.02.98
+;v0.11 - added THX replayer (set THX in addition to MUSIC to let it play)
+;        added THXMODULE (see MODULE for usage)
+
+;25.02.98
+;v0.12 - introduced new file "wos:misc/WOS_MacrosServer.i"
+;        replaced THXMODULE and MODULE by THXMOD and TP3MOD
+;v0.13 - added CHECKEXIT , MOUSEX , MOUSEY
+
+;10.03.98 got the relocation examples working
+
+;16.03.98
+;v0.2 - code cleanup, fixed TP3-replay with FixCIABug (causes 1 sec delay)
+;       new FLAG: CLIONLY (no WBStartup)
+;       new CONSTANT: RELOCPSIZE (default is 338722)
+
+;... been in Ireland on a student-seminar ... Kilkenny rules.
+
+;11.04.98
+;v0.21 - added EfxTimer in d1
+
+;16.04.98
+;..... - fixed screen syncronisation errors, esp. in mode3 (2x2)
+;v0.3  - introduced "wosbase" instead of WOS_Client and WOS_Server !!!!
+;        added VBIHOOK (uses L3_Vertb Pointer)  < set to 0 when exiting
+;        your effect (will be done automatically in future) >
+
+;17.04.98
+;v0.31 - tried to add THX2 , the 4kb longer replay for THX 2.x Modules        
+
+;05.05.98
+;v0.32 - introduced binary Plug-Ins for c2ps and replays (must NOT contain relocs)
+
+;06.05.98
+;v0.32 - addded NOMODE1,NOMODE2,...,NOMODE5 flags for not including those modes
+;v0.33 - added more conditional assembling for NOMODE?
+
+;11.05.98
+;v0.33 - added different Esc-codes: 1=Effect Exit / 2=User Exit
+;        added EXITWOS macro, although it doesn't do much, yet (always call!)
+
+;12.05.98
+;v0.34 - c3b1 c2p created
+
+;13.05.98
+;v0.35 - multiple replays possible (see REPLAY=???), default is specified
+;        with MUSIC=??? [P61=1 , TP3=2 , THX=4 , THX2=8] ... all working now!
+
+;20.05.98 (1.Tag "Der Berg ruft")
+;v0.36 - NO040C2P and NO020C2P flags
+;        new: CPU , AGA , ATTNFLAGS , CHIPREVBITS 
+
+;21.05.98 (Vatertag)
+;v0.37 - THX2 now loads/calculates its waves before taking the system
+
+;22.05.98
+;v0.38 - Chipmem is now allocated rather than using sections (there was a bug
+;        with OMA's section-alignment causing c2p-errors)
+
+;24.05.98
+;v0.39 - Included Wos_Body.s into the Main-Source
+
+;25.05.98
+;v0.40 - different c2p's for 020/030 and 040/060 possible (startup decides)
+
+;29.05.98
+;v0.41 - optimised the main-source with the help of Devpac3
+
+;31.05.98
+;v0.42 - the _wosbase jumptable has been destroyed during optimisation
+;        ...not anymore
+;v0.43 - new handling for effects vertical blank interrupt (VBIHOOK #xyz)
+;        also some modifications to the wos_exe-header (_Iptr , _Eptr) "WOS",3
+
+;01.06.98
+;v0.44 - included misc/reloc.s into the system (can be excluded with NORELOC)
+;        new default-size for the reloc-buffer is now 2MB 
+;        change it with RELOCPSIZE as described for v0.2
+
+;03.06.98
+;v0.44 - Player 610.4 by Platon42 included (Enforcer Hits removed)
+
+;04.06.98
+;v0.45 - started to integrate DK3D (new flag: DK3D)
+;        Infos available when there is any commandline-argument
+
+;06.06.98
+;v0.46 - wrote the missing Macros for DK3D 
+;        (eg. a replacement for move.l #mattab,adrtabadrmat)
+
+;15.06.98
+;        added NOINFO flag to not show the info if d0<>0 (while coding)
+;        added RETURNCODE, set it if you want to pass a DOS-Returncode in d0
+;        debugged INITWOS macro (wosbase wasn't loaded into a6 for DK3D)
+;        Bitplanes are now cleared during EXITWOS
+
+;16.06.98
+;v0.47 - moved all DK3D related routines to wos:dk3d
+
+;28.06.98
+;v0.48 - added DECRUNCH macro (decrunch from a0 to a1 - d0=0 is error)
+;        added INITWPAC macro (unpacks \1, destination is given out in a0)
+;        ---> disable with NODECRUNCH (saves 1844 bytes + 2MB buffer)
+;        (INITWPAC currently depacks to the 2MB buffer "Decrbuf:"+8
+;        improved CALLEFX macro (now also handles WPAC effects)
+;        ---> use s:packwos to pack a WOS-file
+;        ---> see doc/wpac.txt for the fileformat
+;        added DEBUG macro, program waits at exit so you can look for 
+;        Enforcer hits with a debugger
+
+;09.07.98
+;        added LIB flag to be used e.g. by DK3D
+
+... been on motorbike hollidays in France.
+
+;28.07.98
+;v0.49 - started to write the memory-system, exclude if with NOMMS flag
+;        32 so called memory banks for you (get more by setting "bnknum")
+;        6 macros for usage:
+;        ALLOC     in: \1 - banknum , \2 - size ; out: d0 - adr or 0
+;        ALLOCCHIP in: \1 - banknum , \2 - size ; out: d0 - adr or 0
+;        START     in: \1 - banknum             ; out: d0 - start of the bank or 0
+;        LENGTH    in: \1 - banknum             ; out: d0 - length of the bank or 0
+;        ERASE     in: \1 - banknum             ; out: -
+;        ERASEALL  in: -                        ; out: - 
+;        all the banks are freed by EXITWOS
+;        ---> the system itself uses 256 banks in a different pool
+;             if it really must be, you could try to call the macros with 
+;             a trailing "SYS" , e.g. "SYSERASEALL", these banks are naturally not
+;             freed at the end of each effect, so you could share data with them
+;             NEVER DO A SYSERASEALL JUST FOR FUN, THE SYSTEM MIGHT CRASH.
+;             Future Plug-Ins will use memory banks for their code and data.             
+
+;29.07.98
+;v0.492 - 4 new macros for MMS: ALLOCANY , ALLOCANYCHIP , SYSALLOCANY and SYSALLOCANYCHIP
+;        ALLOCANY     in: \1 - size    ; out: d0 - adr or 0 , d1 - banknumber
+;        ALLOCANYCHIP in: \1 - size    ; out: d0 - adr or 0 , d1 - banknumber
+;
+;        (same for SYSALLOCANY and SYSALLOCANYCHIP)
+;v0.493 - started to utilize MMS in the relocation and decrunching
+
+... several quick and undocumented changes for Reflexity/Sector 7 and Yes!/Haujobb ...
+
+;15.9.98
+;v0.496ß - fixed the bugs with SYSALLOCANY(CHIP)
+
+;19.9.98
+;v0.497 - moved CALLEFX code from the macro into the maincode
+
+;11.11.98
+;v0.497b - added DONTTAKE flag-> don't take the system (don't use it!) <- no big use
+;          added INCEFX macro to ensure cnop's after incbin'ed effects!
+;          INCEFX in: \1 - labelname , \2 - filename
+
+;19.11.98
+;v0.497b - added SETSCREEN macro which sets the screen-position (Speedo-style)
+;          SETSCREEN in: \1 - rel. x-pos \2 - rel. y-pos (rel. means relative
+;          to the normal position) note: doesn't center in x-pos. but gives
+;          some nice (buggy:) horizontal open/close effect. 
+
+;27.11.98
+;v0.497c - startet the major code-cleanup for v0.5 
+;          moved all sub-routines to the sub/ directory
+;   !!! A6 (wosbase) is NO LONGER updated in every macro, take care of it !!!
+;          decrunch,brightness,reloc and wbstartup routines have been moved
+;          into the main-source
+
+;28.11.98
+;v0.497d - extended P61 useability for asmone and devpac users
+;          you can now give a usecode (use=...) to assemble your own p61bin
+;          set "asmone" and get the P61-Options on screen
+;          set "asmone" and "makebin" to save the p61bin to "ram:"
+;        - change in v0.497c (about a6) was too drastic! everything stays normal
+;          until you set SHORTMACROS flag which will exclude "move.l wosbase,a6"
+;          from every macro. nobody would ever use it i presume (including me:)
+;          (introduced "wcall" macro which is used inside almost every macro from now
+;           on. this note is just for my own information. please don't care!)
+
+;29.11.98
+;v0.497e - added SPEEDYCHIP by Piru (speeds up chipmem-access on 060)
+;          exclude it with NOSPEEDYCHIP
+
+;29.11.98
+;v0.498  - added ERROR macro: return from anywhere in the demo to the workbench
+;          and give detailed information or use a default text
+;          ERROR in: (\1) (\2) (\3) (\4) (\5) !!! function does not return !!!
+;          -> you can have no text at all (use the default-text) or up to five lines
+;          -> instead of spaces ( ) you must use underscores (_)
+;          -> you can't use these: (`) (') (") and maybe some more
+;          -> don't make the line in the editor too long! Devpac cuts at 255
+;             characters, OMA at 270 if i'm right.
+;        - set the NOERRORS flag to just see default messages (for final versions)
+;        - set the ABSOLUTELYNOERRORS flag to just quit the demo in case of an error
+;          -> you should't set ABSOLUTELYNOERRORS flag unless you really need to.
+;             errors are also used to inform about WickedOS problems like "out of memory"
+;          -> if you set NOERRORS, no error text will be assembled into your binary
+;          -> you should not set NOERRORS in your server (but it's fine for the clients)
+
+;10.12.98
+;v0.498b - NOERRORS did affect the server too much...fixed
+
+;15.12.98
+;v0.498c - moved the CrM2 decrunching-routine to sub/misc/unpacklzh.bin
+
+;16.12.98
+;v0.498d - added the PROFILER by Bartman/Abyss
+
+;05.01.99/11.01.99
+;v0.499  - reworked the Soundsystem, prepared it for EffectTracker
+;          PLAY     in: \1 - module (, \2 - pattern ... currently P61 only)
+;                   -> checks the mod-type and plays it when the replay is available
+;          STOP     in: none
+;                   -> stops the active sound
+;     n.a. (VOLUME) in: \1 #0-#255
+;                   -> sets the volume where #255 is the maximum (if supported by replay)
+;     n.a. (GETPOS) in: none
+;                   -> returns current Pattern,Position,Row,E8 in d0-d3 (if supported by replay)
+;                      and ptr to P61Bin in a0 (to get all infos abou the mod)
+;        - new and handy function:
+;          NEXTVBI  in: \1 - ptr to a routine
+;                   -> routine will be executed in the next vertical blank interrupt
+;                   -> you can have up to MAX_NVBI (default: 255) calls per frame
+
+;23.01.99
+;v0.4992 - adding Level2Server for softint based fading
+
+;28.01.99
+;v0.4993 - new um: P61BINARY macro
+;                   incbin yournewbinary
+;                  endm
+;          -> use it for making size-optimized intros, esp. on assemblers
+;             which can't assemble the P61 source (OMA). Use Asm-One to
+;             make the binary (set asmone and makebin flags in the P61 source)
+;        - new v: P61BUFFERSIZE
+;          -> set the size of the packed sample buffer, if you have packed samples 
+;          -> if you have packed samples, you MUST define this or you'll get a guru!
+;        - DK3D now calculates its sin&cos tables, saving us some kb
+;
+;v0.4994 - new um: STARTUPHOOK macro
+;                  endm
+;          -> use it to run code just before the system gets killed (thought for precalcs)
+
+;03.02.99
+;v0.5    - got fed up with the long version names ;)
+;        - started to implement loading routines
+
+;19.02.99
+;v0.51   - overlay support added. set OVERLAY to enable it
+;          files will be searched first IN the overlay-exe in future
+;        - now restores the sprites correctly. source taken from howtocode7
+;          prevent it by setting NOSPRITESFIX
+
+;01.03.99
+;v0.52   - memory-system completely rewritten (own mempool for each client)
+
+;08.03.99
+;v0.522  - fixed: clients did't got their times in d1
+
+;09.03.99
+;v0.53   - mode4 (640x200) and mode5 (640x400) added, both are single-buffer
+
+;13.03.99
+;v0.54   - mode6 (160x100 18bit) added (doesn't need palette and brightness!)
+
+;24.03.99
+;v0.55   - big rework on relocating clients, EXE-header changed
+;          splitted _CallEfx into _InitEfx, _CallOnceEfx, _ExitEfx
+;        - extremely fast mode6 c2p added!
+;        - overlay/wHDF support improved/added
+
+;v0.56-0.58 - quick tests, don't use
+
+;30.03.99
+;v0.6    - precise timing also on slow machines
+;        - PRINT #text added (don't call when system is killed)
+;        - LOADFROM (#filename|#0|-1) added (doesn't work, yet)
+;          seeks for wHDF data in filename | nowhere | own loadfile
+;          uses this as default for further loading
+;          nowhere means no wHDF file. loading files stays possible!
+;        - CLEARPLANES macro added...clears the bitplanes
+
+;31.03.99
+;v0.61   - mode7 (320x200 64cols) added
+
+;01.04.99
+;v0.63   - INITHOOK and EXITHOOK macros added
+;        - CLOSEDOWNHOOK added (the opposite of STARTUPHOOK)
+
+;04.04.99
+;v0.64   - effect gets its delay in d2
+
+;26.06.99
+;v0.65   - now it is possible to use the args from comstr and comlen
+
+;09.07.99
+;v0.666  - started to implement anim saving (framewise as 8bit BMP)
+;          check the source for SAVEFRAMES
+
+;28.08.99
+;v0.7    - Effecttracker
+
+;07.02.00
+;v0.71   - 3 nop`s added to prevent errors while assembling with certain settings
+;        - reworked Profilers output
+
+;April 2000
+;v1.0    - finished with Amiga coding
+
+;April 2010
+;v1.1    - for Prototype 1, mainly 320x180 + ADPCM (only via linking)
+
+;15.05.15
+;v1.2    - turned off bitplane DMA in black borders screen mode 8 (needs to be applied to all screens)
+;        - fixed Give with reenabled bitplane DMA
+;        - fixed MUSIC=0 audio DMA off (no sample trash playing anymore)
+
+>> v1.2 is last working version for ASM-One (v1.3 and v1.4 "temporarily" broke that compatibility)
+
+;27.09.15 (adoptions and new features specifically for Last Train to Danzig)
+;v1.3    - new chunky screenmodes, added MODE14 (320x180x6) and MODE15 (320x180x5)
+
+;05.10.15 
+;        - hardware setline wos function for logo glitch effect
+
+;07.10.15
+;        - mode16 with copper colours
+>> v1.3 is last version with triple buffering
+
+;12.10.15 (heading towards the RK/LE deadline)
+;v1.4    - changed wos from triple to double-buffering, i.e. no 030 optimized c2p anymore (also 18 bit temporarily disabled)
+
+;28.10.15
+;        - fixed INITWOS to remove initial glitch in WinUAE
+
+;31.10.15
+;        - fixed: copper-colour glitches in fragment part & palette / display mismatch
+
+;01.11.15
+;        - added PageFlip counter, fixed initial frame glitch
+
+;26.11.16
+;v1.4.2  - added mode17, 216x180 15 bit from 32bit ARGB pixel, still buggy
+
+;29.12.16
+;v1.5    - made mode17 work
+
+;30.12.16
+;        - added mode18, 216x180 15 bit from rgb666 buffer
+;        - finally documented how to add a screenmode :)
+
+;02.01.17
+;        - fixed mode18, mode19, mode17 to 220x180 (and 220x90)
+;          (220*32/11=640, which is the width of the underlying hires screen)
+
+;07.01.17
+;        - added mode20 (220x180, 4rgb888)
+
+;08.01.17
+;        - added mode21 (220x180, 4rgb666 with saturation), mode22 (220x90, 4rgb666 with saturation)
+
+;18.01.17
+;        - mode8 fix and speedup (+3fps) by using a newer 040 c2p
+
+How to add a new screenmode
+===========================
+Adding a new c2p-based screenmode to WOS requires a few modifications at several places in several files.
+As I tend to forget at least one place for myself, this write-up is at least for my own reference.
+
+Hint: you can set wtest flag in the main wos_v#?.s source for setup and display a simple screen.
+Note: XY is to be replaced with a running number, e.g. 19
+
+in file wos#?.s
+1) in _wosbase:
+- mXY: dc.l 0,0,0,0	; add some comments as well
+
+2) in WOSInit:
+- add an init block for your c2p-mode after the last one (.m18ok at the time of writing)
+	ifnd	NOMODEXY
+		lea	mXYc2p,a0
+		lea	mXY,a1	;dc.l 0,0,0
+		move.l	a0,(a1)+	;Init
+		add.l	#4,a0
+		move.l	a0,(a1)+	;Main
+		add.l	#4,a0
+		move.l	a0,(a1)+	;Exit
+	endc	
+.m7ok:
+- feel free to add custom init code here, e.g. generation of ham masks or the like
+
+3) in _Display:
+- add macro-line "_DisplayM1 XY" in first block
+- add macro-line "_DisplayM2 XY" in second block
+
+4) in _RefreshDisplay:
+- "add cmp.b #XY,d0" and "beq .mXY"
+- provide fitting code at .mXY (copy from appropriate 8 bit or ham-based examples above)
+
+5) in SetModeAndColors:
+- add macro-line "_SetMaCM1 XY" in first block
+- add macro-line "_SetMaCM2 XY" in second block
+- (for ham-modes) add special cmp/beq cases at ".m0"
+ 
+6) in _SetMode:
+- add macro-line "_CallSetModeMac XY" in first block
+- add macro-line "_SetModeMac XY" in second block
+
+7) in _SetColors:
+- add macro-line "_SetColM1 XY" in first block
+- add macro-line "_SetColM2 XY" in second block
+
+8) in Modes:
+- provide fitting block which adds exactly one bit to MODES (double the number of the previous)
+e.g. 	
+	ifnd	NOMODE18
+MODES		set	MODES!131072
+	endc
+-- (this logic is why there are currently a maximum of 32 mods supported)
+- include you binary code and provide label mXYc2p
+-- (code is expected to have jump table like all the other modes - init at 0, c2p at 4, ..)
+
+in file sub/wos_defines.i
+9) in struct after "Define the structure" comment
+add four rs.l 1 entries to structure for  modeXYinit, modeXYc2p, modeXYexit, modeXYptr
+
+10) after "Set up the screen-dimensions" comment
+- provide fitting MakeMode line to describe your screen dimensions
+-  (or alternative definition of modeXYsize .. modeXYsize)
+
+in file sub/wos_copperlists_v#?.s
+11) at EOF
+- provide fitting copperlist named CopmXY, also with labels sprmXY and colmXY with appropriate space
+
+in dir sub/chunky/sources
+12) finally you need to provide a fitting c2p-routine as a pc-relative plugin. check the provide sources and do likewise.
+- name the file as "mode#?bin.s"
+
+in file sub/chunky/sources/wmake
+13) add compilation line
+- "execute a1 modeXY_#?.bin" - note: replace #? with an actual name, but "mode" and "bin" have to be prefix and suffix
+-- (this is because the last line of "copy mode#?.bin")
+
+

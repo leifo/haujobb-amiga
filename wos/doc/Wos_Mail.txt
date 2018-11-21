@@ -1,0 +1,121 @@
+Hi all!
+
+I've been writing on a new demosystem for our Amiga-Demos/Intros for a while
+and have now reached a point where i feel to make it a little public.
+
+I would like to hear your statements, esp. from you coders, as it is
+intended to ease our way of putting together our productions.
+
+
+
+******* Goals and problems
+
+My main goals were:
+ - to code each effect on his own (as it is possible with Nuts as well)
+ - to make the system useable not only on ASM-One but also on other assemblers
+   (I've tried it with O.M.A. and my test-effects assembled right there)
+ - to give us the possibility to work together (also with Darken :) 
+
+
+Further goals are:
+ - to make onefile intros (no probs here, just haven't done it, yet)
+ - to make .exe / .dat multiload demos (like The Gate)
+ - to make onefile-multiload demos with overlay-hunks (like nothing before)
+ - to make a header which integrates WOS-effects into Nuts.
+ - to generate more screenmodes (18 Bit , optimised 6 bpl , ...)
+ - to support Cybergraphics screens totally transparent for the effect
+ - to add screenwipes for more interesting transitions
+ - to make a Trackloader (not really, but it is possible!)
+ - to maybe make it a linkable object, but i haven't done such things, yet
+
+
+My biggest problems were/are:
+ - the reloction of the effects (solved now)
+ - the overlay multiload system (but i have some more docs now)
+
+
+
+******* Overview
+
+Wicked OS (Wicked has been my first, selffounded group in 1991)
+is a client-server demo/intro-system which enables different coders to work
+on the same project. They just code their effects on their own and link them
+to one of the above described productions afterwards (and hopefully without
+problems). If offers a set of routines which are called via Macros and handles
+all this stuff like systemkilling/reenabling, displays and musics.
+It loads/links the effect as binaries (but you could also link them as source)
+and thus you don't have to care about the labels of the other effects.
+
+The good thing is that all those basic routines (c2p, replay, killer) are 
+supplied by the server, the effect-binary just carries its own code/data.
+This makes it possible to even link effects to an intro, as there is very
+little overhead in a WOS-binary (about 20 bytes). The active effect gets
+a (easy to check for) signal when the effect-time is up or LMB,RMB,Escape
+is pressed.
+
+The next advantage is that the screenmodes are handled very easy. Currently
+there is 320x200 (1x1) , 320x100 (1x2) , 160x100 (2x2) , 640x200 and 640x400.
+They are all handled in a transparent manner via Macros, and might as well 
+be displayed on a Cybergraphics-Screen (window :) if the effect does not 
+need sprites or other Customchip-based features (I therefore intend to ask 
+the effect if he is nasty). Currently there is only an AGA hardware-hack 
+server which uses Scout's fast chunky2planar-routines with triple-buffering 
+but i plan to support Cybergraphics and Multitasking in the long run as well.
+
+On the musical side it currently supports TrackerPacker3.1 and THX1.27
+which both work 100% even on MY a4060. I've not included P61 because it bugs
+heavily on my machine (even Fastjack's fix bugged yesterday), but I'm 
+optimistic to get a really fixed P61-source from the authors of Cyberlogik
+some day.
+
+
+
+******* Info and question about relocation
+
+As i have written above, i solved the problem with the relocation with 
+a few restrictions and would like to hear your statements on this. 
+
+An effect could either have:
+ - ONLY fastmem-hunks, but as many as it needs
+   (based on a source by LSD)
+ - ONE chip and ONE fastmem-hunk (no BSS)
+   (based on a source by Roman and Touchstone/Essence)
+
+I don't see a problem, as the server manages all the music and 
+screens and blitts and copperlists and therefore an effect should perfectly 
+work without chipmem (and use the first way which is more flexible).
+I think only linked effects (like Darken codes) will run into trouble
+when they need chipmem, as the second way allows only one hunk each.
+
+Unneeded routines won't be assembled into the server, e.g. there won't be
+the THX-replay source if we play a TP3 module.
+
+
+
+******* Last words
+
+I will post a beta-version of WOS in our mailing-list soon. Since i've heard
+that we have a coop with Essence, i'd like you (the coders) to test WOS-beta
+and tell me what you miss (and what didn't work). 
+
+I've written WOS because it always took so long to put some effects together, 
+and i hope it will help us to make more demos in less time.
+
+I've been asked by 2 polish groups by now, if we could code something for
+them. If WOS works out to be practicable, we could accept such "offers".
+
+I'm going to leave germany for 2 weeks now. I thus have very little time
+left to code something for Symposium & Mekka 98 / The Gathering.
+I'll be away from 19.3. - 5.4.98. I will post WOS before this and I hope you 
+find it useable (and use it).
+
+I got myself a new (additional) email-addy: lop@gmx.net
+It is routed to my still valid account: l_oppermann@fs1.arch.fh-hannover.de 
+but i think it is easier to recall.
+
+
+
+
+Regards,
+
+ - Leif / NoName

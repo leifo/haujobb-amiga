@@ -1,0 +1,402 @@
+@database WOS.guide
+@author Leif Oppermann
+@$VER: 0.35 14.05.98
+@node MAIN "WickedOS: Amiga-Guide Documentation"
+
+     @{" Foreword " link FOREWORD} -  What is this all about?   |                @{b}WickedOS v0.5@{ub}
+                                              |
+     @{" Features " link FEATURES}              @{" Greetings " link HELLOS}    |         @{b} an AMIGA demosystem@{ub}
+     @{" Requires " link REQUIRES}              @{" Address   " link CONTACT}    |  coded by Leif Oppermann aka
+                                              | NoName of Haujobb & Sector 7
+ ---------------------------------------------'
+
+     @{"· " link GETTING} Getting started
+     @{"· " link ADVANCED} Advanced options
+     @{"· " link LINKING} Linking
+
+     @{"· " link OVERVIEW} Macros and Flags overview
+
+     @{"· " link REPLAYS} Supported replayers
+     @{"· " link C2P} Supported c2p
+     @{"· " link PLUGINS} Plug-Ins
+     @{"· " link CLIENT} Client infos
+     @{"· " link SERVER} Server infos
+     @{"· " link IFEQ} Conditional assembling
+@endnode
+
+
+@node FOREWORD "WickedOS: Foreword"
+
+@{u} Foreword:@{uu}
+
+Wicked OS is a client-server demo-system which enables different coders to
+work on the same project. They just code their effects on their own and
+link them to a full productions afterwards (and hopefully without problems).
+If offers a set of routines which are called via Macros and it handles all
+this stuff like systemkilling/reenabling, displays and musics.
+It loads/links the effect as binaries and thus you can concentrate on the
+effect you are working on and don't even have to care about the labels of
+the other effects (which are probably coded by another coder).
+
+The good thing is that all those basic routines (c2p, replay, killer) are 
+supplied by the server, the effect-binary just carries its own code/data.
+This makes it possible to even link effects to an intro, as there is very
+little overhead in a WOS-binary (about 20-30 bytes). The active effect gets
+a (easy to check for) signal when the effect-time is up or LMB,RMB,Escape
+is pressed.
+
+The next advantage is that the screenmodes are handled very easy. Currently
+there is 320x200 (1x1) , 320x100 (1x2) , 160x100 (2x2) , 640x200 and 640x400.
+They are all handled in a transparent manner via Macros, and might as well 
+be displayed on a Cybergraphics-Screen (window :) if the effect does not 
+need sprites or other Customchip-based features (I therefore intend to ask 
+the effect if he is nasty). Currently there is only an AGA hardware-hack 
+server which uses Scout's fast chunky2planar-routines with triple-buffering 
+but i plan to support Cybergraphics and Multitasking in the long run as well.
+
+On the musical side there currently are Player 6.1 (fixed to work on A4060),
+TrackerPacker 3.1, THX 1.27 and THX 2.3d. 
+
+The c2p- and replay-routines are already assembled and can be just plugged
+in. It is no problem to assemble a server which features all replays and
+different c2ps for 020/030 and 040/060.
+
+
+@endnode
+
+
+@node REQUIRES "WickedOS: Requirements"
+
+@{u} Requirements:@{uu}
+
+Currently I haven't checked what is really necessary to code with WOS, but
+the demands aren't too high I guess. AGA and some Megabytes of Fast-Ram
+will be enough. It could even be possible to code something for A500/2000,
+but I haven't tested this. Bear in mind that the included c2p-routines
+require 68020 or better CPU and are besides this pretty useless under OCS.
+
+To assemble a SERVER and the various Plug-Ins you need ASM-One
+or a compatible assembler.
+
+To assemble a CLIENT (code an effect) you may use nearly any other
+assembler.
+PhxAss, DevPac or even OMA might be fine for this purpose.
+
+Note: The system is written in case-dependant code. The sources do assemble
+      case-independant and you are free to code the clients as you want.
+      But please: don't spread modified versions of the source which
+      only assemble when "UCase = LCase".
+           
+@endnode
+
+@node FEATURES "WickedOS: Features"
+
+@{u} Features:@{uu}
+
+******* Goals and problems
+
+My main goals were:
+ - to code each effect on its own
+ - to make the system useable not only on ASM-One but also on other assemblers
+ - to give coders the possibility to work together
+
+
+Further goals are:
+ - to make onefile intros
+ - to make .exe / .dat multiload demos
+ - to make onefile-multiload demos with overlay-hunks
+ - to generate more screenmodes (18 Bit , optimised 6 bpl , ...)
+ - to support Cybergraphics screens totally transparent for the effect
+ - to add screenwipes for more interesting transitions
+ - to make a Trackloader (not really, but it is possible!)
+ - to make it a linkable object, but i haven't done such things, yet
+
+
+My biggest problems were/are:
+ - the reloction of the effects (almost solved now)
+ - the overlay multiload system (but i have some more docs now)
+
+@endnode
+
+@endnode
+
+@node HELLOS "WickedOS: Greetings"
+
+@{u} Greetings:@{uu}
+
+     - Touchstone / Essence
+     - Darken / Haujobb
+     - Fastjack / Haujobb
+     - JCS, Marc and CDK
+     - Spin / Abyss
+     - Sniper & Grey / LSI
+     - Blueberry / Efreet
+     - Guru / Sahara Surfers
+     - Scout / C-Lous
+     - Fishwave / Scoopex
+     - Jazz / Haujobb
+     - Owl / Haujobb
+     - ...
+          
+@endnode
+
+@node CONTACT "WickedOS: Address"
+
+@{u} Contact address:@{uu}
+
+
+                             Leif Oppermann
+                           Meeresblickstr. 11
+                          31556 Wölpinghausen
+                                Germany
+
+                  Or by phone: +49(0)5037-799 (parents)
+
+                      Or preferably via Internet:
+
+                               lop@gmx.de
+
+@endnode
+
+@node GETTING "WickedOS: Getting started"
+
+GETTING STARTED: *************************************************************
+
+ Basically, you only have to init your effect, select your desired screen-mode
+and display it in your inner-loop. If CHECKEXIT-macro returns -1 you must quit
+by calling EXITWOS.
+
+ If your effect is ready, set the ISREADY-flag. Your code will then be
+assembled with the WOS Exe-header. 
+
+(macro) INITWOS         The server will jump here to start your effect.
+                        ALWAYS define this.
+
+                in:     nothing
+                out:    d0 - for your use to pass data to the client
+                        d1 - effects time (how long you are allowed to stay :)
+
+
+(macro) EXITWOS         This does some cleanup and then exits the effect
+                in:     d0 - your returncode (if you want to have one)
+                out:    nothing (this function does not return, it quits)
+        
+(macro) SETMODE         This selects the screenmode you want to use.
+                        The c2p is automatically initialized and the palette
+                        is written to the copperlist.
+
+                in:     Mode,^Buffer,^Palette,Brightness
+                out:    nothing
+
+        (arg)   Mode    Desired screenmode (#1-#5), current modes are:
+                        #1 - 320x200 256cols 1x1 lores
+                        #2 - 320x100 256cols 1x2 lores
+                        #3 - 160x100 256cols 2x2 lores
+                        #4 - 640x200 256cols hires
+                        #5 - 640x400 256cols hires-laced
+
+        (arg)   ^Buffer         This must point to your chunky-screen.
+
+        (arg)   ^Palette        This must point to your palette (4 Bytes
+                        ($0RGB) per color -> palette size: 1024 bytes).
+
+        (arg)   Brightness      #0 - #255       -> black to normal
+                                #256 - #65535   -> normal to white
+
+        Example1:       SETMODE #1,#Chunky,#Colors,#255 ; mode1 (320x200),
+                        normal brightness. The palette is taken from #Colors,
+                        the screen will be c2p-converted from #Chunky.
+
+        Example2:       SETMODE #3,#Buffer,#Cols,#0     ; mode3 (160x100 2x2)
+                        The screen is black due to Brightness=0. The palette is
+                        taken from #Cols, the screen from #Buffer.
+
+
+
+(macro) DISPLAY1        Make the buffer visible on screen.
+                        (c2p with triple-buffering, with 50 fps framesync)
+                        Use this for 1x2 and 2x2.
+
+                in:     nothing
+                out:    nothing
+
+
+
+
+(macro) DISPLAY2        Make the buffer visible on screen.
+                        (c2p with triple-buffering, with 25 fps framesync)
+                        Use this for 1x1.
+                        
+                in:     nothing
+                out:    nothing
+
+
+(macro) DISPLAY         Make the buffer visible on screen.
+                        (c2p with triple-buffering, without framesync)
+                        You shouldn't use this in innerloops,
+                        it is only thought for pictures.
+
+                in:     nothing
+                out:    nothing
+
+
+(macro) SETCOLS         Change the Palette and Brightness of the current mode.
+                        Use this for fading or flashing.
+                        See SETMODE for details.
+
+                in:     ^Palette,Brightness
+                out:    nothing
+
+        Example:        SETCOLS #Colors,#512    ;slightly lighted
+                        The palette is taken from #Colors, the brightness
+                        is slightly too high. Nice for effects.
+                        
+
+EXIT CONDITIONS: *************************************************************
+
+ WOS checks if the user decided to quit or if the effects time is up.
+If it is time to quit, CHECKEXIT will return -1 (True), otherwise 0 (False)
+
+(macro) CHECKEXIT
+
+                in:     nothing
+                out:    D0 = -1 means: time to quit
+                        D0 = 0 means: no need to quit
+        
+        Note: The flags are set -> no need to "tst d0"  
+
+(flag)  NORMB           do not exit when right mousebutton is pressed
+(flag)  NOLMB           do not exit when left mousebutton is pressed
+(flag)  NOESC           do not exit when ESCAPE is pressed
+
+
+@endnode
+
+@node LINKING "WickedOS: Linking"
+
+******* Info about the relocation of the effects
+
+I solved the problem with the relocation with a few restrictions.
+
+An effect could either have:
+ - ONLY fastmem-hunks, but as many as it needs
+   (based on a source by LSD)
+ - ONE chip and ONE fastmem-hunk (no BSS)
+   (based on a source by Roman and Touchstone/Essence)
+
+I don't see a problem, as the server manages all the music and 
+screens and blitts and copperlists and therefore an effect should perfectly 
+work without chipmem (and use the first way which is more flexible).
+
+@endnode
+
+
+@node OVERVIEW "WickedOS: Macros and Flags overview"
+
+First of all:
+
+ m: stands for a Macro (given function)
+ f: is a flag (just set this type, eg. NORMB)
+ v: user-defined-variable (eg. MUSIC=TP3)
+um: user-defined-macro (eg. TP3MOD contains an incbin line)
+
+************* Basic routines, you must define these
+
+m: INITWOS    in:     nothing
+              out:    d0-for you , d1-effects time
+
+m: EXITWOS    in: - 
+              this function does not return!
+
+************* Displays
+
+m: SETMODE    in:     Mode,^Buffer,^Palette,Brightness
+              out:    nothing
+
+m: DISPLAY1   update the screen as fast as possible, but not faster than 50fps
+              in:     nothing
+              out:    nothing
+
+m: DISPLAY2   same as above, but not faster than 25fps (use this for mode1)
+
+m: DISPLAY    same as above, without framesync. don't use in effect-loops!
+
+m: SETCOLS    Change the Palette and Brightness of the current mode.
+              in:     ^Palette,Brightness
+              out:    nothing
+
+************* Music
+
+v: MUSIC      play music
+              Example: MUSIC=TP3 ; P61=1 , TP3=2 , THX=4 , THX2=8
+              Note: MUSIC automatically sets REPLAY correctly.
+              Note2: MUSIC=2 is also ok, then you don't need "wos.i"
+
+v: REPLAY     if you want more than one replay to be included, just OR them.
+              Example: REPLAY set P61!TP3!THX2 (include these 3 replays)
+
+um: P61MOD    don't use default P61-module, but this one
+              Example: P61MOD  Macro
+                        incbin modules:p61/p61.anothermodule
+                       endm
+
+um: TP3MOD    Same for Tracker Packer 3.1
+um: THXMOD    same for THX 1.27
+um: THX2MOD   same for THX 2.3d
+
+
+************* Exiting
+
+m: CHECKEXIT  ifne d0, it is time to exit. Just EXITWOS to do so.
+              Note: The exit-conditions can be affected with the following:
+
+f: NORMB      do not exit when right mouse-button has been pressed
+f: NOLMB      same for left mb
+f: NOESC      same for Escape-key
+              Note: If you set all 3 flags, the user can't quit!
+                    You should always let him quit by LMB and ESC. 
+              Note2: Currently the flags won't be regarded when ISREADY is set,
+                     but this might possibly change in future.
+
+************* User interaction
+
+m: MOUSEX     returns the x-position of the mouse in d0 (max: 640)
+m: MOUSEY     same for the y-position (max: 400)
+
+************* Misc stuff
+
+m: VBIHOOK    if you want to have a routine in the vertical blanc interrupt
+              Example: VBIHOOK #mylevel3
+
+f: CLIONLY    do not include the Workbench-startup (maybe of use for intros)
+
+v: RELOCPSIZE set the size of the PUBLIC-MEM Buffer for the effects.
+              (default size is 338722)
+
+f: NOMODE1    do not include mode1 (320*200)
+f: NOMODE2    do not include mode2 (320*100)
+f: NOMODE3    do not include mode3 (160*100)
+f: NOMODE4    do not include mode4 (640*200)
+f: NOMODE5    do not include mode5 (640*400)
+
+@endnode
+
+@node REPLAYS "WickedOS: Replays"
+
+MUSIC SUPPORT: ***************************************************************
+
+ WOS lets you easily test your effects with music in the background. The music
+will be excluded if your effect is said to be ready (ISREADY-flag is set).
+This is very logical, because the effect is only a subprogram then and the 
+music will be played by the demo-server in your finished production.
+
+ Currently WOS supports Player 6.1a (P61), TrackerPacker 3.1 (TP3),
+The Highest eXperience 1.27 (THX) and THX 2.3d (THX2) modules.
+All have their default-modules in "wos:dat/". P61 is fixed to work on A4060.
+
+ The respective Plug-Ins and modules will only be included if MUSIC-flag is
+set. P61 and TP3 play with CIA-Timing, THX and THX2 currently only via
+VBL-Interrupt. THX and THX2 will thus sound too fast on NTSC Amigas (60hz
+rather than 50hz).
+
+@endnode

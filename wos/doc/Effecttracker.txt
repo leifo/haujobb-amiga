@@ -1,0 +1,53 @@
+;*****************************************************************************
+;* WOS - Wicked Operating System for Demos by Leif 'NoName' Oppermann        *
+;*****************************************************************************
+;Saturday, 7.11.98
+;the Effecttracker
+
+The EFFECTTRACKER (from now on ET) is thought to easily time your demo to the
+music. It currently only works with P61, but could be adapted for all kind 
+of supported trackers which have a pattern and a position field to read out.
+
+To use ET, call EFFECTTRACKER #patternlist.
+To quit ET, call EFFECTTRACKER #0 
+
+The patternlist is much the same like in ProTracker. It points to the patterns
+to use, one after another. The patternlist consists of longwords and must be
+terminated either by 0 (END) or by -1 (REPEAT).
+ 
+If the music-pattern is shorter than the ET-pattern,  the rest of
+the ET-pattern won`t be used. Instead the next pattern will be used.
+If the ET-pattern is shorter than the music-pattern, it can be looped (->pat2).
+SO: music-patterposition and ET-patternposition are always identically.
+
+Each pattern consists of a 4 byte long header (2 bytes tag, 1b patlen+loop)
+plus patlen longwords that point to a routine or are set to 0. 
+
+---
+
+Example1: 
+
+patternlist:	dc.l	pat1,pat2,-1
+
+pat1:	dc.b	"ET",64,0		;tag,patlen,repeat(-1) or end (0)
+	dc.l	flash,0,0,0,bisch,0,0,0	;0-7
+	dc.l	wackel,0,bumm,bumm,0,0,0	;8-15
+	ds.l	48
+
+pat2:	dc.b	"ET",16,-1		;tag,patlen,repeat(-1) or end (0)
+	dc.l	flash,0,0,0,bisch,0,0,0	;0-7
+	dc.l	wackel,0,bumm,bumm,0,0,0	;8-15
+
+---
+
+Example2: (a very short one, flashes the screen to a standard techno-beat)
+
+patternlist:	dc.l	pat3,-1
+
+pat3:	dc.b	"ET",4,-1
+	dc.l	flash,0,0,0 
+
+---
+
+note: flash,bisch,wackel and bumm aren`t built-in functions of WickedOS! :)
+

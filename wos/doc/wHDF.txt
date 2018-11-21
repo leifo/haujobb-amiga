@@ -1,0 +1,50 @@
+;*****************************************************************************
+;* WOS - Wicked Operating System for Demos by Leif 'NoName' Oppermann        *
+;*****************************************************************************
+;Thursday, 17.12.98
+;wHDF - the WickedOS HardDiskFile format
+;this format is static, names can't be changed without problems
+;use it for final versions of your demos. you can link it to your overlay-exe.
+
+;--- wHDF header
+offset 0: 4 bytes
+    "wHDF" - tag for wickedHardDiskFile
+
+offset 4: 4 bytes
+    total length of hdf, counting from position 0 (not the length of your overlay!)
+
+offset 8: 4 bytes
+    number of files in this hdf
+
+offset 12: 4 bytes
+    pointer to beginning of toc (bytes from pos. 0 of hdf)
+
+offset 16: 16 bytes
+    name of hdf
+
+...maybe more in future
+
+;--- wHDF toc (table of contents)
+for each entry:
+
+start.l
+länge.l
+^name.l
+length of name.b
+3 bytes free
+
+ --> 16 bytes per toc-entry
+
+;--- names-array
+for each name: rem (len(filename)+3)
+
+filename
+0.b (end of string)
+number in toc-table.w (0..n) --> max 65536 files in wHDF
+
+
+
+
+
+
+

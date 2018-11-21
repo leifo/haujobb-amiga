@@ -1,0 +1,13 @@
+mode8 (320x180x8) neu am 18.01.17
+gemessen mit scroller-vertical, 100 frames
+
+29 fps, 170 ticks mit alter mode8 (132% public version 1996)
+31 fps, 159 ticks mit 060 1997
+31 fps, 159 ticks mit 040 1997
+32 fps, 155 ticks mit 040 1998 smc (aber screen kaputt)
+29 fps, 170 ticks mit generic
+32 fps, 156 ticks mit 040-normal 
+======
+
+Winner auf 1260/64 ist: c2p1x1_8_c5_040.s aus /normal
+32 fps, 156 ticks mit 040-normal

@@ -1,0 +1,33 @@
+;*****************************************************************************
+;* WOS - Wicked Operating System for Demos by Leif 'NoName' Oppermann        *
+;*****************************************************************************
+;Sunday, 28.6.98
+;the wPAC fileformat, as produced by s:packwos
+
+offset 0: 4 bytes
+ packed WOS-files
+  wPAC - current version
+  wPAK - improved version (later on)
+   other names I thought about: wCRU,wCRM,wSTC
+
+offset 4: 4 bytes
+ decrunched length
+
+offset 8: 4 bytes
+ crunched length
+
+offset 12: 4 bytes
+ offset to 0-terminated multiline-text or zero (no infos)
+ -> use this for example to describe the effect
+ -> offset is counted from the beginning of the file ("wPAC"-tag)
+
+offset 16: 8 bytes
+ reserved for future extensions (don't use this)
+
+offset 24: 8 bytes
+ description (some files only use the first 4 bytes (from 8-11))
+ e.g. "Effect  " (cmp.l  #"Effe",... is enough)
+
+offset 32: xxx bytes
+ start of data
+

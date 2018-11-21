@@ -1,0 +1,151 @@
+;-------------------T-----------T-----------------T---------T---------------
+
+;=============================================================================
+;=============================================================================
+;===================== t h x - s o u n d   s y s t e m =======================
+;=============================================================================
+;================= b i n a r y - r e p l a y e r   d o c u ===================
+;=============================================================================
+;=============================================================================
+;========================= v e r s i o n   2 . 3 d ===========================
+;=============================================================================
+;=============================================================================
+
+- Note that 68000er DeliPlayer as Noteplayer is NOT possible!
+
+How to use the replayer in my own productions ??
+ - Here we go (take a look at the example source!-and contact me!)
+
+1. Include the "THX-Offsets.I" file
+2. Include the "THX-Replayer.BIN" file (100% pc-relative) <needn't be chip>
+3. Call the following procedures as described:
+   for example: jsr thxReplayer+thxInitCIA
+                jsr thxReplayer+thxInitPlayer
+                jsr thxReplayer+thxInitModule (or BSR if in the same section!)
+4. To access e.g. the volume etc. (the thx_p... variables as seen in the
+   "THX-Offsets.I" file), proceed like this: (access them by byte!)
+
+
+;---- thxVoiceControl
+;thxVoiceControl
+;               ;is easily possibly, but I'm outta time, just contact me AFTER
+;               ;Mekka & Symposium '98... -> Dexter.Abyss@iName !!
+
+
+;---- thxGetSubsongs
+;thxGetSubsongs move.l      a6,-(sp)
+;               move.l      thxReplayer+thxBSS_P(pc),a6  ;get ptr to
+;               moveq       #0,d0                        ;players public
+;               move.b      thx_pSubsongs(a6),d0         ;memory
+;               move.l      (sp)+,a6                     ;and get nr. of
+;               RTS                                      ;subsongs from there
+
+   You may then also set the thx_pPlaying flag to non-0 if the immediate play
+   value was set to non-zero in thxInitSubSong or you may set the volume, get
+   your external timing (if you read out the ext. timing value, be sure to
+   clear the BYTE after reading it!) or see if the song has reached its end.
+
+5. That's it, now some technical information!
+
+
+
+;            ----==== a Little Function-Overview ====----
+
+
+; All Inputs are LONGWORDS, please!
+
+
+;---- thxInitCIA
+;
+; Inputs: a0: pointer to your cia-interrupt (return with RTS please!)
+;             - or -
+;  *NEW*  a0: pointer to a routine that sets the cia-timer (tempo is
+;             given you over in d0.w, which will then be whether 28419/2,
+;             28419/4, 28419/6 or 28419/8)  - if using your own cia (d0=1)
+;             You need NOT save the registers here!
+;         d0: 0 for system-friendly level 1 i think (called by exec.cause)
+;               others are NOT YET included!
+;    *NEW*    1 for using your own cia - pass a tempo_set routine in a0 then
+;
+; Output: d0:  0 for success
+;             -1 for error (so don't call thxKillCIA then later!)
+;
+: Function: will try to get one of amiga's cia-interrupts (system-method!)
+;   *NEW*   but now also supports multiple-speed modules using your own cia!
+
+
+;---- thxInitPlayer
+;
+; Inputs: a0: pointer to 412150 bytes of public (fast) memory
+;         a1: pointer to   2560 bytes of explicit chip memory
+;      or null-pointer(s) (sub.l a0,a0 and/or sub.l a1,a1) for auto-allocation!
+; *NEW*   d0: zero (0) for LoadWavesFile if possible (should normally be used)!
+;             one (1) for ExplicitWavesPrecalcing
+; *NEW*   d1: zero (0) for Filters (standard setting!)
+;             one (1) for No Filters (use only if playing THXv1.xx modules!
+;
+; Output: d0: non-zero (-1) for failure, zero (0) for no error!
+;
+: Function: will precalc the few waveforms and (if a0/a1 = 0) allocate
+;           player's memory-blocks (auto-allocation is recommended!)
+;           This function will also precalc the filter-waves, so
+;           it may take some time depending on your cpu power (or if
+;           possible loads it from your hdd)
+; *NEW*     This function now also turns the audiohardware on.
+
+
+;---- thxInitModule
+;
+; Inputs: a0: pointer to a THX-Module
+;
+; Output: d0: non-zero (-1) for failure, zero (0) for no error!
+; *NEW*   d0: minus-two (-2) for 2x/3x/4x-speed module failed due no cia
+;             was initialized (2x/3x/4x only works with cia!)
+; *NEW*   d1: number of subsongs
+;
+; Function: initializes the given THX-Module
+;
+; Bugs: No output value WAS returned until version v2.0 - Sorry
+
+
+;---- thxInitSubSong
+;
+; Inputs: d0: subsong number (0 means main tune, 1 means first subsong etc.)
+;         d1: immediate play (zero means immediately play when thxInterrupt is
+;                             called, non-zero means wait until thx_pPlaying
+;                             flag is set to non-zero) normally use 0 here!
+;
+; Function: initializes the given subsong
+
+
+;---- thxInterrupt
+;
+; Function: plays 1/50 of a second, so you'll have to call it every 1/50 sec.!
+;           If possible, use thxInitCIA (with thx's or your own cia), as you
+;           can't play 2x/3x/4x-speed tunes with vbl-irq !!!
+
+
+;---- thxStopSong
+;
+; Function: stops the current playing song.
+
+
+;---- thxKillPlayer
+;
+; Function: shuts down the audio-channels and deallocates the two memory
+;           blocks as long as they were allocated by thxInitPlayer itsself!
+; *BUG*     did not shut down the audio-channels before v2.1n
+; *NEW*     now shuts down the audio-channels!
+
+;---- thxKillCIA
+;
+; Function: Removes the cia-interrupt from system, call only if you're
+;           sure it was initialized correctly!! (thxInitCIA returns 0/-1)
+;   *NEW*   Please do also call thxKillCIA if you were using your own CIA!
+
+
+
+; If ya wanna e.g. set the volume, contact me, i'll tell you !
+; If ya need a shorter replayer for your production, contact me, i'll do!
+
+; Take a look at the example source!!        - dexter/abyss! signing off!

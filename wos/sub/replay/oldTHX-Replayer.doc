@@ -1,0 +1,125 @@
+;-------------------T-----------T-----------------T---------T---------------
+
+;=============================================================================
+;=============================================================================
+;===================== t h x - s o u n d   s y s t e m =======================
+;=============================================================================
+;================= b i n a r y - r e p l a y e r   d o c u ===================
+;=============================================================================
+;=============================================================================
+;========================= v e r s i o n   1 . 2 7 ===========================
+;=============================================================================
+;=============================================================================
+
+- replaycode its self hasn't changed very much - now you can use level 1 cia
+- been working on 68000 version, but couldn't test if 68000 version still
+- has some odd addressing in it as i didn't bring my a500 to the party 6 here!
+- sorry folx, again if u need one WRITE ME!
+
+How to use the replayer in my own productions ??
+ - Here we go (take a look at the example source!)
+
+1. Include the "THX-Offsets.I" file
+2. Include the "THX-Replayer.BIN" file (100% pc-relative) <needn't be chip>
+3. Call the following procedures as described:
+   for example: jsr thxReplayer+thxInitCIA
+                jsr thxReplayer+thxInitPlayer
+                jsr thxReplayer+thxInitModule (or BSR if in the same section!)
+4. To access e.g. the volume etc. (the thx_p... variables as seen in the
+   "THX-Offsets.I" file), proceed like this: (access them by byte!)
+
+;---- thxGetSubsongs
+;thxGetSubsongs movem.l     a6,-(sp)
+;               move.l      thxReplayer+thxBSS_P(pc),a6  ;get ptr to
+;               moveq       #0,d0                        ;players public
+;               move.b      thx_pSubsongs(a6),d0         ;memory
+;               movem.l     (sp)+,a6                     ;and get nr. of
+;               RTS                                      ;subsongs from there
+
+   You may then also set the thx_pPlaying flag to non-0 if the immediate play
+   value was set to non-zero in thxInitSubSong or you may set the volume, get
+   your external timing (if you read out the ext. timing value, be sure to
+   clear the BYTE after reading it!) or see if the song has reached its end.
+
+5. That's it, now some technical information!
+
+
+
+;            ----==== a Little Function-Overview ====----
+
+
+
+;---- thxInitCIA
+;
+; Inputs: a0: pointer to your cia-interrupt (return with RTS please!)
+;         d0: 0 for system-friendly level 1 i think (called by exec.cause)
+;             others are NOT YET included!
+;
+; Output: d0:  0 for success
+              -1 for error (so don't call thxKillCIA then later!)
+;
+: Function: will try to get one of amiga's cia-interrupts (system-method!)
+;           non-system hard-core code will follow in the next version or
+;           contact me for that if you need it (anyway, everybody has a
+;           cia-irq routine, right?!
+
+
+;---- thxInitPlayer
+;
+; Inputs: a0: pointer to 7854 bytes of public (fast) memory
+;         a1: pointer to 2560 bytes of explicit chip memory
+;      or a null-pointer (sub.l a0,a0 and/or sub.l a1,a1) for auto-allocation!
+;
+; Output: None yet, as everybody should have 10kb of free memory ?
+;         Own checks wouldn't help, as the memory is already written when
+;         this function returns!
+;
+: Function: Will precalc the few waveforms and (if a0/a1 = 0) allocate
+;           player's memory-blocks (auto-allocation is recommended!)
+
+
+;---- thxInitModule
+;
+; Inputs: a0: pointer to a THX-Module
+;
+; Output: d0: non-zero (-1) for failure, zero (0) for no error!
+;
+; Function: Initializes the THX-Module given
+
+
+;---- thxInitSubSong
+;
+; Inputs: d0: subsong number (0 means main tune, 1 means first subsong etc.)
+;         d1: immediate play (zero means immediately play when thxInterrupt is
+;                             called, non-zero means wait until thx_pPlaying
+;                             flag is set to non-zero) normally use 0 here!
+;
+; Function: Initializes the subsong given
+
+
+;---- thxInterrupt
+;
+; Function: Plays 1/50 of a second, so you'll have to call it every 1/50 sec.!
+;           If possible, use cia (not thxInitCIA, as it's not yet implemented)
+
+
+;---- thxStopSong
+;
+; Function: Stops the current playing song.
+
+
+;---- thxKillPlayer
+;
+; Function: Shuts down the audio-channels and deallocates the two memory
+;           blocks as long as they were allocated by thxInitPlayer itsself!
+
+
+;---- thxKillCIA
+;
+; Function: Removes the cia-interrupt from system, call only if you're
+;           sure it was initialized correctly!! (thxInitCIA returns 0/-1)
+
+
+
+
+; Take a look at the example source!!      - dexter/abyss! signing off!

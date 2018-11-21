@@ -1,0 +1,10 @@
+macros	PLAY	in: #address,(pattern)
+	STOP	in: -
+	VOLUME	in: #(0-255)
+	GETPOS	in: -
+		out: d0-d3 pat,pos,row,e8
+	EFFECTRACKER	in: #patternlist
+
+flags	MUSIC	=(1,2,4,8)
+	SETPOS	=pattern
+	

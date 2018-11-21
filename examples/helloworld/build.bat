@@ -1,0 +1,1 @@
+vc +aos68k -o hello hello.c
