@@ -1,0 +1,5 @@
+incdir Include3.0:include,Work:ASMprg/Modules
+-vp=68020/68881
+-vow-,o+,o6-
+alink
+debug
