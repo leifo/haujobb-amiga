@@ -15,8 +15,8 @@
 devpac:genam wickedlink.s with genam_vbcc.opts
 devpac:genam wickedquicklink.s with genam_vbcc.opts
 
-copy wicked1.o pct:wicked1.oman
-copy wicked2.o pct:wicked2.oman
-copy wicked3.o pct:wicked3.oman
+;copy wicked1.o pct:wicked1.oman
+;copy wicked2.o pct:wicked2.oman
+;copy wicked3.o pct:wicked3.oman
 copy wickedlink.o pct:wickedlink.oman
 copy wickedquicklink.o pct:wickedquicklink.oman

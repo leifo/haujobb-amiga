@@ -15,8 +15,8 @@ CALL:	MACRO
 	jsr	_LVO\1(a6)
 	ENDM
 
-INTB_VERTB equ	5			; for vblank interrupt
-INTB_COPER equ	4			; for copper interrupt
+;INTB_VERTB equ	5			; for vblank interrupt
+;INTB_COPER equ	4			; for copper interrupt
 
 
 
