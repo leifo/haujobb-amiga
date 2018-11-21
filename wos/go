@@ -1,0 +1,22 @@
+;1
+;cd sub/chunky/sources
+;execute wmake
+;cd ///
+
+; wicked1: prototype1
+; wicked2: last train to danzig
+; wicked3: beam riders
+; wickedlink: framework distribution, req. assembly-bridge
+; wickedquicklink: framework distribution
+
+;devpac:genam wicked1.s with genam_vbcc.opts
+;devpac:genam wicked2.s with genam_vbcc.opts
+;devpac:genam wicked3.s with genam_vbcc.opts
+devpac:genam wickedlink.s with genam_vbcc.opts
+devpac:genam wickedquicklink.s with genam_vbcc.opts
+
+copy wicked1.o pct:wicked1.oman
+copy wicked2.o pct:wicked2.oman
+copy wicked3.o pct:wicked3.oman
+copy wickedlink.o pct:wickedlink.oman
+copy wickedquicklink.o pct:wickedquicklink.oman
