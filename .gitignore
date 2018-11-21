@@ -1,0 +1,14 @@
+# docs at https://git-scm.com/docs/gitignore
+*~
+*.o
+*.bin
+*.asm
+.moc*
+
+Makefile
+Makefile.Debug
+Makefile.Release
+
+wostest
+hellomake
+stars
