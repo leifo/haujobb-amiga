@@ -1,5 +1,5 @@
 to ram:
-incdir Include3.0:include,Work:ASMprg/Modules
+incdir Includes:
 -vp=68020/68881
 -vow-,o+,o6-
 debug
