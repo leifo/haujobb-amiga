@@ -74,7 +74,7 @@ REPLAY=0	; no legacy music support, here (you probably want adpcm anyway)
 
 	section code,code
 _wosInit:
-	include	wos.i
+	include	NewestWos.s
 	
 	;--- take system
 	INITWOS

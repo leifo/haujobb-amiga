@@ -111,7 +111,7 @@ ReplayPeriod = 124		; 124 means 28603.99 HZ
 	
 
 _wosInit:
-	include	wos.i
+	include	NewestWos.s
 	
 	;--- take system
 	INITWOS
