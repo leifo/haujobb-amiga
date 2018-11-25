@@ -6,8 +6,8 @@
 #include "tools/mem32.h"
 #include "tools/rand.h"
 #include "math/imath.h"
+#include "tools/malloc.h"
 
-#include <malloc.h>
 #include <stdio.h>
 #include <math.h>
 

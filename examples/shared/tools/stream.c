@@ -1,5 +1,5 @@
 #include "stream.h"
-#include <malloc.h>
+#include "malloc.h"
 #include <string.h>
 
 // diesen zeiger einfach auf den gelinkten datenblock zeigen lassen
