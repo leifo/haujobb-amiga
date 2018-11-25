@@ -1,5 +1,5 @@
 // stars example, 21.11.18
-// optimised for clarity, not speed or beauty
+// optimised for clarity
 
 #include "starseffect.h"
 
@@ -8,11 +8,11 @@
 #include "tools/rand.h"
 #include "common/vertex.h"
 
-#define NUMSTARS 3000
-#define STARFIELDSIZE 1024
+#define NUMSTARS 7000
+#define STARFIELDSIZE 2048
 #define STARFIELDDEPTH 512
-#define PERSFAK 8192
 #define ZMAX STARFIELDDEPTH
+
 static Vertex stars[NUMSTARS];
 static unsigned int pal[256];
 
@@ -22,6 +22,10 @@ void setPal(int index, int r, int g, int b)
    if (g>255) g=255;
    if (b>255) b=255;
 
+   if (r<0) r=0;
+   if (g<0) g=0;
+   if (b<0) b=0;
+      
    pal[index]= (r<<16)|(g<<8)|(b<<0);
 }
 
@@ -33,7 +37,6 @@ unsigned int* starsPalette()
 void starsRelease()
 {
 }
-
 
 void starsInit()
 {
@@ -64,25 +67,19 @@ void starsInit()
 }
 
 // draw all stars to screenbuffer, movement based on time
-void starsDraw(int time, unsigned char* screenBuffer, int xres, int yres)
+void starsDraw(int time, int persfak, unsigned char* screenBuffer, int xres, int yres)
 {
 
-    int i,sx,sy;
-    int cx = xres/2;
-    int cy = yres/2;
-    int x,y,col;
-    int iz;
-    unsigned int zx;
-    unsigned int zy;
-
+    int i,x,y,col;
+    
     float fpersfak,wx,wy,wz;
-
+   
     for (i=0; i<NUMSTARS; i++)
     {
         wz = (stars[i].z - time) & STARFIELDDEPTH-1;
         wx = stars[i].x;
         wy = stars[i].y;
-        fpersfak=( 1 / wz*(PERSFAK/256) );
+        fpersfak=( 1 / wz*persfak );
         x=xres/2+wx*fpersfak;
         y=yres/2+wy*fpersfak;
         if( (wz>0) & (wz<ZMAX)){
@@ -103,6 +100,6 @@ void starsRender(int time)
    // clear screen
    memset32(screenBuffer, 0, xres*yres);
    
-   starsDraw(time,screenBuffer,xres,yres);
+   starsDraw(time, 32, screenBuffer,xres,yres);
 }
 

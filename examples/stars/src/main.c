@@ -29,7 +29,7 @@ void updateDemo(int time)
 void drawDemo(int time)
 {
    starsRender(time);
-   wosDisplay(1);
+   wosDisplay(2);
 }
 
 void mainDemo()
