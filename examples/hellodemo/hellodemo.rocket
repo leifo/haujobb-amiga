@@ -1,0 +1,26 @@
+<sync rows="128">
+	<tracks>
+		<track name="part">
+			<key row="0" value="1" interpolation="0"/>
+		</track>
+		<track name="brightness">
+			<key row="0" value="0" interpolation="1"/>
+			<key row="48" value="256" interpolation="0"/>
+			<key row="96" value="256" interpolation="1"/>
+			<key row="125" value="192" interpolation="3"/>
+			<key row="127" value="0" interpolation="0"/>
+		</track>
+		<track name="stars(1):time">
+			<key row="0" value="1" interpolation="2"/>
+			<key row="96" value="2000" interpolation="2"/>
+			<key row="127" value="1800" interpolation="0"/>
+		</track>
+		<track name="stars(1):perspective">
+			<key row="0" value="128" interpolation="2"/>
+			<key row="80" value="32" interpolation="0"/>
+			<key row="96" value="32" interpolation="3"/>
+			<key row="127" value="0" interpolation="0"/>
+		</track>
+	</tracks>
+	<bookmarks/>
+</sync>

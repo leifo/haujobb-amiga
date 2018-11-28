@@ -1,0 +1,105 @@
+How to add an effect to our Rocket-based demo-framework
+by example of line3 to demo3
+noname, 07.09.17
+
+1.) copy source-files to /src folder
+- omitting main.c
+- in QtCreator right-click on project (Source-Files/src) "Add existing files"
+- reusing, merging or renaming often used sources like poly.c or line.c
+- try to compile, iterate on the above
+
+2.) #include "lineeffect.h" in main.c and provide missing interfaces (or stubs)
+- note: effects should end on effect and expose their public functions though their .h file
+- effect typically has:
+void lineInit();		 		// a.k.a. lineEffectInit();
+void lineDraw(int time); 		// a.k.a. lineEffectRender(int time);
+void lineDeinit();		 		// a.k.a. lineEffectRelease();
+unsigned int* linePalette();	// return pointer to private palette
+- effect often misses:
+void lineEffectOn(int startTime);	// called everytime a switch to sthis effect occurs
+
+- add missing ..EffectOn(int startTime) function to .h/.c
+// rocket additions
+extern unsigned int* g_currentPal;
+extern unsigned char* screenBuffer;
+int lineEffect_startTime;
+
+void lineEffectOn(int startTime)
+{
+   unsigned int pal[256];
+
+   lineEffect_startTime=startTime;
+   xres=320;
+   yres=180;
+
+   wosSetMode(8, screenBuffer, &linePalette, 0);
+   g_currentPal = linePalette;
+
+}
+
+3.) wire up your constructor/destructors
+- call yourEffectInit() from initDemo() in main.c
+- call yourEffectRelease() from deinitDemo() in main.c
+- (maybe also in reloadDemo() if you want to support that feature)
+ 
+4.) add Rocket-specific code
+a) define a time sync-track in main.c (do others later, unless they are really obvious)
+'''
+// line
+const struct sync_track *rt_line_time;
+'''
+
+b) define a time variable in drawDemo() in main.c
+'''
+   int ri_line_time; // WOS-time is ticks as int(a tick is 1/50 s, so 50 ticks is 1 second)
+   //float rf_line_length;	// other variables later, Rocket supports float natively (int actually needs a type-cast)
+'''
+
+c) fill the time variable in drawDemo() from sync-track based on current row/time
+'''
+   // line
+   ri_line_time  = (int) sync_get_val(rt_line_time, row);
+'''
+
+d) name and communicate your sync-track to Rocket editor, in getSyncTracks()
+'''
+   // line
+   rt_line_time = sync_get_track(rocket, "line(3):time");		// note the 3 here which is your self-defined effect ID
+'''
+
+
+5.) add WOS-specific code
+a) add yourEffectOn() to init part in drawDemo() in main.c
+'''
+   // init part
+   if (prevPart != curPart)
+   {       
+      switch (curPart)
+[..]
+      case 3:		// define an effect ID here, and reuse it consistently also for draw part and in Rocket name
+          lineEffectOn(time); break;
+'''
+
+b) add yourEffectRender(time) to draw part in drawDemo() in main.c
+'''
+   // draw part
+   switch (curPart)
+   {
+[..]
+   case 3:
+      lineEffectRender(ri_line_time);
+      break;
+''' 
+
+6.) compile and test
+- it should definitely compile as this stage
+- if you didn't forget something it might already run and look as intended
+
+7.) fix remaining bug / typical issues:
+a) wrong palette
+- double check yourEffectOn(), esp. wosSetMode() and g_currentPal
+-- are you passing in a pointer to the palette or to the function returning the palette?
+
+b) load your data
+- copy your data files to data/EFFECTNAME/
+- adjust file-names in your init function
