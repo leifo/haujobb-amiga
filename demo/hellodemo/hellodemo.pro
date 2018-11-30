@@ -54,12 +54,14 @@ OTHER_FILES += \
 
 # main demo -------------------------------------------------------------------
 HEADERS += \
-    src/stars/starseffect.h
+    src/stars/starseffect.h \
+    src/movetable/movetableeffect.h
 
 SOURCES += \
     src/main.c \
     src/stars/starseffect.c \
-    src/main.c
+    src/main.c \
+    src/movetable/movetableeffect.c
 
 # common ----------------------------------------------------------------------
 HEADERS += \
