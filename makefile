@@ -1,7 +1,7 @@
 all:
 	(cd wos && $(MAKE))
-	(cd examples && $(MAKE))
+	(cd demo && $(MAKE))
 	
 clean:
 	(cd wos && $(MAKE) clean)
-	(cd examples && $(MAKE) clean)
+	(cd demo && $(MAKE) clean)

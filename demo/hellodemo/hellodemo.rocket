@@ -1,14 +1,20 @@
-<sync rows="128">
+<sync rows="256">
 	<tracks>
 		<track name="part">
 			<key row="0" value="1" interpolation="0"/>
+			<key row="128" value="2" interpolation="0"/>
 		</track>
 		<track name="brightness">
 			<key row="0" value="0" interpolation="1"/>
 			<key row="48" value="256" interpolation="0"/>
 			<key row="96" value="256" interpolation="1"/>
 			<key row="125" value="192" interpolation="3"/>
-			<key row="127" value="0" interpolation="0"/>
+			<key row="128" value="0" interpolation="2"/>
+			<key row="152" value="400" interpolation="2"/>
+			<key row="168" value="256" interpolation="0"/>
+			<key row="250" value="256" interpolation="3"/>
+			<key row="254" value="1024" interpolation="1"/>
+			<key row="255" value="0" interpolation="0"/>
 		</track>
 		<track name="stars(1):time">
 			<key row="0" value="1" interpolation="2"/>
@@ -21,6 +27,13 @@
 			<key row="96" value="32" interpolation="3"/>
 			<key row="127" value="0" interpolation="0"/>
 		</track>
+		<track name="movetable(2):time">
+			<key row="0" value="1337" interpolation="1"/>
+			<key row="128" value="300" interpolation="3"/>
+			<key row="255" value="2000" interpolation="1"/>
+		</track>
 	</tracks>
-	<bookmarks/>
+	<bookmarks>
+		<bookmark row="128"/>
+	</bookmarks>
 </sync>

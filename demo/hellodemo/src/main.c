@@ -17,6 +17,7 @@
 #include "tools/malloc.h"
 
 #include "stars/starseffect.h"
+#include "movetable/movetableeffect.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -67,6 +68,10 @@ const struct sync_track *rt_brightness;
 // stars
 const struct sync_track *rt_star_time;
 const struct sync_track *rt_star_pers;
+
+// movetable
+const struct sync_track *rt_move_time;
+
 
 static const double rocket_bpm = 69.9f; /* beats per minute amiga and pc */
 static const int rocket_rpb = 8; /* rows per beat */
@@ -120,6 +125,12 @@ static void die(const char *fmt, ...)
 	//exit();
 }
 
+void reloadDemo()
+{
+   starsEffectInit();
+   movetableEffectInit();
+}
+
 // returns 0 on success, otherwise 1
 int initDemo()
 {
@@ -144,14 +155,8 @@ int initDemo()
    screenBuffer= (unsigned char*)( ((unsigned int)screenBuffer+15) & ~15 );
 
    // effect init
-   starsEffectInit();
-	return 0;
-}
-
-
-void reloadDemo()
-{
-   starsEffectInit();
+   reloadDemo();
+   return 0;
 }
 
 void deinitDemo()
@@ -160,6 +165,7 @@ void deinitDemo()
    removeCVBI();
 #endif
    starsEffectRelease();
+   movetableEffectRelease();
 
    free(AdpcmFileLeft);
    free(AdpcmFileRight);
@@ -216,6 +222,9 @@ void drawDemo(int time)
    int ri_star_time;
    float rf_star_pers;
 
+   // movetable
+   int ri_move_time;
+
    unsigned int playpos;
    double row;
 
@@ -248,6 +257,9 @@ void drawDemo(int time)
    ri_star_time = (int) sync_get_val(rt_star_time, row);
    rf_star_pers = (float) sync_get_val(rt_star_pers, row);
 
+   // movetable
+   ri_move_time = (int) sync_get_val(rt_move_time, row);
+
    // general
    ri_brightness = (int) sync_get_val(rt_brightness, row);
    curPart = (int) sync_get_val(rt_part, row);
@@ -259,7 +271,9 @@ void drawDemo(int time)
       {
       case 1:
           starsEffectOn(time); break;
-         
+      case 2:
+          movetableEffectOn(time); break;
+
       default: break;
       };   
    }
@@ -271,7 +285,10 @@ void drawDemo(int time)
    case 1: 
       starsEffectRender(ri_star_time, rf_star_pers);
       break;
-      
+   case 2:
+      movetableEffectRender(ri_move_time);
+      break;
+
    default: break;
    };   
 
@@ -360,6 +377,10 @@ void getSyncTracks()
    // stars
    rt_star_time = sync_get_track(rocket, "stars(1):time");
    rt_star_pers = sync_get_track(rocket, "stars(1):perspective");
+
+   // movetable
+   rt_move_time = sync_get_track(rocket, "movetable(2):time");
+
 }   
 
 

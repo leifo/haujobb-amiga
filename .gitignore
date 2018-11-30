@@ -4,11 +4,21 @@
 *.bin
 *.asm
 .moc*
+.obj*
 
 Makefile
 Makefile.Debug
 Makefile.Release
 
+*.pro.user
+*.pdb
+*.ilk
+*.exe
+*.rt
+*.mp3
+
 wostest
 hellomake
 stars
+pictures
+movetable
