@@ -3,7 +3,7 @@
 
 void movetableEffectInit();
 void movetableEffectOn(time);
-void movetableEffectRender(int time);
+void movetableEffectRender(int time, int xtab, int ytab);
 void movetableEffectRelease();
 unsigned int* movetablePalette();
 

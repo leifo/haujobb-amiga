@@ -71,6 +71,8 @@ const struct sync_track *rt_star_pers;
 
 // movetable
 const struct sync_track *rt_move_time;
+const struct sync_track *rt_move_xtab;
+const struct sync_track *rt_move_ytab;
 
 
 static const double rocket_bpm = 69.9f; /* beats per minute amiga and pc */
@@ -224,6 +226,8 @@ void drawDemo(int time)
 
    // movetable
    int ri_move_time;
+   int ri_move_xtab;
+   int ri_move_ytab;
 
    unsigned int playpos;
    double row;
@@ -259,6 +263,8 @@ void drawDemo(int time)
 
    // movetable
    ri_move_time = (int) sync_get_val(rt_move_time, row);
+   ri_move_xtab = (int) sync_get_val(rt_move_xtab, row);
+   ri_move_ytab = (int) sync_get_val(rt_move_ytab, row);
 
    // general
    ri_brightness = (int) sync_get_val(rt_brightness, row);
@@ -286,7 +292,7 @@ void drawDemo(int time)
       starsEffectRender(ri_star_time, rf_star_pers);
       break;
    case 2:
-      movetableEffectRender(ri_move_time);
+      movetableEffectRender(ri_move_time, ri_move_xtab, ri_move_ytab);
       break;
 
    default: break;
@@ -380,6 +386,8 @@ void getSyncTracks()
 
    // movetable
    rt_move_time = sync_get_track(rocket, "movetable(2):time");
+   rt_move_xtab = sync_get_track(rocket, "movetable(2):xtab");
+   rt_move_ytab = sync_get_track(rocket, "movetable(2):ytab");
 
 }   
 

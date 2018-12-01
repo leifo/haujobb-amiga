@@ -10,8 +10,21 @@
 			<key row="96" value="256" interpolation="1"/>
 			<key row="125" value="192" interpolation="3"/>
 			<key row="128" value="0" interpolation="2"/>
-			<key row="152" value="400" interpolation="2"/>
-			<key row="168" value="256" interpolation="0"/>
+			<key row="133" value="0" interpolation="2"/>
+			<key row="152" value="450" interpolation="2"/>
+			<key row="160" value="256" interpolation="0"/>
+			<key row="161" value="0" interpolation="1"/>
+			<key row="164" value="256" interpolation="0"/>
+			<key row="174" value="0" interpolation="1"/>
+			<key row="178" value="256" interpolation="0"/>
+			<key row="191" value="0" interpolation="1"/>
+			<key row="195" value="256" interpolation="0"/>
+			<key row="206" value="0" interpolation="1"/>
+			<key row="210" value="256" interpolation="0"/>
+			<key row="222" value="0" interpolation="1"/>
+			<key row="226" value="256" interpolation="0"/>
+			<key row="238" value="0" interpolation="1"/>
+			<key row="242" value="256" interpolation="0"/>
 			<key row="250" value="256" interpolation="3"/>
 			<key row="254" value="1024" interpolation="1"/>
 			<key row="255" value="0" interpolation="0"/>
@@ -30,7 +43,23 @@
 		<track name="movetable(2):time">
 			<key row="0" value="1337" interpolation="1"/>
 			<key row="128" value="300" interpolation="3"/>
-			<key row="255" value="2000" interpolation="1"/>
+			<key row="255" value="2000" interpolation="3"/>
+		</track>
+		<track name="movetable(2):xtab">
+			<key row="128" value="1" interpolation="0"/>
+			<key row="161" value="5" interpolation="0"/>
+			<key row="174" value="3" interpolation="0"/>
+			<key row="183" value="3" interpolation="0"/>
+			<key row="191" value="5" interpolation="0"/>
+			<key row="222" value="6" interpolation="0"/>
+			<key row="238" value="5" interpolation="0"/>
+		</track>
+		<track name="movetable(2):ytab">
+			<key row="128" value="2" interpolation="0"/>
+			<key row="161" value="2" interpolation="0"/>
+			<key row="191" value="4" interpolation="0"/>
+			<key row="206" value="6" interpolation="0"/>
+			<key row="238" value="5" interpolation="0"/>
 		</track>
 	</tracks>
 	<bookmarks>
