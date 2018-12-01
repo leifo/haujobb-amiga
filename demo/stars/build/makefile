@@ -42,7 +42,7 @@ INCDIR = ../../shared
 #LIBDIR =
 
 # m040 m881
-LIBS = posix amiga vc
+LIBS = amiga vc
 
 #
 # include $(VBCC)/targets/build.m68k

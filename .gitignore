@@ -5,6 +5,7 @@
 *.asm
 .moc*
 .obj*
+_gsdata_*
 
 Makefile
 Makefile.Debug
