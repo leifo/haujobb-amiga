@@ -16,6 +16,7 @@
 #include "tools/mem32.h"
 #include "tools/malloc.h"
 
+#include "pictures/pictureeffect.h"
 #include "stars/starseffect.h"
 #include "movetable/movetableeffect.h"
 
@@ -54,7 +55,7 @@ int timerEffect;
 
 int part= 0;
 int prevPart=-1;
-int timeoffset=0; //128 for diver death
+int timeoffset=0;
 
 // amiga build tests
 //extern static unsigned int titlepal[256];
@@ -64,6 +65,9 @@ struct sync_device *rocket;
 
 const struct sync_track *rt_part;
 const struct sync_track *rt_brightness;
+
+// pictures
+const struct sync_track *rt_picture_id;
 
 // stars
 const struct sync_track *rt_star_time;
@@ -129,6 +133,7 @@ static void die(const char *fmt, ...)
 
 void reloadDemo()
 {
+   pictureEffectInit();
    starsEffectInit();
    movetableEffectInit();
 }
@@ -166,6 +171,7 @@ void deinitDemo()
 #ifdef AMIGA
    removeCVBI();
 #endif
+   pictureEffectRelease();
    starsEffectRelease();
    movetableEffectRelease();
 
@@ -219,6 +225,9 @@ void drawDemo(int time)
    // general
    int curPart;
    int ri_brightness;
+
+   // pictures
+   int ri_picture_id;
   
    // stars
    int ri_star_time;
@@ -229,7 +238,6 @@ void drawDemo(int time)
    int ri_move_xtab;
    int ri_move_ytab;
 
-   unsigned int playpos;
    double row;
 
    // either get time from stream for rocket editor
@@ -257,6 +265,9 @@ void drawDemo(int time)
    
 #endif
    
+   // pictures
+   ri_picture_id = (int) sync_get_val(rt_picture_id, row);
+
    // stars
    ri_star_time = (int) sync_get_val(rt_star_time, row);
    rf_star_pers = (float) sync_get_val(rt_star_pers, row);
@@ -271,10 +282,12 @@ void drawDemo(int time)
    curPart = (int) sync_get_val(rt_part, row);
    
    // init part
-   if (prevPart != curPart)
+   if ( (prevPart != curPart) | curPart==0)
    {
       switch (curPart)
       {
+      case 0:
+          pictureEffectOn(time); break;
       case 1:
           starsEffectOn(time); break;
       case 2:
@@ -288,6 +301,9 @@ void drawDemo(int time)
    // draw part
    switch (curPart)
    {
+   case 0: 
+      pictureEffectRender(ri_picture_id);
+      break;
    case 1: 
       starsEffectRender(ri_star_time, rf_star_pers);
       break;
@@ -380,6 +396,9 @@ void getSyncTracks()
    rt_part = sync_get_track(rocket, "part");
    rt_brightness = sync_get_track(rocket, "brightness");
   
+   // pictures
+   rt_picture_id = sync_get_track(rocket, "picture(0):id");
+
    // stars
    rt_star_time = sync_get_track(rocket, "stars(1):time");
    rt_star_pers = sync_get_track(rocket, "stars(1):perspective");
@@ -394,9 +413,7 @@ void getSyncTracks()
 
 int main(int argc, char* argv[])
 {
-   unsigned int playpos1, playpos2;
-   int i;
-  
+ 
   
 #ifdef AMIGA
    IntuitionBase = (struct IntuitionBase *) OpenLibrary( "intuition.library", 39 );

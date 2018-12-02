@@ -1,8 +1,9 @@
-<sync rows="256">
+<sync rows="512">
 	<tracks>
 		<track name="part">
 			<key row="0" value="1" interpolation="0"/>
 			<key row="128" value="2" interpolation="0"/>
+			<key row="256" value="0" interpolation="0"/>
 		</track>
 		<track name="brightness">
 			<key row="0" value="0" interpolation="1"/>
@@ -28,6 +29,65 @@
 			<key row="250" value="256" interpolation="3"/>
 			<key row="254" value="1024" interpolation="1"/>
 			<key row="255" value="0" interpolation="0"/>
+			<key row="256" value="300" interpolation="3"/>
+			<key row="261" value="256" interpolation="0"/>
+			<key row="262" value="300" interpolation="3"/>
+			<key row="267" value="256" interpolation="0"/>
+			<key row="268" value="280" interpolation="3"/>
+			<key row="273" value="256" interpolation="0"/>
+			<key row="274" value="400" interpolation="1"/>
+			<key row="318" value="100" interpolation="1"/>
+			<key row="319" value="300" interpolation="3"/>
+			<key row="324" value="200" interpolation="0"/>
+			<key row="325" value="350" interpolation="3"/>
+			<key row="330" value="256" interpolation="0"/>
+			<key row="331" value="300" interpolation="1"/>
+			<key row="337" value="200" interpolation="0"/>
+			<key row="338" value="300" interpolation="3"/>
+			<key row="343" value="200" interpolation="0"/>
+			<key row="344" value="500" interpolation="1"/>
+			<key row="383" value="50" interpolation="0"/>
+			<key row="384" value="300" interpolation="3"/>
+			<key row="390" value="200" interpolation="0"/>
+			<key row="391" value="300" interpolation="3"/>
+			<key row="395" value="256" interpolation="0"/>
+			<key row="396" value="280" interpolation="3"/>
+			<key row="400" value="250" interpolation="0"/>
+			<key row="401" value="350" interpolation="1"/>
+			<key row="447" value="50" interpolation="0"/>
+			<key row="448" value="300" interpolation="3"/>
+			<key row="453" value="256" interpolation="0"/>
+			<key row="454" value="300" interpolation="3"/>
+			<key row="459" value="250" interpolation="0"/>
+			<key row="460" value="350" interpolation="1"/>
+			<key row="465" value="240" interpolation="0"/>
+			<key row="466" value="270" interpolation="1"/>
+			<key row="471" value="250" interpolation="0"/>
+			<key row="472" value="400" interpolation="1"/>
+			<key row="495" value="30" interpolation="0"/>
+			<key row="496" value="800" interpolation="3"/>
+			<key row="511" value="256" interpolation="0"/>
+		</track>
+		<track name="picture(0):id">
+			<key row="256" value="1" interpolation="0"/>
+			<key row="262" value="2" interpolation="0"/>
+			<key row="268" value="3" interpolation="0"/>
+			<key row="274" value="4" interpolation="0"/>
+			<key row="319" value="5" interpolation="0"/>
+			<key row="325" value="6" interpolation="0"/>
+			<key row="331" value="7" interpolation="0"/>
+			<key row="338" value="8" interpolation="0"/>
+			<key row="344" value="9" interpolation="0"/>
+			<key row="384" value="1" interpolation="0"/>
+			<key row="391" value="2" interpolation="0"/>
+			<key row="396" value="3" interpolation="0"/>
+			<key row="401" value="4" interpolation="0"/>
+			<key row="448" value="5" interpolation="0"/>
+			<key row="454" value="6" interpolation="0"/>
+			<key row="460" value="7" interpolation="0"/>
+			<key row="466" value="8" interpolation="0"/>
+			<key row="472" value="9" interpolation="0"/>
+			<key row="496" value="10" interpolation="0"/>
 		</track>
 		<track name="stars(1):time">
 			<key row="0" value="1" interpolation="2"/>
