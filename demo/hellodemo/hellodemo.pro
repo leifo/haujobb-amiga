@@ -118,5 +118,7 @@ DISTFILES += \
     build/makefile \
     src/assembly-bridge.s \
     src/AdpcmSource.s \
-    src/PaulaOutput.s
+    src/PaulaOutput.s \
+    build/makefile \
+    src/assembly-bridge.s
 

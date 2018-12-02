@@ -147,10 +147,15 @@ int initDemo()
 
    //printf("init...\n");
 
-   size= adpcmLoad("data/music_stereo.wav", &AdpcmFileLeft, &AdpcmFileRight, &rate);
+   size= adpcmLoad("data/stereo_ima_adpcm_22050.wav", &AdpcmFileLeft, &AdpcmFileRight, &rate);
    if (size < 0)
       return 1;
+   
+#ifdef AMIGA
+   rocket_row_rate = (rocket_bpm / 60.0f) * rocket_rpb *(28600.0/22050);  
+#else
    rocket_row_rate = (rocket_bpm / 60.0f) * rocket_rpb;  
+#endif
 
    xres= 320;
    yres= 180;
@@ -200,7 +205,7 @@ void updateDemo(int time)
 #else
    // AMIGA
    // or calculate it since start of demo
-   double row = (timeoffset*50+time)/50.0*rocket_row_rate;
+   double row = (timeoffset*50+time)/50.0*rocket_row_rate/(28600.0/22050);
 #endif
    
    ri_brightness = (int) sync_get_val(rt_brightness, row);
@@ -238,6 +243,7 @@ void drawDemo(int time)
    int ri_move_xtab;
    int ri_move_ytab;
 
+   unsigned int playpos;
    double row;
 
    // either get time from stream for rocket editor
@@ -347,7 +353,7 @@ void mainDemo()
 #ifndef AMIGA
    if (!BASS_Init(-1, 44100, 0, 0, 0))
        die("failed to init bass");
-  stream = BASS_StreamCreateFile(FALSE, "data/music_stereo_44100.mp3", 0, 0, BASS_STREAM_PRESCAN);
+   stream = BASS_StreamCreateFile(FALSE, "data/stereo_ima_adpcm_22050.wav", 0, 0, BASS_STREAM_PRESCAN);
    if (!stream)
        die("failed to open tune");
   bytes = (int)BASS_ChannelSeconds2Bytes(stream, timeoffset);
@@ -381,9 +387,8 @@ void mainDemo()
    {
       //if (g_renderedFrames==200) break;
       drawDemo(g_vbitimer);
-      // soundtrack duration:    4:38, 278s * 50 = 13900 (to avoid click at end)
-      if (g_vbitimer>=13800-1000+(7*50)+25 ) wosSetExit();  // Beam Riders final
-      //if (g_vbitimer>=500 ) wosSetExit();  // debug
+      // soundtrack duration:    57s * 50 = 2850 (to avoid streaming random memory at the end)
+      if (g_vbitimer>= 2850) wosSetExit();  // hellodemo
    }
 #endif
 }
@@ -434,7 +439,6 @@ int main(int argc, char* argv[])
       printf("No AGA found. Running in OCS mode!\n");
       ocs = 1;
    }
-   playpos1 = wosGetPlayPos();
 #endif
    
     /* rocket init */
@@ -495,8 +499,6 @@ int main(int argc, char* argv[])
 #ifdef AMIGA
    CloseLibrary( IntuitionBase );
 #endif
-
-   profileDeinit();
 
 //   malloc_debug();
    
