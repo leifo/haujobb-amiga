@@ -34,6 +34,8 @@ INCLUDEPATH += $$(QTDIR)/include/QtGui
 INCLUDEPATH += $$(QTDIR)/include/QtNetwork
 INCLUDEPATH += $$(QTDIR)/include/QtOpenGL
 
+LIBS += -lopengl32
+
 OTHER_FILES += \
     build/makefile
 

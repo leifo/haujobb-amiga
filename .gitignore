@@ -10,6 +10,7 @@ _gsdata_*
 Makefile
 Makefile.Debug
 Makefile.Release
+.qmake.stash
 
 *.pro.user
 *.pdb
@@ -23,3 +24,4 @@ hellomake
 stars
 pictures
 movetable
+demo
