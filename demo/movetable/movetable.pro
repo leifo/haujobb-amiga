@@ -34,6 +34,8 @@ INCLUDEPATH += $$(QTDIR)/include/QtGui
 INCLUDEPATH += $$(QTDIR)/include/QtNetwork
 INCLUDEPATH += $$(QTDIR)/include/QtOpenGL
 
+LIBS += -lopengl32
+
 OTHER_FILES += \
     build/makefile
 
@@ -42,12 +44,14 @@ OTHER_FILES += \
 HEADERS += \
     src/vertex.h \
     src/movetableeffect.h \
-    ../shared/math/imath.h
+    ../shared/math/imath.h \
+    ../shared/image/tga.h
 
 SOURCES += \
     src/main.c \
     src/movetableeffect.c \
-    ../shared/math/imath.c
+    ../shared/math/imath.c \
+    ../shared/image/tga.c
 
 # shared
 

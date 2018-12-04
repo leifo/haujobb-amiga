@@ -6,6 +6,7 @@
 #include "tools/mem32.h"
 
 #include "image/gif.h"
+#include "image/tga.h"
 #include "math/imath.h"
 #include "math.h"
 
@@ -159,6 +160,7 @@ void movetableInit()
    int w,h;
 
    gifLoad("data/texture.gif", (void**)&texture, &w,&h, (unsigned int*)&texturepal);
+   //tgaLoad8("data/texture.tga", (void**)&texture, &w,&h, (unsigned int*)&texturepal); // provide 256x256x8 tga-file and test this
    g_currentPal = texturepal;
 
   

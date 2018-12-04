@@ -189,7 +189,7 @@ static int gifTracePrefix(unsigned short* prefix, int code, int clear_code)
 // call this function once per scanline to fill in a picture.
 static void gifReadLine(Stream* file, unsigned char* dst, GifDecoder* decoder, int length)
 {
-   int i= 0, j;
+   int i= 0, j= 0;
    int current_code;
    int eof_code;
    int clear_code;

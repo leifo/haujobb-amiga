@@ -29,13 +29,14 @@ INCLUDEPATH += $$(QTDIR)/include/QtOpenGL
 INCLUDEPATH += ../shared/libs/bass24/c
 INCLUDEPATH += ../../libs/SDL-1.2.7/include
 
+LIBS += -lopengl32
+
 #QMAKE_LFLAGS_DEBUG += /NODEFAULTLIB:msvcrtd.lib
 #QMAKE_LFLAGS_RELEASE += /NODEFAULTLIB:msvcrt.lib
 
 #LIBS += -lbass
 LIBS += ../shared/libs/bass24/c/bass.lib
 #LIBS += ../../libs/SDL-1.2.7/lib/SDL.lib
-#LIBS += opengl32.lib
 #LIBS += glu32.lib
 #LIBS += -L$${PWD}/../shared/rocket/lib
 #LIBS += -llibrocketd
