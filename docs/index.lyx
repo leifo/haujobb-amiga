@@ -1,0 +1,3913 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass extarticle
+\use_default_options true
+\begin_modules
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 4cm
+\topmargin 2cm
+\rightmargin 3cm
+\bottommargin 4cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+The Haujobb Amiga Framework
+\end_layout
+
+\begin_layout Abstract
+This document describes how to setup and use the Haujobb Amiga Framework
+ on Amiga and PC.
+ It guides you through setting up the required components in small steps
+ with immediate incentives.
+\end_layout
+
+\begin_layout Abstract
+Source on GitHub: 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://github.com/leifo/haujobb-amiga"
+target "https://github.com/leifo/haujobb-amiga"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+Documentation at: 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://www.dig-id.de/amiga/framework/"
+target "http://www.dig-id.de/amiga/framework/"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+PDF at: 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://www.dig-id.de/amiga/framework/haf.pdf"
+target "http://www.dig-id.de/amiga/framework/haf.pdf"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Phantom HPhantom
+status open
+
+\begin_layout Plain Layout
+\begin_inset Phantom HPhantom
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename haujobb.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Overview and Setup
+\end_layout
+
+\begin_layout Standard
+The Haujobb Amiga Framework facilitates modern Amiga demo making on several
+ levels.
+ 
+\end_layout
+
+\begin_layout Standard
+On its lowest level, WickedOS, it provides with you with an API for assembly-lev
+el access to over 20 different chunky to planar based screenmodes, several
+ music replayers, and interrupt hooks.
+ You can choose from using a multi-tasking-friendly hardware abstraction
+ layer, or a traditional multi-tasking-killer mode.
+ WickedOS has been used in a number of our Amiga demos, ranging from Mnemonics
+ to Beam Riders.
+ By default it targets 
+\begin_inset Quotes eld
+\end_inset
+
+todays
+\begin_inset Quotes erd
+\end_inset
+
+ 68060 AGA demos, i.e.
+ having an FPU and at least a 68020 or better CPU in the target machine.
+\end_layout
+
+\begin_layout Section
+Assembler and Linker Setup
+\end_layout
+
+\begin_layout Standard
+Traditionally, many Amiga-demos were made using ASM-One, or one of its derivates.
+ I have personally worked with ASM-One v1.29 for many years, and demos like
+ Mnemonics were made almost exclusively with that assembler, while other
+ parts relied on genam from the Devpac 3.04 package.
+ To honor that tradition, WickedOS stays fully compatible with ASM-One and
+ Devpac.
+ But, more importantly, it can also be used with tools like vasm and vlink,
+ both natively on the Amiga, and for cross-compiling on the PC.
+\end_layout
+
+\begin_layout Standard
+This setup chapter will take you on a quick tour through the different component
+s that are required to get you up and running step by step.
+ 
+\end_layout
+
+\begin_layout Standard
+To get started, grab the release archive of our framework from GitHub at
+ 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://github.com/leifo/haujobb-amiga"
+target "https://github.com/leifo/haujobb-amiga"
+literal "false"
+
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Includes from NDK
+\end_layout
+
+\begin_layout Standard
+First of all, you need to have the assembler include-files available at
+ 
+\begin_inset Quotes eld
+\end_inset
+
+INCLUDES:
+\begin_inset Quotes erd
+\end_inset
+
+.
+ WickedOS doesn't need the latest features of AmigaOS, so it is likely to
+ work with the includes that you might already have.
+ If not, do as follows.
+\end_layout
+
+\begin_layout Standard
+Obtain a copy of the latest AmigaOS Native Developer Kit (NDK).
+ At the time of writing this was version 3.9 and it was still available at
+ 
+\begin_inset CommandInset href
+LatexCommand href
+name "www.haage-partner.de/download/AmigaOS/NDK39.lha"
+target "http://www.haage-partner.de/download/AmigaOS/NDK39.lha"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Unpack the archive on your Amiga
+\end_layout
+
+\begin_layout Enumerate
+Assign 
+\begin_inset Quotes eld
+\end_inset
+
+INCLUDES:
+\begin_inset Quotes erd
+\end_inset
+
+ <whereYouUnpackedIt>/Include/include_i
+\end_layout
+
+\begin_layout Enumerate
+List includes:hardware/custom.i (should list a file, mine is 3045 bytes long)
+\end_layout
+
+\begin_layout Enumerate
+Consider putting the assign from line 2 into s:user-startup (optional, but
+ you must provide the assign to INCLUDES: if you plan to assemble WickedOS
+ on Amiga).
+\end_layout
+
+\begin_layout Subsection
+vasm and vlink
+\end_layout
+
+\begin_layout Standard
+We can now use 
+\emph on
+vasm
+\emph default
+ to assemble the WickedOS source into a linkable binary object (.o) file,
+ and then link that into an executable file using 
+\emph on
+vlink
+\emph default
+.
+ These portable command-line tools are at the core of our strategy for cross-dev
+elopment, together with vmake and vbcc, which will be covered later in this
+ document.
+ 
+\end_layout
+
+\begin_layout Standard
+The project homepages are at 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://sun.hasenbraten.de/vasm/"
+target "http://sun.hasenbraten.de/vasm/"
+literal "false"
+
+\end_inset
+
+and 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+target "http://sun.hasenbraten.de/vlink/"
+literal "false"
+
+\end_inset
+
+.
+ You can get the binaries, sources, as well as complete documentation for
+ both tools at their respective homepages.
+\end_layout
+
+\begin_layout Standard
+The supplied WickedOS source assembles out of the box on Amiga and PC.
+ The following sections show you how to do it.
+\end_layout
+
+\begin_layout Standard
+To assembe on the Amiga, get the latest release binaries from
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "http://sun.hasenbraten.de/vasm/bin/rel/vasmm68k_mot_os3.lha"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+and 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://sun.hasenbraten.de/vlink/bin/rel/vlink_AmigaM68k.lha"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Copy the contained files vasmm68k_mot and vlink to your path (e.g.
+ to 
+\begin_inset Quotes eld
+\end_inset
+
+C:
+\begin_inset Quotes erd
+\end_inset
+
+).
+ Confirm that they are working by typing:
+\end_layout
+
+\begin_layout Itemize
+vlink -v
+\end_layout
+
+\begin_layout Itemize
+vasmm68k_mot
+\end_layout
+
+\begin_layout Standard
+The output version numbers should somehow match those that are mentioned
+ on the project homepages.
+ Note that vasm is not only portable, i.e.
+ ready to make work on different plattforms, but also retargetable, i.e.
+ able to assemble sources for different target CPUs with different syntax
+ modules.
+ Shortcodes for the latter two are automatically appended to the binary
+ executable name.
+ Although many different versions of vasm exist, we are only interested
+ in the 68k_mot version.
+ If you are like me and like shorter names, you can add 
+\begin_inset Quotes eld
+\end_inset
+
+alias vasm vasmm68k_mot
+\begin_inset Quotes erd
+\end_inset
+
+ to your s:user-startup to make your life a little bit easier once in a
+ while.
+\end_layout
+
+\begin_layout Subsection
+Example: Wostest
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "Built-In-Example-With-vasm-and-vlink"
+
+\end_inset
+
+With vasm and vlink in place, you can already assemble, link and execute
+ the built-in example like this:
+\end_layout
+
+\begin_layout Enumerate
+cd WOS:
+\end_layout
+
+\begin_layout Enumerate
+execute buildwostest.bat
+\end_layout
+
+\begin_layout Enumerate
+wostest
+\end_layout
+
+\begin_layout Standard
+This procedure should build and run an example screen.
+ See the screenshot for a typical output of the shell and of 
+\emph on
+wostest
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename wostest.png
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename hautjob.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Wostest assembled on Amiga, output
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+vasm and vlink are called from buildwostest.bat, which contains only two
+ lines.
+ Let's look at them in more detail:
+\end_layout
+
+\begin_layout LyX-Code
+vasmm68k_mot -Fhunk -m68020 -m68882 wos_v1.63.s -o wostest.o 
+\end_layout
+
+\begin_layout LyX-Code
+  -Ic:/vbcc/NDK39/Include/include_i -DWTEST
+\end_layout
+
+\begin_layout LyX-Code
+vlink wostest.o -o wostest
+\end_layout
+
+\begin_layout Standard
+The vasm-line specifies a number of things about our source and target binary
+ via these parameters:
+\end_layout
+
+\begin_layout Itemize
+-F: the output format should be (Amiga) hunk
+\end_layout
+
+\begin_layout Itemize
+-m68020/m68882: the source contains 68020 CPU and 68882 FPU commands (this
+ defines the base-level and is also okay if we really want to target 68060)
+\end_layout
+
+\begin_layout Itemize
+-o: the assembled file should be written to a linkable object named wostest.o
+\end_layout
+
+\begin_layout Itemize
+-D: Define a flag (here 
+\begin_inset Quotes eld
+\end_inset
+
+WTEST
+\begin_inset Quotes erd
+\end_inset
+
+, which causes the conditional-assembly of the built-in example) 
+\end_layout
+
+\begin_layout Itemize
+-I: additional Include path at 
+\begin_inset Quotes eld
+\end_inset
+
+c:/vbcc/targets/NDK39/Include/include_i
+\begin_inset Quotes erd
+\end_inset
+
+ (as created by the Windows installer, c.f.
+ 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:Compiler-Setup"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+)
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Note that this path is searched first, but not found on Amiga, since it
+ is a PC-style path, and thus disregarded silently.
+\end_layout
+
+\begin_layout Itemize
+vasm thus falls back to using the 
+\begin_inset Quotes eld
+\end_inset
+
+incdir INCLUDES:
+\begin_inset Quotes erd
+\end_inset
+
+ directives that are contained in the source.
+\end_layout
+
+\begin_layout Itemize
+if you preferred, you could actually remove the assign INCLUDES: and point
+ to the corresponding directory via the -I parameter.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Finally, the vlink-line takes the output-file generated by vasm, wostest.o,
+ and turns it into an executable file, 
+\emph on
+wostest
+\emph default
+.
+\end_layout
+
+\begin_layout Subsection
+Assembling on PC
+\end_layout
+
+\begin_layout Standard
+Windows binaries of vasm, vlink and make are shipped together with the vbcc-comp
+iler which can be obtained from 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://sun.hasenbraten.de/vbcc/"
+target "http://sun.hasenbraten.de/vbcc/"
+literal "false"
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Download and run 
+\begin_inset CommandInset href
+LatexCommand href
+name "Install-VBCC.exe"
+target "http://server.owl.de/~frank/vbcc/2017-05-18/Install-VBCC.exe"
+literal "false"
+
+\end_inset
+
+, as decribed 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:Compiler-Setup"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ in more detail.
+ Please skip to that page.
+ Then come back and confirm that the tools are working by opening a command
+ prompt and typing:
+\end_layout
+
+\begin_layout Itemize
+vlink -v
+\end_layout
+
+\begin_layout Itemize
+vasmm68k_mot
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename wostest-pc.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Wostest assembled on PC
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With vasmm68k_mot and vlink in place, you can then just:
+\end_layout
+
+\begin_layout Enumerate
+cd 
+\emph on
+<to the directory where you unpacked WickedOS on PC> 
+\emph default
+(here: t:
+\backslash
+wos)
+\end_layout
+
+\begin_layout Enumerate
+type 
+\begin_inset Quotes eld
+\end_inset
+
+buildwostest.bat
+\begin_inset Quotes erd
+\end_inset
+
+ to cross-assemble and link 
+\emph on
+wostest
+\emph default
+ on the PC
+\end_layout
+
+\begin_layout Standard
+Note that the binary output produced on the PC is exactly the same as on
+ the Amiga, of course.
+ Also note that this worked in a fraction of the time that it took on the
+ Amiga.
+ Yes, it was really
+\emph on
+ that fast
+\emph default
+.
+ Welcome to Modern Amiga Demo Cross-Development!
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Shared-Folders-between"
+
+\end_inset
+
+Shared Folders between Amiga and PC
+\end_layout
+
+\begin_layout Standard
+Now that you cross-compiled an Amiga executable blazingly fast on your PC,
+ you wouldn't want to waste any time getting it onto your Amiga for testing
+ it, would you? So manual file-copying via FTP, CF-cards, or by other means
+ is not going to be fast enough for quick turn-around times.
+ Your ideal setup depends on whether you want to work with emulated or real
+ Amigas, or both.
+\end_layout
+
+\begin_layout Paragraph
+Emulators
+\end_layout
+
+\begin_layout Standard
+like WinUAE allow adding a folder from the host-computer as a volume on
+ the emulated Amiga.
+ Do yourself a favour and use this feature!
+\end_layout
+
+\begin_layout Standard
+I personally mounted a volume 
+\begin_inset Quotes eld
+\end_inset
+
+WIP:
+\begin_inset Quotes erd
+\end_inset
+
+ (as in Work In Progress) from a folder that I mounted from a Network Attached
+ Storage (NAS, a Synology here) on the PC.
+ This is because...
+\end_layout
+
+\begin_layout Paragraph
+Real Amigas 
+\end_layout
+
+\begin_layout Standard
+cannot just mount your Windows folders.
+ NAS folders, on the other hand, are made to be mountable, and can also
+ easily be mounted on Amigas that have:
+\end_layout
+
+\begin_layout Itemize
+some Fast-RAM
+\end_layout
+
+\begin_layout Itemize
+a TCP/IP stack, like AmiTCP, Genesis, Miami, or Roadshow
+\end_layout
+
+\begin_layout Itemize
+a SMB file system client like smbfs (try 
+\begin_inset CommandInset href
+LatexCommand href
+name "Aminet"
+target "http://aminet.net/package/comm/tcp/smbfs-68k"
+literal "false"
+
+\end_inset
+
+, although the version 1.74 hosted there is currently horribly outdated)
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+I am using Roadshow and just had to add the following line to s:Network-Startup
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+smbfs domain=workgroup user=username password=password
+\end_layout
+
+\begin_layout LyX-Code
+      volume=NAS service=//diskstation/files/amiga
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Paragraph
+PC-Ramdisks
+\end_layout
+
+\begin_layout Standard
+are a fact.
+ Yes, they do exist! Even though they are not shipped as part of the Windows
+ operating system, like on Amiga, you can easily download and install very
+ powerful third-party components.
+ And PC-based Ramdisks are just as useful as they have always been on Amigas.
+ This is what I did:
+\end_layout
+
+\begin_layout Enumerate
+Download and install 
+\begin_inset CommandInset href
+LatexCommand href
+name "ImDisk Virtual Disk Driver"
+target "http://www.ltr-data.se/opencode.html/#ImDisk"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Configure a Drive Letter 
+\begin_inset Quotes eld
+\end_inset
+
+T:
+\begin_inset Quotes erd
+\end_inset
+
+ with a 2 GB RamDisk using File System 
+\begin_inset Quotes eld
+\end_inset
+
+NTFS
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+check: 
+\begin_inset Quotes eld
+\end_inset
+
+Allocate Memory Dynamically
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+Launch at Windows Startup
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+uncheck: 
+\begin_inset Quotes eld
+\end_inset
+
+Create TEMP Folder
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Mount that folder as 
+\begin_inset Quotes eld
+\end_inset
+
+PCT:
+\begin_inset Quotes erd
+\end_inset
+
+ in WinUAE (very useful for quick data exchange, esp.
+ downloads)
+\end_layout
+
+\begin_layout Section
+Compiler Setup
+\end_layout
+
+\begin_layout Standard
+When planning to develop Amiga software with the C programming language,
+ there are a number of C-Compilers to choose from.
+ Most notably they are:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+name "SAS/C"
+target "http://www.pjhutchison.org/tutorial/sas_c.html"
+literal "false"
+
+\end_inset
+
+, which is 
+\emph on
+the
+\emph default
+ Amiga standard programming environment (commercial and deprecated)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+name "GCC"
+target "https://github.com/bebbo/amiga-gcc"
+literal "false"
+
+\end_inset
+
+, which is 
+\emph on
+the
+\emph default
+ cross-plattform standard (free and open source)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+name "Storm C"
+target "http://www.haage-partner.de/amiga/storm/sc_e.htm"
+literal "false"
+
+\end_inset
+
+, an Amiga programming environment based on an old version of GCC (commercial)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+name "DICE"
+target "http://aminet.net/package/dev/c/dice-3.16"
+literal "false"
+
+\end_inset
+
+, which was a popular and inexpensive Amiga programming environment (recently
+ open sourced)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+name "vbcc"
+target "http://sun.hasenbraten.de/vbcc/"
+literal "false"
+
+\end_inset
+
+, which is an actively maintained cross-plattform compiler (free and open
+ source)
+\end_layout
+
+\begin_layout Standard
+As we were looking for a cross-compiling solution, SAS/C, Storm C and DICE
+ were no options.
+ They are also neither free and open source, nor actively maintained, which
+ was our second selection-criteria.
+ This left us to decide between GCC and vbcc.
+ At the time when we made our decision in 2009/2010, the Amiga-port of GCC
+ was lacking behind in version numbers, while vbcc was the relatively new
+ thing that was used by several Amiga-coders, and personally recommended
+ by Kalms of TBL.
+ It also allows for writing inline-assembly in the familiar Motoral syntax,
+ rather than the more alien GCC Assembler syntax.
+\end_layout
+
+\begin_layout Standard
+Moreover, vbcc is designed to work in combination with vasm and vlink from
+ the same authors.
+ The maintainer of the Amiga bindings, Frank Wille, is one of the most experienc
+ed and longest standing developers of quality Amiga development tools, ranging
+ back to at least 1991 (with his 
+\begin_inset CommandInset href
+LatexCommand href
+name "PhxAss"
+target "http://royal.owl.de/~frank/phxass.html"
+literal "false"
+
+\end_inset
+
+and 
+\begin_inset CommandInset href
+LatexCommand href
+name "PxhLnk"
+target "http://royal.owl.de/~frank/phxlnk.html"
+literal "false"
+
+\end_inset
+
+).
+ This long-term experience and continued commitment ensures first class
+ Amiga support.
+ 
+\end_layout
+
+\begin_layout Standard
+Hence, we decided to use vbcc as our C-compiler.
+ The vbcc project homepage is located at 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://sun.hasenbraten.de/vbcc/"
+
+\end_inset
+
+.
+ There you can get the binaries, targets, sources, and complete documentation.
+\end_layout
+
+\begin_layout Subsection
+vbcc setup on Amiga
+\end_layout
+
+\begin_layout Standard
+Installation on Amiga is easy.
+ Citing the 
+\begin_inset CommandInset href
+LatexCommand href
+name "vbcc download instructions"
+target "http://sun.hasenbraten.de/vbcc/index.php?view=download"
+literal "false"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Quotation
+You need to pick the appropriate binary archive for your host platform.
+ Then you can add as many target archives as you need.
+ [..] Install the binary archive first, using the provided Amiga installer,
+ then add the targets.
+\end_layout
+
+\begin_layout Standard
+So, download and install:
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset CommandInset href
+LatexCommand href
+name "AmigaOS 2.x/3.x 68020+ binaries"
+target "http://server.owl.de/~frank/vbcc/current/vbcc_bin_amigaos68k.lha"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset CommandInset href
+LatexCommand href
+name "Compiler target AmigaOS 2.x/3.x M680x0"
+target "http://server.owl.de/~frank/vbcc/current/vbcc_target_m68k-amigaos.lha"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The archives contain standard Amiga Installer scripts.
+ Run them.
+ Then test if the following commands are available:
+\end_layout
+
+\begin_layout Enumerate
+vc
+\end_layout
+
+\begin_layout Enumerate
+vbccm68k
+\end_layout
+
+\begin_layout Standard
+The former is a frontend for the latter and is very handy, if you are planning
+ to use the C-compiler on the Amiga..
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:vbcc-setup-on"
+
+\end_inset
+
+vbcc setup on PC
+\end_layout
+
+\begin_layout Standard
+Installation on PC is even easier.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Compiler-Setup"
+
+\end_inset
+
+Basically, just download and install a single file from the 
+\begin_inset CommandInset href
+LatexCommand href
+name "vbcc homepage"
+target "http://sun.hasenbraten.de/vbcc/index.php"
+literal "false"
+
+\end_inset
+
+.
+ But be aware that the download is falsely reported to be a infected by
+ malware by several virus scanners! Therefore:
+\end_layout
+
+\begin_layout Enumerate
+Disable your virus-checker (optional)
+\end_layout
+
+\begin_layout Enumerate
+Download and install 
+\begin_inset CommandInset href
+LatexCommand href
+name "Install-VBCC.exe"
+target "http://server.owl.de/~frank/vbcc/2017-05-18/Install-VBCC.exe"
+literal "false"
+
+\end_inset
+
+ with these settings
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Leave 
+\begin_inset Quotes eld
+\end_inset
+
+Default compiler target
+\begin_inset Quotes erd
+\end_inset
+
+ as 
+\emph on
+AmigaOS 2.0
+\end_layout
+
+\begin_layout Enumerate
+Change path (below) to C:
+\backslash
+vbcc
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename install-vbcc.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+VBCC Installer for Windows
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Enable your virus-checker again.
+ If your were curious about this installer, you could:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+check the sources at 
+\begin_inset CommandInset href
+LatexCommand href
+name "GitHub"
+target "https://github.com/leffmann/vbcc-windows"
+literal "false"
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+follow the thread 
+\begin_inset CommandInset href
+LatexCommand href
+name "Windows installer for VBCC tool chain"
+target "http://eab.abime.net/showthread.php?t=83113"
+literal "false"
+
+\end_inset
+
+ at the English Amiga Board
+\end_layout
+
+\begin_layout Enumerate
+or believe us that it is fine.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+The good news is that you are already done! Open a new command prompt and
+ test that the following commands are available:
+\end_layout
+
+\begin_layout Enumerate
+vc
+\end_layout
+
+\begin_layout Enumerate
+vbccm68k
+\end_layout
+
+\begin_layout Enumerate
+vasmm68k_mot
+\end_layout
+
+\begin_layout Enumerate
+vlink
+\end_layout
+
+\begin_layout Enumerate
+make
+\end_layout
+
+\begin_layout Subsection
+Example: Hello world
+\end_layout
+
+\begin_layout Standard
+Let's compile our first C-source with this setup! The following procedure
+ should work on the Amiga aas well as on the PC side.
+\end_layout
+
+\begin_layout Enumerate
+cd to the /examples/helloworld folder
+\end_layout
+
+\begin_layout Enumerate
+vc hello.c
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+this should generate an Amiga executable 
+\begin_inset Quotes eld
+\end_inset
+
+a.out
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+alternatively provide a filename with: vc hello.c -o hello
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Run the freshly compiled executable on Amiga.
+\end_layout
+
+\begin_layout Standard
+For completeness, this is the full source of hello.c
+\end_layout
+
+\begin_layout LyX-Code
+/* hello world, noname, 23.10.18 
+\end_layout
+
+\begin_layout LyX-Code
+   compile with: 
+\end_layout
+
+\begin_layout LyX-Code
+   - "vc hello.c" (compiles to file a.out)
+\end_layout
+
+\begin_layout LyX-Code
+   - or "vc +aos68k hello.c -o hello" (being more explicit about what we
+ want)
+\end_layout
+
+\begin_layout LyX-Code
+   - or "vc +aos68k hello.c -o hello -v" (to see commands as called by vc)
+\end_layout
+
+\begin_layout LyX-Code
+   - or "make" (using makefile)
+\end_layout
+
+\begin_layout LyX-Code
+*/
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+#include <stdio.h>
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+int main(int argc, char **argv)
+\end_layout
+
+\begin_layout LyX-Code
+{
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+int i; 
+\end_layout
+
+\begin_layout LyX-Code
+if (argc==1)
+\end_layout
+
+\begin_layout LyX-Code
+{
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+/* no args */ 
+\end_layout
+
+\begin_layout LyX-Code
+printf("Hello, world!
+\backslash
+n"); /* argv[0] is always the filename */
+\end_layout
+
+\begin_layout LyX-Code
+printf("Called from filename: %s
+\backslash
+n", argv[0]);
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+}else{
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+/* arguments given, start at argv[1] */
+\end_layout
+
+\begin_layout LyX-Code
+printf("Hello");
+\end_layout
+
+\begin_layout LyX-Code
+for (i=1; i<argc; i++)
+\end_layout
+
+\begin_layout LyX-Code
+{ 
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+printf(", %s",argv[i]); 
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+} 
+\end_layout
+
+\begin_layout LyX-Code
+printf("!
+\backslash
+n"); 
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout LyX-Code
+return 0; 
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+} 
+\end_layout
+
+\begin_layout Standard
+This is slightly extended hello world that also makes use of the provided
+ arguments (i.e.
+ argc and argv).
+ You can also build the binary by executing build.bat.
+ This example also comes with a simple makefile.
+ But in order to build it from there, you first have to install make itself.
+\end_layout
+
+\begin_layout Section
+GNU make
+\end_layout
+
+\begin_layout Standard
+While using batch-files for scripting repetetive tasks is useful, you are
+ quickly hitting the roof with that approach.
+ Which files need to be built, and how? This is where makefiles and make
+ come into play.
+ They coordinate the software build process in a structured way.
+ Required tools, source-files, and libraries are listed in the makefile.
+ Based on the rules that are also noted in the makefile, the make-tool then
+ coordinates the build-process, i.e.
+ turning source-code into an executable file.
+\end_layout
+
+\begin_layout Standard
+We are using GNU make for building the Amiga target, as it is a free standard
+ tool that is available on both Amiga and current plattforms.
+ It is your choice to install it on Amiga and/or PC.
+ The forthfollowing test should run on both platforms.
+\end_layout
+
+\begin_layout Subsection
+Configuring make on Amiga
+\end_layout
+
+\begin_layout Enumerate
+Get a native Amiga binary from: 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://aminet.net/package/dev/c/make-3.75-bin"
+target "http://aminet.net/package/dev/c/make-3.75-bin"
+literal "true"
+
+\end_inset
+
+ and put it to your path
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Please note that the v3.75 from Aminet is in fact a v3.74 ported natively
+ for Amiga.
+ The author just bumped the version number for his efforts.
+\end_layout
+
+\begin_layout Enumerate
+Open a newshell and type 
+\begin_inset Quotes eld
+\end_inset
+
+make -v
+\begin_inset Quotes erd
+\end_inset
+
+ to check that make is working
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+it should show you its version number.
+\end_layout
+
+\begin_layout Enumerate
+In case you get a stack overflow warning type 
+\begin_inset Quotes eld
+\end_inset
+
+stack 20000
+\begin_inset Quotes erd
+\end_inset
+
+ and try again
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection
+Configuring make on PC
+\end_layout
+
+\begin_layout Enumerate
+Make is bundled and installed with 
+\begin_inset CommandInset href
+LatexCommand href
+name "Install-VBCC.exe"
+target "http://server.owl.de/~frank/vbcc/2017-05-18/Install-VBCC.exe"
+literal "false"
+
+\end_inset
+
+, as described
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:Compiler-Setup"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ (v4.2.90 at the time of writing).
+ Thus you should have already installed it.
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+This is the preferred version
+\end_layout
+
+\begin_layout Enumerate
+Alternatively, older Windows binaries can be obtained from:
+\begin_inset Newline newline
+\end_inset
+
+\SpecialChar allowbreak
+
+\begin_inset CommandInset href
+LatexCommand href
+name "http://gnuwin32.sourceforge.net/packages/make.htm"
+target "http://gnuwin32.sourceforge.net/packages/make.htm"
+literal "true"
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Open a command prompt and type 
+\begin_inset Quotes eld
+\end_inset
+
+make -v
+\begin_inset Quotes erd
+\end_inset
+
+ to check that it is working
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+make should show you its version number.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+
+\series medium
+Building the WickedOS C2P-converters
+\end_layout
+
+\begin_layout Standard
+We are aiming to use make on both Amiga and PC.
+ Test that it works for you in two steps:
+\end_layout
+
+\begin_layout Enumerate
+Use it to assemble a bunch of real world assembler files with a given makefile
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+cd to /sub 
+\end_layout
+
+\begin_layout Enumerate
+make
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+This should call vasm on about two dozen assembly-files from the /chunky
+ subfolder and generate the same number of *.bin files.
+ These files are the actual chunky to planar (C2P) converters for WickedOS'
+ different screenmodes.
+ If the distribution archive came only with one bin-file (for screenmode
+ #1, as used in the initial example), you have now enabled the rest of them.
+ Congratulations, well done! 
+\end_layout
+
+\begin_layout Subsection
+Cleaning with rm
+\end_layout
+
+\begin_layout Standard
+After work comes the clean-up! For make this is 
+\begin_inset Quotes eld
+\end_inset
+
+make clean
+\begin_inset Quotes erd
+\end_inset
+
+ which usually deletes a bunch of assembled or compiled binary object files
+ and needs a delete command in order to work.
+ Unfortunately, these delete commands differ between operating systems,
+ not only by name, but also by syntax.
+ In order to keep at least a somehow coherent structure, we define as per
+ convention that a command 
+\begin_inset Quotes eld
+\end_inset
+
+rm
+\begin_inset Quotes erd
+\end_inset
+
+ should be reachable and work like rm from GNU coreutils.
+\end_layout
+
+\begin_layout Subsubsection
+On Amiga
+\end_layout
+
+\begin_layout Standard
+Just add another line to s:user-startup: 
+\begin_inset Quotes eld
+\end_inset
+
+alias rm delete
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Please note that this is not ideal but will work reasonably well for small
+ projects, as long as the command-line does not get too long.
+ Unfortunately, the command-line of the C2P-converter example with over
+ 20 entries is already exceeding those limits.
+ Mea culpa!
+\end_layout
+
+\begin_layout Subsubsection
+On PC
+\end_layout
+
+\begin_layout Standard
+Windows del is not good enough for our purposes! Therefore we are using
+ rm from GNU coreutils, a.k.a.
+ fileutils.
+\end_layout
+
+\begin_layout Enumerate
+Get the latest binaries from
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://gnuwin32.sourceforge.net/packages/coreutils.htm"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+either choose the setup file, or just the binary.zip
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+At your discretion, install all the tools, or just copy rm.exe from the bin-folde
+r in the zip-file to your path
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+it is suggested to copy rm to c:
+\backslash
+vbcc
+\backslash
+bin
+\end_layout
+
+\begin_layout Enumerate
+in case you choose the file from the zip-file, add missing dependencies
+ from 
+\begin_inset CommandInset href
+LatexCommand href
+name "coreutils-dep-zip"
+target "http://gnuwin32.sourceforge.net/downlinks/coreutils-dep-zip.php"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Open a command prompt and type 
+\begin_inset Quotes eld
+\end_inset
+
+rm --help
+\begin_inset Quotes erd
+\end_inset
+
+ to check if it is working
+\end_layout
+
+\begin_layout Enumerate
+Finally, try it in combination with make
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+cd to the /sub directory again
+\end_layout
+
+\begin_layout Enumerate
+type 
+\begin_inset Quotes eld
+\end_inset
+
+make
+\begin_inset Quotes erd
+\end_inset
+
+ and it should tell you 
+\begin_inset Quotes eld
+\end_inset
+
+Nothing to be done for `all'
+\begin_inset Quotes erd
+\end_inset
+
+ which means that all assembled filed were up-to-date.
+\end_layout
+
+\begin_layout Enumerate
+type 
+\begin_inset Quotes eld
+\end_inset
+
+make clean
+\begin_inset Quotes erd
+\end_inset
+
+ to remove those files
+\end_layout
+
+\begin_layout Enumerate
+type 
+\begin_inset Quotes eld
+\end_inset
+
+make
+\begin_inset Quotes erd
+\end_inset
+
+ again and see it rebuild.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+This concludes the setup of the Amiga-oriented tools.
+ 
+\end_layout
+
+\begin_layout Section
+PC-Prototyping Environment
+\end_layout
+
+\begin_layout Standard
+A large part of the productivity-benefits of our toolchain stem from the
+ use of a native PC-build while prototyping the effects and editing the
+ demo.
+ This takes cross-compilation out of the picture for a period of time and
+ allows you to focus on getting something on screen, debugging it, and then
+ making it look nice before focussing again on making it all run smoothly
+ on the Amiga.
+ It also allows you to exploit the PC-hardware that you own anyway for your
+ own sanity, e.g.
+ use your big monitor wisely and fill it with a modern IDE with syntax-coloring,
+ code-completion, code-navigation, project support, and of course debugging
+ facilities.
+ And run all of this natively on your modern multi-core CPU to save time
+ and keep you in the flow.
+\end_layout
+
+\begin_layout Standard
+For this to work you need a compiler, an IDE, and a debugger.
+ While in theory these components would all be included in the popular Microsoft
+ Visual Studio, we have blended it in our toolchain with QtCreator as the
+ IDE component.
+ While this was mainly a simple personal preference for a nice IDE that
+ can work with different compilers, it also kept our toolchain itself plattform
+ independant! QtCreator is available for Windows, macOS, and Linux.
+ For the latter two, you would be able to set it up with gcc.
+ For Windows, you best use it in combination with Microsoft's compiler.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Visual-Studio"
+
+\end_inset
+
+Visual Studio
+\end_layout
+
+\begin_layout Standard
+Let's start with installing 
+\begin_inset CommandInset href
+LatexCommand href
+name "Microsoft Visual Studio"
+target "https://en.wikipedia.org/wiki/Microsoft_Visual_Studio"
+literal "false"
+
+\end_inset
+
+ (MSVC), which comes in many different versions over the years (see table).
+ The oldest one that we have personally tested is 2010.
+ If you already have Visual Studio installed in a least that version, you
+ can skip this section.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="6">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Visual Studio
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2010
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2012
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2013
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2015
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2017
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pro
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+OK
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+not tested
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+OK
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+not tested
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+not tested
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Community
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+not tested
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+OK
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+OK
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Supported Microsoft Visual Studio versions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+While Visual Studio was, and still is, a full-price commercial product,
+ Microsoft has launched a number of free (as in beer) editions over the
+ years.
+ The Express edition introduced in 2005 has long since been discontinued
+ and is now superseded by the Community edition.
+ Visual Studio Community 2017 will work well for us.
+ Please download it from 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://visualstudio.microsoft.com"
+target "https://visualstudio.microsoft.com"
+literal "false"
+
+\end_inset
+
+ and then install it on your Windows machine.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Qt-Creator"
+
+\end_inset
+
+Qt Creator
+\end_layout
+
+\begin_layout Standard
+Now let't install Qt and Qt Creator.
+ The Haujobb Amiga Framework is known to work with Qt4 and Visual Studio
+ 2010 as the minimum supported versions.
+ If you haven't got Qt installed already, head over to 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://www.qt.io/download"
+target "https://www.qt.io/download"
+literal "false"
+
+\end_inset
+
+, get the Open Source edition installer for Qt5, and run it.
+\end_layout
+
+\begin_layout Standard
+It features many different options, we don't need all of them.
+ Just install the latest available Qt 5.x.y release, as well as QtCreator
+ and CDB support from the tools section (see figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Required-Components-from"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename qt5-setup.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Required-Components-from"
+
+\end_inset
+
+Required Components from Qt Open Source Installer
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Please note that the version numbers in the figure will change quickly and
+ are already outdated at the time of writing.
+ The figure also shows a setup wizard that was run on a machine with MSVC
+ 2015 32-bit.
+ You will need to pick the version that fits your installed compiler.
+ It is your choice, to install 32-bit or 64-bit version (if available).
+ The default path for installation if C:
+\backslash
+Qt.
+\end_layout
+
+\begin_layout Standard
+The official documentation for Qt Creator is at 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://doc.qt.io/qtcreator/"
+target "http://doc.qt.io/qtcreator/"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Debugger (CDB)
+\end_layout
+
+\begin_layout Standard
+If you want to debug your C-programs in Qt Creator, you need to setup the
+ CDB debugger.
+ The official documentation for this is 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "http://doc.qt.io/qtcreator/creator-debugger-engines.html#debugging-tools-for-windows"
+literal "false"
+
+\end_inset
+
+.
+ It boils down to downloading the Windows SDK from 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://developer.microsoft.com/de-de/windows/downloads/windows-10-sdk"
+target "https://developer.microsoft.com/de-de/windows/downloads/windows-10-sdk"
+literal "false"
+
+\end_inset
+
+.
+ Then run the installer and uncheck everything except 
+\begin_inset Quotes eld
+\end_inset
+
+Debugging Tools for Windows
+\begin_inset Quotes erd
+\end_inset
+
+ (see figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Debugging-Tools-for"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename winsdk-debugger.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Debugging-Tools-for"
+
+\end_inset
+
+Debugging Tools for Windows from Windows SDK
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Kit-Setup"
+
+\end_inset
+
+Kit Setup
+\end_layout
+
+\begin_layout Standard
+In Qt Creator, combinations of compiler, debugger, Qt version, and a few
+ other things are called a 
+\emph on
+kit
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+We need such a kit in order to work with our supplied project files (stars.pro,
+ etc.).
+ The full Qt doc for this is at 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://doc.qt.io/qtcreator/creator-configuring-projects.html"
+target "http://doc.qt.io/qtcreator/creator-configuring-projects.html"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename qtcreator-debug-compile.png
+
+\end_inset
+
+\SpecialChar softhyphen
+
+\begin_inset Graphics
+	filename qtcreator-kits.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Compiler-,-Debugger-,-and"
+
+\end_inset
+
+Compiler-, Debugger-, and Kit-Settings in Qt Creator 4.7
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When you installed compiler, debugger and Qt as described above, go to menu
+ Tools->Options.
+ The presented options windows should resemble figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Compiler-,-Debugger-,-and"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ (note that it has been taken with an older Windows SDK installed).
+ 
+\end_layout
+
+\begin_layout Standard
+Select 
+\emph on
+Kits
+\emph default
+ on the left pane.
+ Then:
+\end_layout
+
+\begin_layout Itemize
+check under 
+\emph on
+Qt Versions
+\emph default
+ that your installed Qt Version got auto-detected.
+ If not, configure it manually.
+\end_layout
+
+\begin_layout Itemize
+check under 
+\emph on
+Debuggers
+\emph default
+ that two versions of cdb.exe (32/64-bit) were found in the Windows Kits
+ folder.
+\end_layout
+
+\begin_layout Itemize
+check under 
+\emph on
+Compilers
+\emph default
+ that the Visual C++ compiler was correctly auto-detected.
+ Note that the list will usually show several versions ending on something
+ like 
+\begin_inset Quotes eld
+\end_inset
+
+(amd64_x86)
+\begin_inset Quotes erd
+\end_inset
+
+ meaning that this would be running on a 64-bit machine and generating code
+ for a 32-bit machine.
+ It usually doesn't matter to our framework if you are selecting a 32-bit
+ version or not, as we are not going anywhere near the 32-bit limits, anyway.
+ 
+\end_layout
+
+\begin_layout Itemize
+check under 
+\emph on
+Kits
+\emph default
+ that you have an auto-detected kit comprising of a 
+\emph on
+Qt Version
+\emph default
+, a 
+\emph on
+Debugger
+\emph default
+, and a 
+\emph on
+Compiler
+\emph default
+.
+\end_layout
+
+\begin_layout Itemize
+close the Options window, and you should be able to build & run, as well
+ as to debug.
+\end_layout
+
+\begin_layout Itemize
+keep in mind that sometimes you want to 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+run qmake by right-clicking root-element of a project-tree and selecting
+ 
+\emph on
+Run qmake
+\end_layout
+
+\begin_layout Itemize
+and then selecting 
+\emph on
+Rebuild
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Add-Ons
+\end_layout
+
+\begin_layout Standard
+This section contains a few useful add-ons.
+ Install them at your own discretion.
+\end_layout
+
+\begin_layout Subsubsection
+Syntax Highlighting for M68000 Assembly
+\end_layout
+
+\begin_layout Standard
+This is really handy if you often work with M68000 assembly files in Qt
+ Creator.
+ Get 
+\begin_inset CommandInset href
+LatexCommand href
+name "asm-m68k.xml"
+target "https://github.com/ricardodovalle/config-qtcreator/blob/master/qtcreator/generic-highlighter/asm-m68k.xml"
+literal "false"
+
+\end_inset
+
+ and install it.
+ The documentation of 
+\emph on
+Generic Highlighting
+\emph default
+ in Qt Creator, as described in 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://doc.qt.io/qtcreator/creator-highlighting.html"
+target "http://doc.qt.io/qtcreator/creator-highlighting.html"
+literal "false"
+
+\end_inset
+
+ should serve you as a basis.
+ On my machine, I just copied the file to the 
+\emph on
+Fallback Location
+\emph default
+ (here: C:
+\backslash
+QtSdk
+\backslash
+Tools
+\backslash
+QtCreator
+\backslash
+share
+\backslash
+qtcreator
+\backslash
+generic-highlighter).
+\end_layout
+
+\begin_layout Subsubsection
+Qt Plug-In for Visual Studio
+\end_layout
+
+\begin_layout Standard
+If you'd like to use our supplied Qt Creator Project files (*.pro) from within
+ Visual Studio, you can install the
+\emph on
+ Qt Visual Studio Tools 
+\emph default
+as described 
+\begin_inset CommandInset href
+LatexCommand href
+name "in this blog-post"
+target "https://blogs.msdn.microsoft.com/vcblog/2017/04/14/bring-your-existing-qt-projects-to-visual-studio/"
+literal "false"
+
+\end_inset
+
+and provided 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "https://marketplace.visualstudio.com/items?itemName=TheQtCompany.QtVisualStudioTools2015"
+literal "false"
+
+\end_inset
+
+(for 2015) and 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "https://marketplace.visualstudio.com/items?itemName=TheQtCompany.QtVisualStudioTools-19123"
+literal "false"
+
+\end_inset
+
+(for 2017).
+ You can also install it via the 
+\emph on
+marketplace
+\emph default
+ of Visual Studio.
+\end_layout
+
+\begin_layout Standard
+Once installed:
+\end_layout
+
+\begin_layout Enumerate
+Select menu 
+\emph on
+Qt VS Tools-> Qt Options
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+add your Qt version 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+the name is automatically provided
+\end_layout
+
+\begin_layout Enumerate
+just select the path that leads to /bin/qmake under c:
+\backslash
+Qt
+\end_layout
+
+\begin_layout Enumerate
+this only works for Qt5 and up
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Enumerate
+Select menu 
+\emph on
+Qt VS Tools->Open Qt Project File (.pro)...
+\end_layout
+
+\begin_layout Enumerate
+Build & Run
+\end_layout
+
+\begin_layout Standard
+Please note that our IDE of choice is Qt Creator, so if you run into problems
+ with Visual Studio, we would be more happy to hear about your solutions,
+ and less prepared to help you fix it.
+\end_layout
+
+\begin_layout Subsubsection
+Symbol Files
+\end_layout
+
+\begin_layout Standard
+Even though you have already installed a lot of data, the symbol files have
+ not been part of it.
+ They would usually be loaded on demand over the Internet connection and
+ then cached locally.
+ If you want to prepare yourself for longer times without Internet, get
+ the symbol files.
+ You can read more about this topic in 
+\begin_inset CommandInset href
+LatexCommand href
+name "this"
+target "https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugger-download-symbols"
+literal "false"
+
+\end_inset
+
+ article.
+ We also have a direct download link somewhere and will add it here at some
+ point.
+ 
+\end_layout
+
+\begin_layout Subsection
+Recap (TL;DR)
+\end_layout
+
+\begin_layout Standard
+The Haujobb Amiga Framework supports development of Amiga demos on PC, and
+ then cross-compiling them for the Amiga.You probably didn't want to compile
+ and assemble on the Amiga anyway, so you just:
+\end_layout
+
+\begin_layout Itemize
+set up the vbcc cross-compiler for Windows using 
+\begin_inset CommandInset href
+LatexCommand href
+name "Install-VBCC.exe"
+target "http://server.owl.de/~frank/vbcc/2017-05-18/Install-VBCC.exe"
+literal "false"
+
+\end_inset
+
+ (to c:
+\backslash
+vbcc), as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:vbcc-setup-on"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+you could then 
+\emph on
+cd
+\emph default
+ to the root folder 
+\emph on
+haujobb-amiga
+\emph default
+ and type 
+\emph on
+make
+\emph default
+ to build the whole Amiga side from scratch
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+set up a shared folder on your PC or NAS that could be reached from your
+ real or emulated Amiga, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Shared-Folders-between"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+installed Visual Studio, at least 2010, but probably the latest 2017 Community
+ edition, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Visual-Studio"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+installed Qt5, Qt Creator, and cdb debugger support, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Qt-Creator"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+and then double-checked that compiler, debugger, and Qt version were correctly
+ set up as a 
+\emph on
+kit
+\emph default
+, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Kit-Setup"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This is all that needed to be done, so you could now open our supplied example
+ project files (*.pro) in the 
+\emph on
+/demo
+\emph default
+ folder and start making Amiga demos on PC.
+ 
+\end_layout
+
+\begin_layout Standard
+Enjoy!
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Demomaking
+\end_layout
+
+\begin_layout Section
+Examples
+\end_layout
+
+\begin_layout Standard
+This chapter takes you through the provided examples in order of complexity.
+\end_layout
+
+\begin_layout Subsection
+Stars
+\end_layout
+
+\begin_layout Itemize
+Run 
+\end_layout
+
+\begin_layout Itemize
+Discussion
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Simple 320x screen
+\end_layout
+
+\begin_layout Itemize
+no data loaded
+\end_layout
+
+\begin_layout Itemize
+2 variables
+\end_layout
+
+\begin_layout Itemize
+discussion
+\end_layout
+
+\begin_layout Itemize
+compile for amiga
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Pictures
+\end_layout
+
+\begin_layout Itemize
+load graphics asset (GIF)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+maybe also TGA
+\end_layout
+
+\begin_layout Itemize
+one pic per screenmode?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Discussion
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+getting assets in, as output by photoshop and other tools
+\end_layout
+
+\begin_layout Itemize
+palette sometimes falsely sorted
+\end_layout
+
+\begin_layout Itemize
+explain color sorting in pro motion ng (advanced tools)
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Movetable
+\end_layout
+
+\begin_layout Itemize
+run
+\end_layout
+
+\begin_layout Itemize
+discussion
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+asset loaded
+\end_layout
+
+\begin_layout Itemize
+movetable generated
+\end_layout
+
+\begin_layout Itemize
+not the worlds fastest method
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Hellodemo
+\end_layout
+
+\begin_layout Itemize
+run
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+visual studio command prompt
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+nmake install
+\begin_inset Quotes erd
+\end_inset
+
+ to get the required libraries to the folder
+\end_layout
+
+\begin_layout Itemize
+check 
+\begin_inset Quotes eld
+\end_inset
+
+SYNC_PLAYER
+\begin_inset Quotes erd
+\end_inset
+
+ in main.c
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+discussion
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+additional functions to handle screenmode and palette changes
+\end_layout
+
+\begin_layout Itemize
+parameters from rocket
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Rocket
+\end_layout
+
+\begin_layout Subsection
+More Examples
+\end_layout
+
+\begin_layout Itemize
+Notes:
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+profiler
+\end_layout
+
+\begin_layout Itemize
+cache simulator
+\end_layout
+
+\begin_layout Itemize
+msvc2017 include problem: stdio.h, stddef.h, memory.h
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+https://stackoverflow.com/questions/42777424/visual-studio-2017-errors-on-standar
+d-headers
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Abstract:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+todo: prose for higher levels, (maybe up to prototype 1 and since then)
+\end_layout
+
+\begin_layout Itemize
+double-check: cross-compile, linking with c-code, make, wosqt-qtcreator,
+ profiling, cache simulator, syncing with rocket
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+mixasm
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+ace make all
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Hello Demo (small project without QTCreator)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+without shadow build
+\end_layout
+
+\begin_layout Itemize
+with shadow build (because QtCreator/QMake would like to occupy that space)
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Annex
+\end_layout
+
+\begin_layout Section
+WickedOS 
+\end_layout
+
+\begin_layout Standard
+This is a collection of notes about the WickedOS-layer of our Amiga Framework.
+ Normally, you should not need to study this, but you are very welcome to.
+\end_layout
+
+\begin_layout Subsection
+Built-In Test
+\end_layout
+
+\begin_layout Standard
+If you are feeling nostalgic or curious, you can assembly and run a built-in
+ example of WickedOS in ASM-One or Devpac on the Amiga! The visual outcome
+ will be the same as that described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "Built-In-Example-With-vasm-and-vlink"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.Of course, it doesn't matter if you are using real or emulated hardware
+ for this.
+\end_layout
+
+\begin_layout Subsubsection
+With ASM-One
+\end_layout
+
+\begin_layout Standard
+If you coded on Amiga before, chances are that ASM-One is already installed
+ and that you know how to use it.
+ The minimum supported version is 1.29.
+ If you do not have at least this one, just either:
+\end_layout
+
+\begin_layout Itemize
+download ASM-One from 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://aminet.net/package/dev/asm/ASM-One"
+literal "false"
+
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Itemize
+or get ASM-Pro from 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://aminet.net/package/dev/asm/AsmPro1.18src"
+literal "false"
+
+\end_inset
+
+, which is an improved and open-sourced version
+\end_layout
+
+\begin_layout Itemize
+or grab my copy of 
+\begin_inset CommandInset href
+LatexCommand href
+name "ASM-One v1.29"
+target "http://www.dig-id.de/amiga/asmone129.lha"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Set the WOS: Assign before you start ASM-One.
+\end_layout
+
+\begin_layout Enumerate
+assign 
+\begin_inset Quotes eld
+\end_inset
+
+WOS:
+\begin_inset Quotes erd
+\end_inset
+
+ to where you unpacked WickedOS
+\end_layout
+
+\begin_layout Enumerate
+list WOS:wos_v#? (should list the main file, currently v1.62)
+\end_layout
+
+\begin_layout Enumerate
+Consider putting the assign from line 1 into s:user-startup (optional)
+\end_layout
+
+\begin_layout Standard
+Then test WickedOS' built-in example AGA-screen from within ASM-One.
+\end_layout
+
+\begin_layout Enumerate
+Start ASM-One from a Shell (This is important, as starting it from an icon
+ will cause you a lot of trouble, as previously discussed on 
+\begin_inset CommandInset href
+LatexCommand href
+name "Amiga Demoscene Archive"
+target "http://ada.untergrund.net/?p=boardthread&id=144&page=1"
+literal "false"
+
+\end_inset
+
+.) 
+\end_layout
+
+\begin_layout Enumerate
+Give it some public memory
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+ALLOCATE Fast/Chip/Publ/Abs>p
+\end_layout
+
+\begin_layout Enumerate
+WORKSPACE (Max.
+ XXXXX) KB>1000
+\end_layout
+
+\begin_layout Enumerate
+Note: ASM-One from Aminet (v1.48) seems to expect an assign 
+\begin_inset Quotes eld
+\end_inset
+
+Sources:
+\begin_inset Quotes erd
+\end_inset
+
+ at startup.
+ If you don't have it, either:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+assign 
+\begin_inset Quotes eld
+\end_inset
+
+Sources:
+\begin_inset Quotes erd
+\end_inset
+
+ to somewhere useful, or just to 
+\begin_inset Quotes eld
+\end_inset
+
+Ram:
+\begin_inset Quotes erd
+\end_inset
+
+ for testing
+\end_layout
+
+\begin_layout Enumerate
+or in Asm-One go to Preferences->Environment and change 
+\begin_inset Quotes eld
+\end_inset
+
+Default Dir:
+\begin_inset Quotes erd
+\end_inset
+
+ textbox value to an existing directory or empty it
+\end_layout
+
+\begin_layout Enumerate
+or restart Asm-One with 
+\begin_inset Quotes eld
+\end_inset
+
+!
+\begin_inset Quotes erd
+\end_inset
+
+ to get the memory prompts again.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Enumerate
+Menu->Assembler->Preferences->Assembler
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+CPU 68020
+\end_layout
+
+\begin_layout Enumerate
+Check 
+\begin_inset Quotes eld
+\end_inset
+
+FPU Present
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Uncheck 
+\begin_inset Quotes eld
+\end_inset
+
+UCase = LCase
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Uncheck 
+\begin_inset Quotes eld
+\end_inset
+
+; Comment
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Press 
+\begin_inset Quotes eld
+\end_inset
+
+Save
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Type 
+\begin_inset Quotes eld
+\end_inset
+
+v wos:
+\begin_inset Quotes erd
+\end_inset
+
+ (to set the working dir)
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+v (to list the dir, just to confirm and refresh your memory)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Type 
+\begin_inset Quotes eld
+\end_inset
+
+r
+\begin_inset Quotes erd
+\end_inset
+
+ (read) and select the latest version of wos:wos_v#?.s
+\end_layout
+
+\begin_layout Enumerate
+Press <ESC> to get into edit-mode
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Remove the 
+\begin_inset Quotes eld
+\end_inset
+
+;
+\begin_inset Quotes erd
+\end_inset
+
+ before WTEST in line 3
+\end_layout
+
+\begin_layout Enumerate
+Press <ESC> again to go back into command line mode (
+\begin_inset Quotes eld
+\end_inset
+
+>
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Type 
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+ (assemble), and ASM-One will assemble your source.
+\end_layout
+
+\begin_layout Enumerate
+Type 
+\begin_inset Quotes eld
+\end_inset
+
+j
+\begin_inset Quotes erd
+\end_inset
+
+ (jump), and you should see a nice picture and listening to a tune.
+ (If it didn't work, you might not have AGA, 68020+ and FPU in your machine.
+ Please note that WickedOS does not strictly require neither AGA nor an
+ FPU, but this configuration is the baseline for the AGA/060 demos that
+ we want to build with it.)
+\end_layout
+
+\begin_layout Subsubsection
+With Devpac
+\end_layout
+
+\begin_layout Standard
+Devpac was probably the best allround commercial assembler development package
+ for the Amiga.
+ If you want to give it a go, either use your existing installation or get
+ a copy from the 
+\begin_inset CommandInset href
+LatexCommand href
+name "English Amiga Board file server"
+target "http://eab.abime.net/showthread.php?t=43633"
+literal "false"
+
+\end_inset
+
+ (files 
+\begin_inset Quotes eld
+\end_inset
+
+Devpac v3.04#?.adf
+\begin_inset Quotes erd
+\end_inset
+
+ in /Commodore_Amiga/App/Disk/).
+\end_layout
+
+\begin_layout Standard
+Once installed:
+\end_layout
+
+\begin_layout Enumerate
+Project->Load the WickedOS main-file wos_v1.#?.s
+\end_layout
+
+\begin_layout Enumerate
+Remove the 
+\begin_inset Quotes eld
+\end_inset
+
+;
+\begin_inset Quotes erd
+\end_inset
+
+ before WTEST in line 3
+\end_layout
+
+\begin_layout Enumerate
+Settings->Assembler->Options
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Processor: 68020
+\end_layout
+
+\begin_layout Enumerate
+Check 
+\begin_inset Quotes eld
+\end_inset
+
+68881/2 Maths Coprocessor
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Program->Assemble
+\end_layout
+
+\begin_layout Enumerate
+Program->Run
+\end_layout
+
+\begin_layout Standard
+Check the manual to learn about hotkeys, and the really powerful debugger
+ 
+\begin_inset Quotes eld
+\end_inset
+
+monam
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The manual is 
+\begin_inset CommandInset href
+LatexCommand href
+name "available"
+target "https://computerarchive.org/files/comp/applications/amiga/manual/Devpac%203%20-%20Manual-ENG.pdf"
+literal "false"
+
+\end_inset
+
+ at 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://computerarchive.org/"
+target "https://computerarchive.org/"
+literal "false"
+
+\end_inset
+
+, which host lots of other Amiga manuals, too, in 
+\begin_inset CommandInset href
+LatexCommand href
+name "/files/comp/applications/amiga/manual"
+target "https://computerarchive.org/files/comp/applications/amiga/manual/"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Recap
+\end_layout
+
+\begin_layout Standard
+You tested that the supplied WickedOS-sources directly assemble and work
+ on the minimum supported assembler, ASM-One (without using intermediate
+ object-files and linking).
+ This provides the ground for the following steps with vasm and vlink.
+ 
+\end_layout
+
+\begin_layout Standard
+If you were planning to make extensive use of WickedOS with ASM-One or Devpac
+ on Amiga, you might be interested in setting the WOSASSIGN-flag.
+ This would allow you to set your working directory to somewhere else and
+ then just include WickedOS from wos:newestwos.s, which would then find all
+ of its files from the WOS: assign.
+\end_layout
+
+\begin_layout Standard
+But even if you don't plan to use ASM-One, you must at least provide the
+ assign to INCLUDES: if you plan to assemble WickedOS on Amiga.
+\end_layout
+
+\begin_layout Subsection
+How to add a new screenmode 
+\end_layout
+
+\begin_layout Standard
+Adding a new C2P-based screenmode to WickedOS requires a few modifications
+ at several places in several files.
+ As I tend to forget at least one place for myself, this write-up is at
+ least for my own reference.
+\end_layout
+
+\begin_layout Standard
+Hint: you can set wtest flag in the main wos_v#?.s source for setup and display
+ a simple screen.
+ Note: XY is to be replaced with a running number, e.g.
+ 19
+\end_layout
+
+\begin_layout Subsection*
+in file wos#?.s 
+\end_layout
+
+\begin_layout Enumerate
+in _wosbase:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+mXY: dc.l 0,0,0,0 ; add some comments as well
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+in WOSInit:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+add an init block for your c2p-mode after the last one (.m18ok at the time
+ of writing) 
+\end_layout
+
+\begin_layout LyX-Code
+ifnd NOMODEXY 
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+lea mXYc2p,a0 
+\end_layout
+
+\begin_layout LyX-Code
+lea mXY,a1 ;dc.l 0,0,0
+\end_layout
+
+\begin_layout LyX-Code
+move.l a0,(a1)+ ;Init 
+\end_layout
+
+\begin_layout LyX-Code
+add.l #4,a0
+\end_layout
+
+\begin_layout LyX-Code
+move.l a0,(a1)+ ;Main
+\end_layout
+
+\begin_layout LyX-Code
+add.l #4,a0
+\end_layout
+
+\begin_layout LyX-Code
+move.l a0,(a1)+ ;Exit
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+endc .m7ok:; feel free to add custom init code here
+\end_layout
+
+\begin_layout LyX-Code
+; e.g.
+ generation of ham masks or the like
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+in _Display: 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+add macro-line "_DisplayM1 XY" in first block
+\end_layout
+
+\begin_layout Enumerate
+add macro-line "_DisplayM2 XY" in second block
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+in _RefreshDisplay:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+"add cmp.b #XY,d0" and "beq .mXY"
+\end_layout
+
+\begin_layout Enumerate
+provide fitting code at .mXY (copy from appropriate 8 bit or ham-based examples
+ above)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+in SetModeAndColors:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+add macro-line "_SetMaCM1 XY" in first block
+\end_layout
+
+\begin_layout Enumerate
+add macro-line "_SetMaCM2 XY" in second block
+\end_layout
+
+\begin_layout Enumerate
+(for ham-modes) add special cmp/beq cases at ".m0" 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+in _SetMode:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+add macro-line "_CallSetModeMac XY" in first block
+\end_layout
+
+\begin_layout Enumerate
+add macro-line "_SetModeMac XY" in second block
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+in _SetColors:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+add macro-line "_SetColM1 XY" in first block
+\end_layout
+
+\begin_layout Enumerate
+add macro-line "_SetColM2 XY" in second block
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+in Modes:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+provide fitting block which adds exactly one bit to MODES (double the number
+ of the previous) e.g.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+ifnd NOMODE18 
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+MODES set MODES!131072
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+endc
+\end_layout
+
+\begin_layout Enumerate
+(this bitwise-logic is why there are currently a maximum of 32 modes supported)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+include you binary code and provide label mXYc2p 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+(code is expected to have jump table like all the other modes - init at
+ 0, c2p at 4, etc..)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+in file sub/wos_defines.i 
+\end_layout
+
+\begin_layout Enumerate
+in struct after "Define the structure" comment 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+add four rs.l 1 entries to structure for modeXYinit, modeXYc2p, modeXYexit,
+ modeXYptr
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+after "Set up the screen-dimensions" comment
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+provide fitting MakeMode line to describe your screen dimensions 
+\end_layout
+
+\begin_layout Enumerate
+(or alternative definitions of modeXYsize ..
+ modeXYsize)
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+in file sub/wos_copperlists_v#?.s 
+\end_layout
+
+\begin_layout Enumerate
+at EOF
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+provide fitting copperlist named CopmXY, also with labels sprmXY and colmXY
+ with appropriate space
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+in dir sub/chunky/sources 
+\end_layout
+
+\begin_layout Enumerate
+Finally you need to provide a fitting c2p-routine as a PC-relative plugin.
+ Check the provide sources and do likewise.
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+name the file as "mode#?.s"
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+in file sub/chunky/sources/makefile
+\end_layout
+
+\begin_layout Enumerate
+add filename to 
+\noun on
+Sources
+\noun default
+ 
+\end_layout
+
+\begin_layout Section
+Schematic Overview
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename amiga-toolchain-graph.png
+	width 100text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
