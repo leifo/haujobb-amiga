@@ -1510,6 +1510,12 @@ This is slightly extended hello world that also makes use of the provided
 \end_layout
 
 \begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:GNU-make"
+
+\end_inset
+
 GNU make
 \end_layout
 
@@ -2162,6 +2168,30 @@ literal "false"
 \end_inset
 
  and then install it on your Windows machine.
+ 
+\end_layout
+
+\begin_layout Standard
+With Visual Studio Community 2017, please also install the missing standard
+ headers by selecting 
+\emph on
+Windows Universal CRT SDK
+\emph default
+ under 
+\emph on
+Individual Components -> Compiler, Buildtools and Runtimes
+\emph default
+, as described 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "subsec:Missing-Standard-Headers"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -2737,7 +2767,7 @@ literal "false"
 \end_layout
 
 \begin_layout Subsection
-Recap (TL;DR)
+Summary (TL;DR)
 \end_layout
 
 \begin_layout Standard
@@ -2883,39 +2913,592 @@ This chapter takes you through the provided examples in order of complexity.
 \end_layout
 
 \begin_layout Subsection
-Stars
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Hello-World"
+
+\end_inset
+
+Hello World
+\end_layout
+
+\begin_layout Standard
+Let's start with a simple hello world.
+ We just want to build and run it from within Qt Creator to confirm that
+ everything works.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Overview
 \end_layout
 
 \begin_layout Itemize
-Run 
+Open Qt Creator
 \end_layout
 
 \begin_layout Itemize
-Discussion
+Select menu 
+\emph on
+File -> Open File or Project ...
+ (CTRL-O)
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-Simple 320x screen
+Open 
+\emph on
+helloworld.pro
+\emph default
+ from the
+\emph on
+ /demo/helloworld
+\emph default
+ folder
 \end_layout
 
 \begin_layout Itemize
-no data loaded
-\end_layout
-
-\begin_layout Itemize
-2 variables
-\end_layout
-
-\begin_layout Itemize
-discussion
-\end_layout
-
-\begin_layout Itemize
-compile for amiga
+alternatively, you can also double-click on a project (*.pro) file in Windows
+ Explorer
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+Upon first start of a project in Qt Creator, select your previously configured
+ kit and press
+\emph on
+ Configure Project
+\end_layout
+
+\begin_layout Itemize
+Select menu 
+\emph on
+Build -> Run (CTRL-R)
+\end_layout
+
+\begin_layout Standard
+You should be presented with a console window and some printed text.
+\end_layout
+
+\begin_layout Subsubsection
+Discussion
+\end_layout
+
+\begin_layout Standard
+It couldn't get much simpler than this.
+ Basically, just a couple of printf()'s, which require stdio.h.
+ If compilation fails for you on that header file, solve the issue now,
+ as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Missing-Standard-Headers"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The example also shows the use of parameters that are provided to 
+\emph on
+int main(int argc, char **argv)
+\emph default
+, with 
+\emph on
+argc
+\emph default
+ being the argument count, 
+\emph on
+argv[0]
+\emph default
+ the filename, and 
+\emph on
+argv[1..n]
+\emph default
+ the supplied arguments, if 
+\emph on
+argc
+\emph default
+>1.
+\end_layout
+
+\begin_layout Standard
+Finally, the project also showcases the need for a shadow-build-subdirectory
+ (such as 
+\emph on
+/build
+\emph default
+), as Qt Creator calls qmake which creates its own 
+\begin_inset Quotes eld
+\end_inset
+
+makefile
+\begin_inset Quotes erd
+\end_inset
+
+-file and thereby overwrites our existing 
+\begin_inset Quotes eld
+\end_inset
+
+makefile
+\begin_inset Quotes erd
+\end_inset
+
+ in GNU make syntax 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "subsec:Missing-Standard-Headers"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, which we need to build for Amiga.
+ All further examples will thus employ a 
+\emph on
+/build
+\emph default
+ folder for the Amiga-specific build files.
+\end_layout
+
+\begin_layout Subsection
+Stars
+\end_layout
+
+\begin_layout Standard
+Just a classic star-field.
+\end_layout
+
+\begin_layout Subsubsection
+Overview
+\end_layout
+
+\begin_layout Itemize
+Open, configure, build and run 
+\emph on
+stars.pro
+\emph default
+ from the 
+\emph on
+/demo/stars
+\emph default
+ folder
+\end_layout
+
+\begin_layout Standard
+You should be presented with a graphics window and some shaded 3D stars
+ flying towards you, as show in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Qt-Creator-session"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename qtc-stars.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Qt-Creator-session"
+
+\end_inset
+
+Qt Creator session with project stars
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Discussion
+\end_layout
+
+\begin_layout Standard
+This example does not load any external files.
+ The starfield is set up and drawn from a seperate file called starseffect.c
+ (with fitting header starseffect.h) which is then called from main.c.
+ Keeping the effect-code seperated like this is good practice and will become
+ very useful once we start putting together a demo.
+\end_layout
+
+\begin_layout Standard
+Let's study the code in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Qt-Creator-session"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+starting from main():
+\end_layout
+
+\begin_layout Itemize
+initDemo() is called first thing
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+this declares screensize global variables xres=320 and yres=180
+\end_layout
+
+\begin_layout Itemize
+it allocates memory for a screenBuffer (also global variable)
+\end_layout
+
+\begin_layout Itemize
+and calls starsInit()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+this is obviously our effect init-code
+\end_layout
+
+\begin_layout Itemize
+made known via 
+\emph on
+#include 
+\begin_inset Quotes eld
+\end_inset
+
+starseffect.h
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\emph default
+in line 2
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+starsInit() is not entirely shown in the figure
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+it calculates quasi random 3D star-coordinates 
+\end_layout
+
+\begin_layout Itemize
+and calculates a palette
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+wosInit() is called next
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+this sets up the graphics display amongst other things, and might potentially
+ disable multi-tasking on the Amiga (depending in wether or not wickedquicklink.s
+ / wickedlink.s have been assembled with or without the 
+\emph on
+KILLER 
+\emph default
+flag.)
+\end_layout
+
+\begin_layout Itemize
+wosInit() does not immediately return, but
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+hands over control to mainDemo()
+\end_layout
+
+\begin_layout Itemize
+only returns to main() once the demo is over
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+mainDemo()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+wosSetMode(8, screenBuffer, starsPalette(), 256);
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+sets up a low-res 320x180 screenmode (#8)
+\end_layout
+
+\begin_layout Itemize
+fed from screenBuffer
+\end_layout
+
+\begin_layout Itemize
+with colours from starsPalette() at normal brigthness (256)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+on Amiga
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+mainDemo() then loops over drawDemo(), providing time as ticks (1/50 s)
+\end_layout
+
+\begin_layout Itemize
+until wosCheckExit() returns !=0
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+on PC (WIN32) 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+mainDemo() immediately returns 
+\end_layout
+
+\begin_layout Itemize
+and drawDemo(time) is called from somewhere else from Qt
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+(this is why there is this 
+\emph on
+#ifndef WIN32 [..] #endif
+\emph default
+ block)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+drawDemo() just
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+renders the stars effect based on the given time
+\end_layout
+
+\begin_layout Itemize
+updated the display with wosDisplay(2);
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+the 2 denotes a lock to 25 fps maximum
+\end_layout
+
+\begin_layout Itemize
+which is realistic for low-res chunky to planar effects on AGA/060 config
+\end_layout
+
+\begin_layout Itemize
+motion will look smoother at a constant framerate rather than a slightly
+ faster on
+\end_layout
+
+\begin_layout Itemize
+you could try (1) for a maximum 50 fps frame-lock or (0) for no lock
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+starsRender()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+clears the screenBuffer
+\end_layout
+
+\begin_layout Itemize
+calls starsDraw(), with
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+time
+\end_layout
+
+\begin_layout Itemize
+32 as a constant factor for the perspective
+\end_layout
+
+\begin_layout Itemize
+screenbuffer, xres, yres
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+starsDraw() finally
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+iterates over the number of stars (7000)
+\end_layout
+
+\begin_layout Itemize
+and for each star
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+apply z-movement based on time with boolean clipping
+\end_layout
+
+\begin_layout Itemize
+project x/y based on a floating point perspective factor derived from 1/z
+ *variable factor
+\end_layout
+
+\begin_layout Itemize
+determines a pixel-colour based on z
+\end_layout
+
+\begin_layout Itemize
+adds that colour to the screenbuffer if the pixel is inside the x/y/z box
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+upon exit, deinitDemo() is called, which
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+calls starsRelease() - an empty function/stub
+\end_layout
+
+\begin_layout Itemize
+frees the tempBuffer that contained the screenBuffer and some safety margin
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+The resulting effect is a classic, albeit simple starfield.
+ It doesn't rotate or even just move in different directions.
+ All of this could be added, if needs be.
+ But we recommend you to go on and just take this as an example of a typical
+ project setup.
+\end_layout
+
+\begin_layout Subsubsection
+Compile for and run on Amiga
+\end_layout
+
+\begin_layout Standard
+If you now wanted to compile the stars for Amiga, you would:
+\end_layout
+
+\begin_layout Itemize
+open a console window on PC
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+cd
+\emph default
+ to the
+\emph on
+ /stars/build
+\emph default
+ folder
+\end_layout
+
+\begin_layout Itemize
+run 
+\emph on
+make
+\end_layout
+
+\begin_layout Standard
+And then to run it on the Amiga, you would:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+cd
+\emph default
+ to the 
+\emph on
+/stars
+\emph default
+ folder on Amiga
+\end_layout
+
+\begin_layout Itemize
+run 
+\emph on
+build/stars
+\end_layout
+
+\begin_layout Standard
+For this simple project, which doesn't load any external data-files, you
+ could actually also run it from the 
+\emph on
+build
+\emph default
+ folder.
+ But as soon as you want to load data (which we put in
+\emph on
+ /data
+\emph default
+ by convention), you would need to make sure you run your executables from
+ the right folder.
+\end_layout
+
 \begin_layout Subsection
 Pictures
 \end_layout
@@ -2979,7 +3562,7 @@ not the worlds fastest method
 
 \end_deeper
 \begin_layout Subsection
-Hellodemo
+Hello Demo
 \end_layout
 
 \begin_layout Itemize
@@ -3116,6 +3699,60 @@ with shadow build (because QtCreator/QMake would like to occupy that space)
 
 \begin_layout Part
 Annex
+\end_layout
+
+\begin_layout Section
+Trouble-Shooting
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Missing-Standard-Headers"
+
+\end_inset
+
+Missing Standard Headers
+\end_layout
+
+\begin_layout Standard
+With Visual Studio Community 2017 we have witnessed missing standard headers,
+ resulting in compilation problems even for the simplest programs such as
+ the hello world 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "subsec:Hello-World"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.Unbelievable as it sounds, this behavior is also documented on 
+\begin_inset CommandInset href
+LatexCommand href
+name "Stack Overflow"
+target "https://stackoverflow.com/questions/42777424/visual-studio-2017-errors-on-standard-headers"
+literal "false"
+
+\end_inset
+
+, along with the solution in answer #1.
+ 
+\end_layout
+
+\begin_layout Standard
+To solve this problem, you need to rerun the Visual Studio Installer and
+ select 
+\emph on
+Windows Universal CRT SDK
+\emph default
+ under 
+\emph on
+Individual Components -> Compiler, Buildtools and Runtimes.
+
+\emph default
+ Then restart you IDE, and rebuild your project.
 \end_layout
 
 \begin_layout Section
