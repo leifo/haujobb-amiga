@@ -11,12 +11,6 @@ s:
 
 plsiz=640*400/8
 _chunky2planar:
-	move.l	#256000,d0
-.lp	move.b	(a0)+,(a1)+
-	subq.l	#1,d0
-	bne.s	.lp
-	rts
-
 	        movem.l d2-d7/a2-a6,-(sp)
 
                 move.w  sp,d0

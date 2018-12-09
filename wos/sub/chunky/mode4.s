@@ -9,7 +9,7 @@ s:
 	rts				;QBlit (Offset 12) 
 	rts
 
-plsiz=640*400/8
+plsiz=640*200/8
 _chunky2planar:
 	        movem.l d2-d7/a2-a6,-(sp)
 
