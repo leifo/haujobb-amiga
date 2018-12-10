@@ -1,4 +1,4 @@
-#define SYNC_PLAYER ;// comment out to run in Rocket edit mode
+//#define SYNC_PLAYER ;// comment out to run in Rocket edit mode
 
 // hellodemo.pro, based on beam riders
 

@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-TARGET = pictures
+TARGET = picture
 
 QT += core
 QT += gui
@@ -52,19 +52,15 @@ SOURCES += \
 
 HEADERS += \
     ../shared/wos/wos.h \
-    ../shared/image/image.h \
     ../shared/image/gif.h \
-    ../shared/tools/mem32.h \
-    ../shared/math/imath.h \
-    ../shared/tools/rand.h 
-
+    ../shared/tools/mem32.h
+    
 
 SOURCES += \
     ../shared/wos/wos.cpp \
     ../shared/tools/mem32.c \
     ../shared/image/gif.c \
-    ../shared/tools/stream.c \
-    ../shared/tools/rand.c 
+    ../shared/tools/stream.c
 
 DISTFILES += \
     build/makefile

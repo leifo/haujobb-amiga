@@ -8,12 +8,11 @@
 SOURCES = main.c \
    pictureeffect.c \
    ../../shared/tools/mem32.c \
-   ../../shared/tools/rand.c \
    ../../shared/tools/stream.c \
    ../../shared/image/gif.c 
 
 	
-TARGET = pictures
+TARGET = picture
 
 # PC oder Amiga Source-Dir relativ zum aktuellen Dir.
 # - muesste man eigentlich auch automatisch an die Platform anpassen,

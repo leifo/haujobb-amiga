@@ -1,8 +1,8 @@
 #include "wos/wos.h"
 #include "pictureeffect.h"
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 unsigned int* g_currentPal;
 unsigned char* tempBuffer;
@@ -22,28 +22,29 @@ void initDemo()
    pictureEffectInit();
 }
 
+// not called from wickedquicklink
+// use wickedlink and assembly-bridge if you want to have this called each frame
 void updateDemo(int time)
 {
+
 }
 
 void drawDemo(int time)
 {
-   int pic = 1+(time/50.0);
-   pictureEffectRender(pic);
-   wosSetCols(g_currentPal,256);
-   wosDisplay(1);
+   wosSetCols(g_currentPal, 160+sin(time/50.0)*160);
+   pictureEffectRender();
+   wosDisplay(2);
 }
 
 void mainDemo()
 {
    int time= 0;
 
-   wosSetMode(8, screenBuffer, g_currentPal, 256);
+   wosSetMode(8, screenBuffer, g_currentPal, 0);
 #ifndef WIN32
    while (wosCheckExit()==0)
    {
       time= g_vbitimer;
-
       drawDemo(time);
    }
 #endif

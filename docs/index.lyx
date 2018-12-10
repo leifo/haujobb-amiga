@@ -135,6 +135,19 @@ literal "false"
 
 \end_layout
 
+\begin_layout Abstract
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "subsec:Summary-(TL;DR)"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset Phantom HPhantom
 status open
@@ -1336,7 +1349,7 @@ Let's compile our first C-source with this setup! The following procedure
 \end_layout
 
 \begin_layout Enumerate
-cd to the /examples/helloworld folder
+cd to the /demo/helloworld folder
 \end_layout
 
 \begin_layout Enumerate
@@ -2767,6 +2780,12 @@ literal "false"
 \end_layout
 
 \begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Summary-(TL;DR)"
+
+\end_inset
+
 Summary (TL;DR)
 \end_layout
 
