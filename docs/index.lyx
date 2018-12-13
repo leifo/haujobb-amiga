@@ -3519,41 +3519,349 @@ build
 \end_layout
 
 \begin_layout Subsection
-Pictures
+Picture
+\end_layout
+
+\begin_layout Standard
+This example loads in and displays a picture that has been written in the
+ standard GIF file-format.
+\end_layout
+
+\begin_layout Subsubsection
+Overview
 \end_layout
 
 \begin_layout Itemize
-load graphics asset (GIF)
+Open, configure, build and run 
+\emph on
+picture.pro
+\emph default
+ from the 
+\emph on
+/demo/picture
+\emph default
+ folder
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
-maybe also TGA
+\noindent
+You should be presented with a picture in 320x180 resolution and 8-bit colour-de
+pth
 \end_layout
 
-\begin_layout Itemize
-one pic per screenmode?
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename picture.png
+
+\end_inset
+
+
 \end_layout
 
-\end_deeper
-\begin_layout Itemize
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Picture project (artwork by Helge/Haujobb)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
 Discussion
 \end_layout
 
+\begin_layout Standard
+The effect simply loads a picture in GIF-format which can be created with
+ standard tools like Photoshop or Pro Motion.
+ This is a lot easier and less time-consuming than always employing a graphics
+ converter program.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+void pictureEffectInit() { 
+\end_layout
+
+\begin_layout LyX-Code
+   int w,h;
+\end_layout
+
+\begin_layout LyX-Code
+   gifLoad("data/helge-haujobb.gif", (void**)&picture, &w,&h, 
+\end_layout
+
+\begin_layout LyX-Code
+          (unsigned int*)&picturepal); 
+\end_layout
+
+\begin_layout LyX-Code
+   g_currentPal = picturepal; 
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout Standard
+The control flow of this example is the same as in the previous example
+ stars.
+ So upon init, the pictureEffectInit() function is called, which calls gifLoad()
+ with
+\end_layout
+
+\begin_layout Itemize
+the filename
+\end_layout
+
+\begin_layout Itemize
+a pointer (&picture) to where the pointer to the loaded and decoded picture
+ should be stored
+\end_layout
+
 \begin_deeper
 \begin_layout Itemize
-getting assets in, as output by photoshop and other tools
+note that GIF is an 8-bit format with up to 256 colours
 \end_layout
 
 \begin_layout Itemize
-palette sometimes falsely sorted
-\end_layout
-
-\begin_layout Itemize
-explain color sorting in pro motion ng (advanced tools)
+picture is thus defined as unsigned char*
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+pointers to the int variables w & h which will store width and height of
+ the decoded image
+\end_layout
+
+\begin_layout Itemize
+a pointer to an array of 256 unsigned int to store the image palette
+\end_layout
+
+\begin_layout Standard
+Finally, pictureEffectInit() also copies the pointer to the loaded image
+ palette to g_currentPal, which can be accessed from main.c in function drawDemo(
+).
+ Here, the palette brightness will be calculated with a simple time-based
+ function that makes the image fade in and out smoothly on a sine-wave.
+ Note that the standard brightness for paletted image is 256.
+ In this example it is just going slightly above that for an exaggerated
+ effect.
+\end_layout
+
+\begin_layout Subsubsection
+Changing the palette
+\end_layout
+
+\begin_layout Standard
+If you run this example on the Amiga (like the stars example), you will
+ notice that the background colour around the image is not black and thus
+ also fades in and out.
+ This is often not the desired effect.
+ To fix it, we need to have look at the palette.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename picture-palette.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sorting-the-picture"
+
+\end_inset
+
+Sorting the picture palette with the Pro Motion NG palette editor
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tools like Photoshop are very good for all sorts of image manipulations
+ and can also be used to save in the GIF-format.
+ But it does not sort the colours in the way we would prefer it, i.e.
+ keep colour 0 dark.
+ Photoshops' palette editor is also below standard.
+ Thus we will use a different PC-based tool to fiddle with the palette:
+ 
+\emph on
+Pro Motion N
+\emph default
+G from 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://www.cosmigo.com/"
+target "https://www.cosmigo.com/"
+literal "false"
+
+\end_inset
+
+.
+ The available free version is enough for this excercise.
+ So download and install it, then:
+\end_layout
+
+\begin_layout Itemize
+Open the image 
+\begin_inset Quotes eld
+\end_inset
+
+data/helge-haujobb.gif
+\begin_inset Quotes erd
+\end_inset
+
+ by selecting menu 
+\emph on
+File -> Load Image ...
+\end_layout
+
+\begin_layout Itemize
+You should see the image and the palette-editor (as in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sorting-the-picture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, left).
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If not, press F12 to open it.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Now press the 
+\emph on
+Functions
+\emph default
+ button in the palette editor and select 
+\emph on
+Sort -> Brightness
+\emph default
+.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ok, so the colors are sorted now, but from brightest to darkest.
+ Your palette should look like in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sorting-the-picture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, middle.
+\end_layout
+
+\begin_layout Itemize
+But the image still looks odd.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Press the 
+\emph on
+Remap
+\emph default
+ button in the palette editor, or select menu 
+\emph on
+Colors -> Resample (!) Color
+\end_layout
+
+\begin_layout Itemize
+To have then have the palette sorted from darkest to brightest we have to
+ use flip function now 
+\emph on
+(Functions -> Flip
+\emph default
+).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Your palette should look like in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sorting-the-picture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, right, as desired.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Press 
+\emph on
+Remap
+\emph default
+, again.
+\end_layout
+
+\begin_layout Standard
+You can save the image, reload the Amiga executable without compiling it
+ again, and the border should stay dark.
+\end_layout
+
 \begin_layout Subsection
 Movetable
 \end_layout
