@@ -64,9 +64,9 @@ oldintreq:
 ;-------------- v39 Sprites-Fix by CJ/SAE
 	ifnd	NOSPRITESFIX
 	ifd	WOSASSIGN
-		include	wos:sub/fixsprites.s
+		include	wos:sub/FixSprites.s
 	else
-		include	sub/fixsprites.s
+		include	sub/FixSprites.s
 	endc
 	endc
 
