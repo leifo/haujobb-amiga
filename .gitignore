@@ -19,6 +19,10 @@ Makefile.Release
 *.rt
 *.mp3
 
+1x1x8_c5.bin
+wickedlink.o
+wickedquicklink.o
+
 wostest
 hellomake
 stars

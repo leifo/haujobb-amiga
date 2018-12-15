@@ -37,7 +37,7 @@ VPATH = $(SRCDIR)
 #vpath %.c src
 #vpath %.asm src
 
-CFLAGS = -O=23999 -cpu=68060 -fpu=68060 -DAMIGA -speed -k -DSYNC_PLAYER -DNEED_STRDUP
+CFLAGS = -O=23999 -cpu=68060 -fpu=68060 -DAMIGA -speed -c99 -k -DSYNC_PLAYER -DNEED_STRDUP
 ASFLAGS = -Fhunk -m68020 -m68882 -Ic:/vbcc/NDK39/Include/include_i 
 LDFLAGS =
 

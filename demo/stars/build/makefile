@@ -34,7 +34,7 @@ VPATH = $(SRCDIR)
 #vpath %.c src
 #vpath %.asm src
 
-CFLAGS = -O=23999 -cpu=68060 -fpu=68060 -DAMIGA -speed -k
+CFLAGS = -O=23999 -cpu=68060 -fpu=68060 -DAMIGA -c99 -speed -k
 ASFLAGS =
 LDFLAGS =
 
