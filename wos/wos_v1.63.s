@@ -204,7 +204,7 @@ use set -1	;dummy for p61.i and especially for OMA 3. just leave it here!
 	endc
 
 	ifne	WOS_TP3
-		WOSINCLUDE	sub/replay/tp3.i
+		WOSINCLUDE	sub/replay/TP3.i
 	endc
 
 	ifne	WOS_THX
