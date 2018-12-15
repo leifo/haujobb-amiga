@@ -5511,7 +5511,7 @@ tp_module:
 		ifd     TP3MOD
 			TP3MOD
 		else
-			WOSINCBIN	dat/virgill-noxious.tp3
+			WOSINCBIN	dat/Virgill-Noxious.tp3
 		endc
 		even
 	endc
