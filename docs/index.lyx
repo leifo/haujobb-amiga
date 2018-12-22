@@ -3866,28 +3866,218 @@ You can save the image, reload the Amiga executable without compiling it
 Movetable
 \end_layout
 
-\begin_layout Itemize
-run
+\begin_layout Standard
+This example shows a typical movetable effect in 320x180 pixel resolution
+ and 8-bit colour-depth.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Overview
 \end_layout
 
 \begin_layout Itemize
-discussion
+Open, configure, build and run 
+\emph on
+movetable.pro
+\emph default
+ from the 
+\emph on
+/demo/movetable
+\emph default
+ folder
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
-asset loaded
+\noindent
+You should be presented with an effect in 320x180 resolution and 8-bit colour-de
+pth
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename movetable.png
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename texture.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Movetable effect and underlying texture (texture by JCS/Haujobb)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Discussion
+\end_layout
+
+\begin_layout Standard
+The effect uses a texture of size 256x256 which is loaded from a GIF file,
+ like in the previous example.
+ Furthermore, it uses a movetable which is generated using trigonometric
+ functions and finally uses those two components to build the screen by
+ obtaining per pixel texture coordinates from the movetable, moved by a
+ smoothly animated x- and y-offset on a sine-wave.
+ The movetable is exactly twice the size of the screen, so 640x360 in this
+ case, and represents a tunnel shape.
+ Other shapes are possible.
+ Let's look at some details.
+\end_layout
+
+\begin_layout LyX-Code
+void movetableInit() { 
+\end_layout
+
+\begin_layout LyX-Code
+    int tabsize; int w,h;
+\end_layout
+
+\begin_layout LyX-Code
+    gifLoad("data/texture.gif", (void**)&texture, &w,&h,
+\end_layout
+
+\begin_layout LyX-Code
+        (unsigned int*)&texturepal);
+\end_layout
+
+\begin_layout LyX-Code
+// provide 256x256x8 tga-file and test this
+\end_layout
+
+\begin_layout LyX-Code
+    //tgaLoad8("data/texture.tga", (void**)&texture, &w,&h,
+\end_layout
+
+\begin_layout LyX-Code
+        (unsigned int*)&texturepal); 
+\end_layout
+
+\begin_layout LyX-Code
+    g_currentPal = texturepal;
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+// allocate memory 
+\end_layout
+
+\begin_layout LyX-Code
+    tabsize= tabx*taby; 
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+// table size 
+\end_layout
+
+\begin_layout LyX-Code
+    xtab= (char*)malloc(tabsize); 
+\end_layout
+
+\begin_layout LyX-Code
+    ytab= (char*)malloc(tabsize);
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+// build tables 
+\end_layout
+
+\begin_layout LyX-Code
+    //buildSphere(xtab, ytab);
+\end_layout
+
+\begin_layout LyX-Code
+    //buildWater(xtab, ytab);
+\end_layout
+
+\begin_layout LyX-Code
+    buildTunnel(xtab, ytab); 
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout Standard
+If you look at function moveTableInit() from movetableeffect.c you will see
+ how the texture is loaded and the function to build the table is called.
+\end_layout
+
+\begin_layout Standard
+Just after the gifLoad() function is a tgaLoad8() function with the same
+ signature, which loads the Targa Image File format TGA.
+ Targa is supported by Photoshop and other tools.
+ It is usually uncompressed and loads faster than GIF.
+ The bigger file-size of TGA is compressed away when you bundle your demo
+ in a compressed archive.
+ Furthermore, Targa files also support higher colour depths; a feature that
+ will come in handy when you work with true colour screenmodes.
+ As an exercise, you could:
 \end_layout
 
 \begin_layout Itemize
-movetable generated
+provide a file called texture.tga in 256x256 pixel size and 8-bit colour
+ depth
 \end_layout
 
 \begin_layout Itemize
-not the worlds fastest method
+comment out the gifLoad() line and comment in the tgaLoad8() line
 \end_layout
 
-\end_deeper
+\begin_layout Itemize
+the effect should work as before
+\end_layout
+
+\begin_layout Standard
+moveTableInit() then allocates some memory and calls \SpecialChar allowbreak
+buildTunnel(), one
+ of three supplied build-functions, to fill that memory with movetable data.
+\end_layout
+
+\begin_layout Itemize
+Try out the other two!
+\end_layout
+
 \begin_layout Subsection
 Hello Demo
 \end_layout

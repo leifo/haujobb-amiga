@@ -28,9 +28,9 @@ unsigned int* movetablePalette()
    return texturepal;
 }
 
-void build_sphere(char *xbuf, char *ybuf)
+void buildSphere(char *xbuf, char *ybuf)
 {
-  int   x,y, w,z, w1,z1, w2,z2, w3,z3, q,p,xp,yp;
+  int   x,y,w1,z1,p;
   float xmid,ymid;
   float tx,ty,d;
   float fak1,fak2;
@@ -62,11 +62,11 @@ void build_sphere(char *xbuf, char *ybuf)
 }
 
 
-void build_tunnel(char *xbuf, char *ybuf)
+void buildTunnel(char *xbuf, char *ybuf)
 {
-  int   x,y, w,z, w1,z1, w2,z2, w3,z3, q,p,xp,yp;
+  int   x,y,w1,z1,p;
   float xmid,ymid;
-  float tx,ty,d;
+  float tx,ty;
   float fak1,fak2;
 
   xmid=tabx / 2.0 - 0.5;
@@ -94,11 +94,11 @@ void build_tunnel(char *xbuf, char *ybuf)
 }
 
 
-void build_water(char *xbuf, char *ybuf)
+void buildWater(char *xbuf, char *ybuf)
 {
-  int   x,y, w,z, w1,z1, w2,z2, w3,z3, q,p,xp,yp;
+  int   x,y,w1,z1,p;
   float xmid,ymid;
-  float tx,ty,d;
+  float tx,ty;
   float fak1,fak2;
 
   #define CAMDIST 100000
@@ -131,7 +131,7 @@ void build_water(char *xbuf, char *ybuf)
 // draw to "dst" with table "tab", using texture "tex"
 void tableDraw(char *dst, char *tab1, char *tab2, char *tex, int move, int xp, int yp)
 {
-  int  p,t,x,y;
+  int  p,t,x,y,p2;
 
   if (xp<0) xp=0; if (xp>tabx/2) xp=tabx/2;
   if (yp<0) yp=0; if (yp>taby/2) yp=taby/2;
@@ -139,9 +139,11 @@ void tableDraw(char *dst, char *tab1, char *tab2, char *tex, int move, int xp, i
   for (y=0;y<yres;y++)
   {
     p= (y+yp)*tabx+xp;
+    //p2= (tabx*taby)-p;
     for (x=0;x<xres;x++,dst++,p++)
     {
-      t= ((tab2[p]<<8)+tab1[p]+move) & 0xffff;
+       t= ((tab2[p]<<8)+tab1[p]+move) & 0xffff;
+       //t= ( ((tab2[p]<<8)+tab1[p]+move) + ((tab2[p2]<<8)+tab1[p2]+move) )   & 0xffff;
       *dst= tex[t];
     }
   }
@@ -170,15 +172,15 @@ void movetableInit()
    ytab=   (char*)malloc(tabsize);
 
    // build tables   
-   //build_sphere(xtab, ytab);
-   //build_water(xtab, ytab);
-   build_tunnel(xtab, ytab);
+   //buildSphere(xtab, ytab);
+   //buildWater(xtab, ytab);
+   buildTunnel(xtab, ytab);
 }
 
 // draw all stars to screenbuffer, movement based on time
 void movetableDraw(int time, unsigned char* screenBuffer)
 {
-   int  xp,yp,move,i;
+   int  xp,yp,move;
       
    move=time*0x01ff;
   

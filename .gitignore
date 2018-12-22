@@ -18,6 +18,7 @@ Makefile.Release
 *.exe
 *.rt
 *.mp3
+*.psd
 
 1x1x8_c5.bin
 wickedlink.o
