@@ -2924,7 +2924,7 @@ Demomaking
 \end_layout
 
 \begin_layout Section
-Examples
+Single Examples
 \end_layout
 
 \begin_layout Standard
@@ -3318,7 +3318,7 @@ on PC (WIN32)
 
 \begin_deeper
 \begin_layout Itemize
-mainDemo() immediately returns 
+mainDemo() immediately returns
 \end_layout
 
 \begin_layout Itemize
@@ -3771,7 +3771,6 @@ noprefix "false"
 \end_inset
 
 , left).
- 
 \end_layout
 
 \begin_deeper
@@ -4078,8 +4077,839 @@ buildTunnel(), one
 Try out the other two!
 \end_layout
 
+\begin_layout Section
+Demo Example
+\end_layout
+
+\begin_layout Standard
+This chapter pulls all the strings together and provides a complete example
+ demo that comprises of the previously discussed component with some added
+ streaming music.
+ The effects' parameters are controlled via the excellent Rocket sync-tracker.
+ Although this approach to demo-syncing is quite common in the PC-scene
+ for many years, it is still fairly unknown in the Amiga-scene and only
+ used by very few demo-makers, like e.g.
+ Loonies.
+ In Haujobb, we have started using Rocket when developing the 
+\begin_inset CommandInset href
+LatexCommand href
+name "Beam Riders"
+target "https://www.pouet.net/prod.php?which=71976"
+literal "false"
+
+\end_inset
+
+demo.
+ We have previously spoken about our demo-making process in our Evoke 2018
+ talk 
+\begin_inset CommandInset href
+LatexCommand href
+name "Modern Amiga Demo Cross-Development (YouTube)"
+target "https://www.youtube.com/watch?v=s1lVS4tW33g"
+literal "false"
+
+\end_inset
+
+.
+ With the release of our Amiga demo framework, we are now publicly sharing
+ a complete and documented example of how to sync your Amiga demos with
+ Rocket.
+ This is how we did it.
+ And now you can do it, too!
+\end_layout
+
 \begin_layout Subsection
 Hello Demo
+\end_layout
+
+\begin_layout Subsubsection
+Overview
+\end_layout
+
+\begin_layout Itemize
+Open, configure, build and run 
+\emph on
+hellodemo.pro
+\emph default
+ from the 
+\emph on
+/demo/hellodemo
+\emph default
+ folder
+\end_layout
+
+\begin_layout Itemize
+\noindent
+The demo will refuse to start with the error message: 
+\begin_inset Quotes eld
+\end_inset
+
+Could not connect to rocket editor!
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+This is because the source-code of hellodemo is configured
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+to require the Rocket editor on the PC
+\end_layout
+
+\begin_layout Itemize
+and to play the demo from the stored parameters on the Amiga.
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+SYNC_PLAYER
+\end_layout
+
+\begin_layout Standard
+If you wanted to quickly check the example demo on the PC, you thus need
+ to configure the source-code to not require the Rocket editor on the PC.
+ This is done with the 
+\emph on
+SYNC_PLAYER
+\emph default
+ define in line 1 of main.c.
+ If it is defined, the demo will load the 
+\emph on
+*.rt
+\emph default
+ files from the /data directory and then play the demo with those parameters.
+ So uncomment that define and run hellodemo again.
+ It should start and show several effects timed to some music by Muffler.
+\end_layout
+
+\begin_layout Standard
+When you are done with that, comment that define-line out again, as you
+ usually would want to work in edit mode on PC.
+\end_layout
+
+\begin_layout Standard
+Note: the Amiga build gets the SYNC_PLAYER define injected via the makefile
+ (-DSYNC_PLAYER in CFLAGS, currently in line 40, c.f.
+ section 2.1 in 
+\begin_inset CommandInset href
+LatexCommand href
+name "VBCC docs"
+target "http://www.ibaug.de/vbcc/doc/vbcc.pdf"
+literal "false"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsubsection
+Rocket Editor
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Rocket is is an intuitive new way of...
+ bah, whatever.
+ It's a sync-tracker, a tool for synchronizing music and visuals in demoscene
+ productions.
+ It consists of a GUI editor (using Qt), and an ANSI C library that can
+ either communicate with the editor over a network socket, or play back
+ an exported data-set.
+
+\emph default
+ – from 
+\begin_inset CommandInset href
+LatexCommand href
+name "Rocket GitHub page"
+target "https://github.com/rocket/rocket"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To get started with using the Rocket editor, download the latest official
+ binaries from the GitHub 
+\begin_inset CommandInset href
+LatexCommand href
+name "Rocket releases"
+target "https://github.com/rocket/rocket/releases"
+literal "false"
+
+\end_inset
+
+.
+ The archives come readily bundled with the required libraries, so just
+ unpacking and starting
+\emph on
+ editor.exe
+\emph default
+ should work.
+ Since its inception, several ports of the Rocket editor have appeared.
+ All of them are listed on the 
+\begin_inset CommandInset href
+LatexCommand href
+name "Rocket GitHub page"
+target "https://github.com/rocket/rocket"
+literal "false"
+
+\end_inset
+
+.
+ We personally only worked with the original editor, but also quickly tested
+ the alternative 
+\begin_inset CommandInset href
+LatexCommand href
+name "OpenGL editor"
+target "https://github.com/emoon/rocket"
+literal "false"
+
+\end_inset
+
+ and can confirm that it works.
+\end_layout
+
+\begin_layout Standard
+On Windows, the Windows firewall would usually come up when starting your
+ chosen editor for the first time.
+ Just allow it to pass, as the editor will need to communicate with the
+ demo via network.
+\end_layout
+
+\begin_layout Standard
+Once you started the editor, you can recompile (without SYNC_PLAYER defined)
+ and run the hellodemo project.
+ You should immediately see some magic happen in the editor.
+ As the demo and the editor already communicated about the available sync
+ tracks, the editor should show them neatly organised in tabs, here: 
+\emph on
+default
+\emph default
+, 
+\emph on
+picture(0)
+\emph default
+, 
+\emph on
+stars(1)
+\emph default
+, 
+\emph on
+movetable(2)
+\emph default
+.
+ The sync tracks still have no keyframes and interpolation methods assigned,
+ yet.
+ This is the typical state of how you would start with a clean slate once
+ you wired up your Rocket variables in your code.
+\end_layout
+
+\begin_layout Standard
+To get started with our example, load the provided file
+\emph on
+ hellodemo.rocket
+\emph default
+ from /data/hellodemo into your editor.
+ This should populate the sync-tracks with data (see 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Rocket-editor-(left)"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ You can now start and stop playing the demo by pressing <SPACE> in the
+ editor.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename hellodemo.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Rocket-editor-(left)"
+
+\end_inset
+
+Rocket editor (left) and hellodemo (right)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Using the Editor
+\end_layout
+
+\begin_layout Standard
+This section is copied from the official Rocket documentation.
+\end_layout
+
+\begin_layout Standard
+The Rocket editor is laid out like a music-tracker; tracks (or columns)
+ and rows.
+ Each track represents a separate "variable" in the demo, over the entire
+ time-domain of the demo.
+ Each row represents a specific point in time, and consists of a set of
+ key frames.
+ The key frames are interpolated over time according to their interpolation
+ modes.
+\end_layout
+
+\begin_layout Paragraph
+Interpolation modes
+\end_layout
+
+\begin_layout Standard
+Each key frame has an interpolation mode associated with it, and that interpolat
+ion mode is valid until the next key frame is reached.
+ The different interpolation modes are the following:
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Step 
+\emph default
+: This is the simplest mode, and always returns the key's value.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Linear
+\emph default
+ : This does a linear interpolation between the current and the next key's
+ values.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Smooth
+\emph default
+ : This interpolates in a smooth fashion, the exact function is what is
+ usually called "smoothstep".
+ Do not confuse this mode with splines; this only interpolates smoothly
+ between two different values, it does not try to calculate tangents or
+ any such things.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Ramp
+\emph default
+ : This is similar to "Linear", but additionally applies an exponentiation
+ of the interpolation factor.
+\end_layout
+
+\begin_layout Paragraph
+Keyboard shortcuts
+\end_layout
+
+\begin_layout Standard
+Some of the Rocket editor's features are available through the menu and
+ some keyboard shortcut.
+ Here's a list of the supported keyboard shortcuts:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="21" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Shortcuts
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Action
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Up/Down/Left/Right
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Move cursor
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+PgUp/PgDn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Move cursor 16 rows up/down
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Home/End
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Move cursor to begining/end
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+Left/Right
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Move tracks
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Enter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Enter key frame values
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Del
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Delete key frame
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+i
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Enumerate interpolation mode
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+k
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Toggle row-bookmark
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Alt+PgUp/PgDn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Go to prev/next row-bookmark
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Space
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pause/Resume demo
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift+Up/Down/Left/Right
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Select
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+C
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Copy
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+V
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paste
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+Z
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Undo
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift+Ctrl+Z
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Redo
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl-B
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bias key frames
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift+Ctrl+Up/Down
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Quick-bias by +/- 0.1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+Up/Down
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Quick-bias by +/- 1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+PgUp/PgDn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Quick-bias by +/- 10
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift+Ctrl+PgUp/PgDn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Quick-bias by +/- 100
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Rocket editor shortcuts
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -4087,6 +4917,14 @@ run
 \end_layout
 
 \begin_deeper
+\begin_layout Itemize
+load example track
+\end_layout
+
+\begin_layout Itemize
+best practice track names
+\end_layout
+
 \begin_layout Itemize
 visual studio command prompt
 \end_layout
@@ -4102,18 +4940,6 @@ nmake install
  to get the required libraries to the folder
 \end_layout
 
-\begin_layout Itemize
-check 
-\begin_inset Quotes eld
-\end_inset
-
-SYNC_PLAYER
-\begin_inset Quotes erd
-\end_inset
-
- in main.c
-\end_layout
-
 \end_deeper
 \begin_layout Itemize
 discussion
@@ -4125,24 +4951,34 @@ additional functions to handle screenmode and palette changes
 \end_layout
 
 \begin_layout Itemize
+devices and tracks and variables
+\end_layout
+
+\begin_layout Itemize
 parameters from rocket
 \end_layout
 
-\end_deeper
+\begin_layout Itemize
+Audio ADPCM Saving and determining BPM
+\end_layout
+
 \begin_layout Itemize
 Rocket
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+Shortcuts
+\end_layout
+
+\end_deeper
+\end_deeper
 \begin_layout Subsection
 More Examples
 \end_layout
 
 \begin_layout Itemize
 Notes:
-\begin_inset Separator latexpar
-\end_inset
-
-
 \end_layout
 
 \begin_deeper
@@ -4151,20 +4987,13 @@ profiler
 \end_layout
 
 \begin_layout Itemize
+file-watcher
+\end_layout
+
+\begin_layout Itemize
 cache simulator
 \end_layout
 
-\begin_layout Itemize
-msvc2017 include problem: stdio.h, stddef.h, memory.h
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-https://stackoverflow.com/questions/42777424/visual-studio-2017-errors-on-standar
-d-headers
-\end_layout
-
-\end_deeper
 \end_deeper
 \begin_layout Itemize
 Abstract:
@@ -4190,22 +5019,6 @@ mixasm
 ace make all
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-Hello Demo (small project without QTCreator)
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-without shadow build
-\end_layout
-
-\begin_layout Itemize
-with shadow build (because QtCreator/QMake would like to occupy that space)
-\end_layout
-
-\end_deeper
-\end_deeper
 \end_deeper
 \begin_layout Standard
 \begin_inset Newpage pagebreak
@@ -4273,7 +5086,7 @@ Individual Components -> Compiler, Buildtools and Runtimes.
 \end_layout
 
 \begin_layout Section
-WickedOS 
+WickedOS
 \end_layout
 
 \begin_layout Standard
