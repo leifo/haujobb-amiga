@@ -4207,6 +4207,155 @@ literal "false"
 \end_layout
 
 \begin_layout Subsubsection
+Good Practice Track Names
+\end_layout
+
+\begin_layout Standard
+Rocket track names are your interface to your demo.
+ For a typical demo, you will quickly have dozens of track names, so it
+ is a Good Idea TM to name them properly.
+ They also need to operate within certain limits:
+\end_layout
+
+\begin_layout Itemize
+keep names short, meaningful and lowercase
+\end_layout
+
+\begin_layout Itemize
+all Rocket tracks are Floats by default
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+but you can cast them e.g.
+ to Int within your code
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Furthermore they are also saved to disk with filenames comprising of a certain
+ scheme (we chose: sync_*.rt, where * is effectname_variablename, e.g.
+ sync_movetable(2)_time.rt) that will have to fit within the Amiga Fast File
+ System filename-length limit of 30 chars.
+\end_layout
+
+\begin_layout Standard
+From our own experience we can propose the following:
+\end_layout
+
+\begin_layout Itemize
+part : should be used as an Int to keep track of the currently visible part
+\end_layout
+
+\begin_layout Itemize
+brightness : Int for the current palette brightness (if applicable), 0 means
+ black, 256 is normal, >256 brighter
+\end_layout
+
+\begin_layout Itemize
+effects should expose their name plus their part number in brackets, e.g.
+ movetable(2), as some kind of namespace
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+effect variables are are appended to this namespace-name with a colon (
+\begin_inset Quotes eld
+\end_inset
+
+:
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+see the code from getSyncTracks() from main.c as an example
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+void getSyncTracks() { 
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+// rocket get tracks 
+\end_layout
+
+\begin_layout LyX-Code
+// general 
+\end_layout
+
+\begin_layout LyX-Code
+rt_part = sync_get_track(rocket, "part"); 
+\end_layout
+
+\begin_layout LyX-Code
+rt_brightness = sync_get_track(rocket, "brightness");
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+// pictures 
+\end_layout
+
+\begin_layout LyX-Code
+rt_picture_id = sync_get_track(rocket, "picture(0):id");
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+// stars 
+\end_layout
+
+\begin_layout LyX-Code
+rt_star_time = sync_get_track(rocket, "stars(1):time"); 
+\end_layout
+
+\begin_layout LyX-Code
+rt_star_pers = sync_get_track(rocket, "stars(1):perspective");
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+// movetable 
+\end_layout
+
+\begin_layout LyX-Code
+rt_move_time = sync_get_track(rocket, "movetable(2):time"); 
+\end_layout
+
+\begin_layout LyX-Code
+rt_move_xtab = sync_get_track(rocket, "movetable(2):xtab"); 
+\end_layout
+
+\begin_layout LyX-Code
+rt_move_ytab = sync_get_track(rocket, "movetable(2):ytab");
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+} 
+\end_layout
+
+\begin_layout Standard
+Adhering to such a scheme will make your life easier when wiring up the
+ internals in your code and when timing your demo.
+ So better stick to it.
+\end_layout
+
+\begin_layout Subsection
 Rocket Editor
 \end_layout
 
@@ -4375,7 +4524,16 @@ Using the Editor
 \end_layout
 
 \begin_layout Standard
-This section is copied from the official Rocket documentation.
+Note: This section is copied from the official 
+\begin_inset CommandInset href
+LatexCommand href
+name "Rocket documentation"
+target "https://github.com/rocket/rocket"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -4903,13 +5061,13 @@ Rocket editor shortcuts
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Wiring up your variables to Rocket
 \end_layout
 
 \begin_layout Itemize
@@ -4917,14 +5075,6 @@ run
 \end_layout
 
 \begin_deeper
-\begin_layout Itemize
-load example track
-\end_layout
-
-\begin_layout Itemize
-best practice track names
-\end_layout
-
 \begin_layout Itemize
 visual studio command prompt
 \end_layout
