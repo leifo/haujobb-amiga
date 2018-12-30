@@ -5070,6 +5070,234 @@ Rocket editor shortcuts
 Wiring up your variables to Rocket
 \end_layout
 
+\begin_layout Standard
+Wiring up your code's internal variables to Rocket so that they can be modified
+ over the network connection is at the heart of working with Rocket from
+ a coder's perspective.
+ It is a straight forward process that you will quickly embrace.
+ All of this is usually happening in your demo's main.c - the effects do
+ not know about Rocket at all.
+ For the purpose of this write-up, we are just handling the case of the
+ stars effect.
+ All other effects are handles in the same way and you cann follow everything
+ in main.c from hellodemo.
+\end_layout
+
+\begin_layout Subsubsection
+Declarations
+\end_layout
+
+\begin_layout Standard
+Include Rocket definitions from:
+\end_layout
+
+\begin_layout LyX-Code
+#include "../shared/rocket/lib/sync.h"
+\end_layout
+
+\begin_layout Standard
+For working with Rocket, you always need a 
+\emph on
+sync_device
+\emph default
+:
+\end_layout
+
+\begin_layout LyX-Code
+struct sync_device *rocket; 
+\end_layout
+
+\begin_layout Standard
+You would then have multiple 
+\emph on
+sync_tracks
+\emph default
+, one for every variable that you want to animate:
+\end_layout
+
+\begin_layout LyX-Code
+const struct sync_track *rt_star_time;
+\end_layout
+
+\begin_layout LyX-Code
+const struct sync_track *rt_star_pers;
+\end_layout
+
+\begin_layout Standard
+Tracknames should start with 
+\begin_inset Quotes eld
+\end_inset
+
+rt_
+\begin_inset Quotes erd
+\end_inset
+
+.
+ It is suggested that you name them according to their namespace and variable
+ names, e.g.
+ rt_part or rt_star_time.
+\end_layout
+
+\begin_layout Subsubsection
+sync_get_track()
+\end_layout
+
+\begin_layout Standard
+Your internal sync_tracks are made known to the Rocket editor via the 
+\emph on
+sync_get_track
+\emph default
+ function.
+ Its invocation is also the place to provide the names that appear in the
+ editor and on disk for the saved tracks.
+ In hellodemo's main.c this is all done in getSyncTracks():
+\end_layout
+
+\begin_layout LyX-Code
+void getSyncTracks() {
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+// stars
+\end_layout
+
+\begin_layout LyX-Code
+rt_star_time = sync_get_track(rocket, "stars(1):time");
+\end_layout
+
+\begin_layout LyX-Code
+rt_star_pers = sync_get_track(rocket, "stars(1):perspective");
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout Standard
+Depending on the definition of SYNC_PLAYER, sync_get_tracks will either
+ connect to the editor, or try to load the tracks from disk.
+\end_layout
+
+\begin_layout Subsubsection
+sync_get_val()
+\end_layout
+
+\begin_layout Standard
+Getting variables out of Rocket is done via the 
+\emph on
+sync_get_val
+\emph default
+ function.
+ It takes the desired trackname and row-position as input and returns a
+ Float.
+ The calculation of 
+\emph on
+row
+\emph default
+ can be followed in drawDemo() and also in updateDemo().
+ This is how we get the variables for the stars effect (from drawDemo):
+\end_layout
+
+\begin_layout LyX-Code
+int ri_star_time; 
+\end_layout
+
+\begin_layout LyX-Code
+float rf_star_pers;
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+// stars
+\end_layout
+
+\begin_layout LyX-Code
+ri_star_time = (int) sync_get_val(rt_star_time, row);
+\end_layout
+
+\begin_layout LyX-Code
+rf_star_pers = (float) sync_get_val(rt_star_pers, row);
+\end_layout
+
+\begin_layout Standard
+As per our convention, variables from Rocket that hold
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Float
+\emph default
+ values (the default) should be preceeded with 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+rf_
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Int
+\emph default
+ values (requiring an explicit cast) should be preceeded with 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+ri_
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Feeding variables to an effect
+\end_layout
+
+\begin_layout Itemize
+feeding them to the effect
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+effects dont know about Rocket
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+void starsEffectRender(int time, float persfak)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+additional functions to handle screenmode and palette changes
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Todo:
+\end_layout
+
 \begin_layout Itemize
 run
 \end_layout
@@ -5101,27 +5329,55 @@ additional functions to handle screenmode and palette changes
 \end_layout
 
 \begin_layout Itemize
-devices and tracks and variables
-\end_layout
-
-\begin_layout Itemize
-parameters from rocket
-\end_layout
-
-\begin_layout Itemize
-Audio ADPCM Saving and determining BPM
-\end_layout
-
-\begin_layout Itemize
-Rocket
+init() and release() stuff when putting demo together
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-Shortcuts
+also initPart and drawPart
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+getting your music in
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+music dependencies
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+rocket_bpm
+\end_layout
+
+\begin_layout Itemize
+rocket_rpb
+\end_layout
+
+\begin_layout Itemize
+rocket_row_rate
+\end_layout
+
+\begin_layout Itemize
+stream player
+\end_layout
+
+\begin_layout Itemize
+bass on PC
+\end_layout
+
+\begin_layout Itemize
+Kalms ADPCM on Amiga
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Audio ADPCM Saving and determining BPM
+\end_layout
+
 \end_deeper
 \begin_layout Subsection
 More Examples
@@ -5167,6 +5423,30 @@ mixasm
 \begin_deeper
 \begin_layout Itemize
 ace make all
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Screenmodes
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+list of
+\end_layout
+
+\begin_layout Itemize
+example
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Literature
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+https://www.doc.ic.ac.uk/lab/cplus/cstyle.html
 \end_layout
 
 \end_deeper
