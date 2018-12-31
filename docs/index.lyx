@@ -3166,6 +3166,12 @@ Qt Creator session with project stars
 \end_layout
 
 \begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:StarsDiscussion"
+
+\end_inset
+
 Discussion
 \end_layout
 
@@ -3678,7 +3684,6 @@ If you run this example on the Amiga (like the stars example), you will
  also fades in and out.
  This is often not the desired effect.
  To fix it, we need to have look at the palette.
- 
 \end_layout
 
 \begin_layout Standard
@@ -3686,7 +3691,7 @@ If you run this example on the Amiga (like the stars example), you will
 placement h
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -4433,6 +4438,46 @@ On Windows, the Windows firewall would usually come up when starting your
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename hellodemo.png
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Rocket-editor-(left)"
+
+\end_inset
+
+Rocket editor (left) and hellodemo (right)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Once you started the editor, you can recompile (without SYNC_PLAYER defined)
  and run the hellodemo project.
  You should immediately see some magic happen in the editor.
@@ -4479,44 +4524,6 @@ noprefix "false"
 ).
  You can now start and stop playing the demo by pressing <SPACE> in the
  editor.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename hellodemo.png
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Rocket-editor-(left)"
-
-\end_inset
-
-Rocket editor (left) and hellodemo (right)
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsubsection
@@ -5072,15 +5079,19 @@ Wiring up your variables to Rocket
 
 \begin_layout Standard
 Wiring up your code's internal variables to Rocket so that they can be modified
- over the network connection is at the heart of working with Rocket from
- a coder's perspective.
- It is a straight forward process that you will quickly embrace.
- All of this is usually happening in your demo's main.c - the effects do
- not know about Rocket at all.
+ over the network connection with the Rocket editor is at the heart of working
+ with Rocket from a coder's perspective.
+ It is a straight forward process that you will quickly embrace once you
+ know what needs to be done.
+\end_layout
+
+\begin_layout Standard
+All of this is usually happening in your demo's main.c - the effects do not
+ know about Rocket at all.
  For the purpose of this write-up, we are just handling the case of the
  stars effect.
- All other effects are handles in the same way and you cann follow everything
- in main.c from hellodemo.
+ All other effects are handled in the same way and you can follow everything
+ in full detail in hellodemo's main.c.
 \end_layout
 
 \begin_layout Subsubsection
@@ -5108,7 +5119,7 @@ struct sync_device *rocket;
 \end_layout
 
 \begin_layout Standard
-You would then have multiple 
+You would then define multiple 
 \emph on
 sync_tracks
 \emph default
@@ -5202,8 +5213,20 @@ sync_get_val
 \emph on
 row
 \emph default
- can be followed in drawDemo() and also in updateDemo().
- This is how we get the variables for the stars effect (from drawDemo):
+ is based on the play-time of the music.
+ Implementation details can be found in drawDemo() and also in updateDemo().
+\end_layout
+
+\begin_layout Standard
+The code snippet below shows how we get the variables for the stars effect:
+\end_layout
+
+\begin_layout LyX-Code
+void drawDemo(int time) { 
+\end_layout
+
+\begin_layout LyX-Code
+[..]
 \end_layout
 
 \begin_layout LyX-Code
@@ -5230,8 +5253,16 @@ ri_star_time = (int) sync_get_val(rt_star_time, row);
 rf_star_pers = (float) sync_get_val(rt_star_pers, row);
 \end_layout
 
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
 \begin_layout Standard
-As per our convention, variables from Rocket that hold
+As per our convention, variables from Rocket that hold:
 \end_layout
 
 \begin_layout Itemize
@@ -5271,73 +5302,205 @@ ri_
 \end_layout
 
 \begin_layout Subsubsection
-Feeding variables to an effect
+Passing variables to an effect
 \end_layout
 
-\begin_layout Itemize
-feeding them to the effect
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-effects dont know about Rocket
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-void starsEffectRender(int time, float persfak)
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-additional functions to handle screenmode and palette changes
-\end_layout
-
-\end_deeper
 \begin_layout Standard
-Todo:
+Once we have the time-based values for our variables from Rocket, we can
+ feed them to our effects.
+ As written above, the effects to not know of Rocket.
+ They just need to get their parameters when calling their render-function.
+ All effects take the variable 
+\emph on
+time
+\emph default
+ as their first and most imporant parameter.
+ They are required to render a frame according to 
+\emph on
+time
+\emph default
+.
 \end_layout
 
-\begin_layout Itemize
-run
+\begin_layout Standard
+The stars effect additionally takes a perpective factor as a parameter.
+\end_layout
+
+\begin_layout LyX-Code
+void starsEffectRender(int time, float persfak);
+\end_layout
+
+\begin_layout Subsection
+Common Effect Functions
+\end_layout
+
+\begin_layout Standard
+As previously implicitly covered 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "subsec:StarsDiscussion"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, effects are expected to have typical functions when working our way.
+\end_layout
+
+\begin_layout Standard
+More explicitly, the minimum required functions when coding single effects
+ are:
+\end_layout
+
+\begin_layout LyX-Code
+void effectInit();
+\end_layout
+
+\begin_layout LyX-Code
+void effectRender(int time);
+\end_layout
+
+\begin_layout LyX-Code
+void effectRelease();
+\end_layout
+
+\begin_layout LyX-Code
+unsigned int* effectPalette();
+\end_layout
+
+\begin_layout Standard
+Init, Render and Release should be clear.
+ The Palette function is required, as the current palette will be used outside
+ the scope of the effect, e.g.
+ to support setting the brightness.
+\end_layout
+
+\begin_layout Standard
+To avoid name-clashes, it is good practice to preceed those names with the
+ actual effect name, e.g.
+ starsEffectInit().
+\end_layout
+
+\begin_layout Standard
+When putting the effects together as a demo, you need one additonal function:
+\end_layout
+
+\begin_layout LyX-Code
+void effectOn(int startTime);
+\end_layout
+
+\begin_layout Standard
+This is a very short function that basically sets the screenmode, palette
+ and dimensions (xres/yres) everytime an effect is called for the first
+ time.
+ This is required because you will want to have different effects that might
+ run in different screen modes.
+ Here is how the starsEffectOn() function looks like:
+\end_layout
+
+\begin_layout LyX-Code
+void starsEffectOn(int startTime) {
 \end_layout
 
 \begin_deeper
-\begin_layout Itemize
-visual studio command prompt
+\begin_layout LyX-Code
+starsEffect_startTime=startTime;
 \end_layout
 
-\begin_layout Itemize
-\begin_inset Quotes eld
-\end_inset
+\begin_layout LyX-Code
+xres=320; 
+\end_layout
 
-nmake install
-\begin_inset Quotes erd
-\end_inset
+\begin_layout LyX-Code
+yres=180;
+\end_layout
 
- to get the required libraries to the folder
+\begin_layout LyX-Code
+wosSetMode(8, screenBuffer, starsPalette(), 0);
+\end_layout
+
+\begin_layout LyX-Code
+g_currentPal = starsPalette();
 \end_layout
 
 \end_deeper
-\begin_layout Itemize
-discussion
+\begin_layout LyX-Code
+}
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-additional functions to handle screenmode and palette changes
+\begin_layout Standard
+The 
+\emph on
+startTime
+\emph default
+ is not always used, but always required by convention.
+ 
+\emph on
+xres
+\emph default
+ and 
+\emph on
+yres
+\emph default
+ in this example are for a typical 16:9 low-res screen.
+ 
+\emph on
+wosSetMode
+\emph default
+ sets up the display for that mode (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:List-of-Screenmodes"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ for a list of available modes) to work from that frame-buffer 
+\emph on
+screenBuffer
+\emph default
+ and with the palette pointer obtained from 
+\emph on
+starsPalette()
+\emph default
+.
+ The initial brightness is set to 0 (black).
+ Finally, the palette pointer is stored in the global variable 
+\emph on
+g_currentPal
+\emph default
+.
+\end_layout
+
+\begin_layout Subsection
+Common Demo Functions
 \end_layout
 
 \begin_layout Itemize
 init() and release() stuff when putting demo together
 \end_layout
 
+\begin_layout Itemize
+drawDemo()
+\end_layout
+
 \begin_deeper
 \begin_layout Itemize
-also initPart and drawPart
+initPart and drawPart
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+updateDemo
+\end_layout
+
+\begin_layout Subsection
+Audio
+\end_layout
+
 \begin_layout Itemize
 getting your music in
 \end_layout
@@ -5378,9 +5541,8 @@ Kalms ADPCM on Amiga
 Audio ADPCM Saving and determining BPM
 \end_layout
 
-\end_deeper
-\begin_layout Subsection
-More Examples
+\begin_layout Section
+Advanced Framework Functions
 \end_layout
 
 \begin_layout Itemize
@@ -5398,6 +5560,35 @@ file-watcher
 
 \begin_layout Itemize
 cache simulator
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Todo:
+\end_layout
+
+\begin_layout Itemize
+Guide to the document
+\end_layout
+
+\begin_layout Itemize
+run
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+visual studio command prompt
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+nmake install
+\begin_inset Quotes erd
+\end_inset
+
+ to get the required libraries to the folder
 \end_layout
 
 \end_deeper
@@ -5440,6 +5631,10 @@ example
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+Credits for framework and components
+\end_layout
+
 \begin_layout Itemize
 Literature
 \end_layout
@@ -6013,6 +6208,21 @@ If you were planning to make extensive use of WickedOS with ASM-One or Devpac
 \begin_layout Standard
 But even if you don't plan to use ASM-One, you must at least provide the
  assign to INCLUDES: if you plan to assemble WickedOS on Amiga.
+\end_layout
+
+\begin_layout Subsection
+List of Screenmodes
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:List-of-Screenmodes"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+todo
 \end_layout
 
 \begin_layout Subsection
