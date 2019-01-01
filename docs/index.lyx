@@ -90,86 +90,50 @@ The Haujobb Amiga Framework
 \end_layout
 
 \begin_layout Abstract
-This document describes how to setup and use the Haujobb Amiga Framework
+If you want to code Amiga AGA demos, are able to program, but don't know
+ how to get started on the Amiga, then this document is for you.
+ Also if you are already more experienced on Amiga and want to learn about
+ how we do our demos.
+ This document describes how to set up and use the Haujobb Amiga Framework
  on Amiga and PC.
- It guides you through setting up the required components in small steps
- with immediate incentives.
+ The framework allows for prototyping, debugging, and timing effects natively
+ on the PC (currently Windows mainly, but Mac and Linux should work as well);
+ and then cross-compiling for the Amiga.
+ We have used these exact codes and workflows for our demo 
+\emph on
+Beam Riders
+\emph default
+; and prior versions for 
+\emph on
+Last Train to Danzig
+\emph default
+ and 
+\emph on
+Prototype 1
+\emph default
+.
 \end_layout
 
 \begin_layout Abstract
-Source on GitHub: 
-\begin_inset CommandInset href
-LatexCommand href
-name "https://github.com/leifo/haujobb-amiga"
-target "https://github.com/leifo/haujobb-amiga"
-literal "false"
-
+This document guides you through setting up the required components in small
+ steps with immediate incentives – leading up to a complete example demo
+ with timing done via the Rocket editor.
+ To get started, first read the guide to the document section to find your
+ way around.
+ Then go and make a demo about it!
+\begin_inset VSpace bigskip
 \end_inset
 
 
-\end_layout
-
-\begin_layout Abstract
-Documentation at: 
-\begin_inset CommandInset href
-LatexCommand href
-name "http://www.dig-id.de/amiga/framework/"
-target "http://www.dig-id.de/amiga/framework/"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Abstract
-PDF at: 
-\begin_inset CommandInset href
-LatexCommand href
-name "http://www.dig-id.de/amiga/framework/haf.pdf"
-target "http://www.dig-id.de/amiga/framework/haf.pdf"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Abstract
-\begin_inset CommandInset ref
-LatexCommand nameref
-reference "subsec:Summary-(TL;DR)"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Phantom HPhantom
-status open
-
-\begin_layout Plain Layout
-\begin_inset Phantom HPhantom
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
+\begin_inset Newline newline
 \end_inset
 
 
 \begin_inset Graphics
 	filename haujobb.jpg
+	scale 87
+	BoundingBox 0bp 96bp 1024bp 669bp
+	clip
 
 \end_inset
 
@@ -194,13 +158,12 @@ LatexCommand tableofcontents
 \end_layout
 
 \begin_layout Part
-Overview and Setup
+Setup
 \end_layout
 
 \begin_layout Standard
 The Haujobb Amiga Framework facilitates modern Amiga demo making on several
  levels.
- 
 \end_layout
 
 \begin_layout Standard
@@ -209,8 +172,15 @@ el access to over 20 different chunky to planar based screenmodes, several
  music replayers, and interrupt hooks.
  You can choose from using a multi-tasking-friendly hardware abstraction
  layer, or a traditional multi-tasking-killer mode.
- WickedOS has been used in a number of our Amiga demos, ranging from Mnemonics
- to Beam Riders.
+ WickedOS has been used in a number of our Amiga demos, ranging from 
+\emph on
+Mnemonics
+\emph default
+ to 
+\emph on
+Beam Riders
+\emph default
+.
  By default it targets 
 \begin_inset Quotes eld
 \end_inset
@@ -223,8 +193,285 @@ todays
  having an FPU and at least a 68020 or better CPU in the target machine.
 \end_layout
 
+\begin_layout Standard
+On a higher level, the framework allows you to mix assembler and C-code.
+ Furthermore, it provides you with a reimplementation of the WickedOS-API
+ in Qt, This allows for developing and debugging effects natively on the
+ PC, before cross-compiling (and further optimizing) them for the Amiga.
+\end_layout
+
+\begin_layout Section
+Guide to the document
+\end_layout
+
+\begin_layout Standard
+This document tries to document to entire framework, which includes working
+ on the PC and well as on the Amiga (with different tools).
+\end_layout
+
+\begin_layout Standard
+If you just wanted to have a quick start on your PC, read the Quickstart
+ section 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Summary-(TL;DR)"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If you also wanted to set up assembler, C-compiler and linker on the Amiga,
+ start reading at that chapter 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:Assembler-and-Linker"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Please note that albeit those tools work perfectly fine on Amiga, we are
+ not supporting them fully with our makefiles.
+\end_layout
+
+\begin_layout Standard
+If you were really curious and also wanted to play around with WickedOS
+ using Asm-One and Devpac, you could read the corresponding section 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:WickedOS"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ in the annex.
+\end_layout
+
+\begin_layout Standard
+In any case, once you installed the assembler, compiler, linker and make
+ tools, you should first check out the Hello World example 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Example:-Hello-world"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, before following the rest of the examples, which are described in Part
+ II of this document, starting 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "part:Demomaking"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Resources
+\end_layout
+
+\begin_layout Standard
+The complete sources are available at 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://github.com/leifo/haujobb-amiga"
+target "https://github.com/leifo/haujobb-amiga"
+literal "false"
+
+\end_inset
+
+.
+ The documentation is hosted at 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://www.dig-id.de/amiga/framework/"
+target "http://www.dig-id.de/amiga/framework/"
+literal "false"
+
+\end_inset
+
+, PDF-version at 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://www.dig-id.de/amiga/framework/haf.pdf"
+target "http://www.dig-id.de/amiga/framework/haf.pdf"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Summary-(TL;DR)"
+
+\end_inset
+
+Quickstart (TL;DR)
+\end_layout
+
+\begin_layout Standard
+The Haujobb Amiga Framework supports development of Amiga demos on PC, and
+ then cross-compiling them for the Amiga.You probably didn't want to compile
+ and assemble on the Amiga anyway, so you just:
+\end_layout
+
+\begin_layout Itemize
+set up the vbcc cross-compiler for Windows using 
+\begin_inset CommandInset href
+LatexCommand href
+name "Install-VBCC.exe"
+target "http://server.owl.de/~frank/vbcc/2017-05-18/Install-VBCC.exe"
+literal "false"
+
+\end_inset
+
+ (to c:
+\backslash
+vbcc), as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:vbcc-setup-on"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+you could then 
+\emph on
+cd
+\emph default
+ to the root folder 
+\emph on
+haujobb-amiga
+\emph default
+ and type 
+\emph on
+make
+\emph default
+ to build the whole Amiga side from scratch
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+set up a shared folder on your PC or NAS that could be reached from your
+ real or emulated Amiga, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Shared-Folders-between"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+installed Visual Studio, at least 2010, but probably the latest 2017 Community
+ edition, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Visual-Studio"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+installed Qt5, Qt Creator, and cdb debugger support, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Qt-Creator"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+and then double-checked that compiler, debugger, and Qt version were correctly
+ set up as a 
+\emph on
+kit
+\emph default
+, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Kit-Setup"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This is all that needed to be done, so you could now open our supplied example
+ project files (*.pro) in the 
+\emph on
+/demo
+\emph default
+ folder and start making Amiga demos on PC.
+ If you find any issues, please report them on 
+\begin_inset CommandInset href
+LatexCommand href
+name "GitHub"
+target "https://github.com/leifo/haujobb-amiga/issues"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Enjoy!
+\end_layout
+
 \begin_layout Section
 Assembler and Linker Setup
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Assembler-and-Linker"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -649,7 +896,7 @@ literal "false"
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -1341,6 +1588,13 @@ make
 
 \begin_layout Subsection
 Example: Hello world
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Example:-Hello-world"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2779,140 +3033,7 @@ literal "false"
  
 \end_layout
 
-\begin_layout Subsection
-\begin_inset CommandInset label
-LatexCommand label
-name "subsec:Summary-(TL;DR)"
-
-\end_inset
-
-Summary (TL;DR)
-\end_layout
-
 \begin_layout Standard
-The Haujobb Amiga Framework supports development of Amiga demos on PC, and
- then cross-compiling them for the Amiga.You probably didn't want to compile
- and assemble on the Amiga anyway, so you just:
-\end_layout
-
-\begin_layout Itemize
-set up the vbcc cross-compiler for Windows using 
-\begin_inset CommandInset href
-LatexCommand href
-name "Install-VBCC.exe"
-target "http://server.owl.de/~frank/vbcc/2017-05-18/Install-VBCC.exe"
-literal "false"
-
-\end_inset
-
- (to c:
-\backslash
-vbcc), as described 
-\begin_inset CommandInset ref
-LatexCommand vpageref
-reference "subsec:vbcc-setup-on"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-you could then 
-\emph on
-cd
-\emph default
- to the root folder 
-\emph on
-haujobb-amiga
-\emph default
- and type 
-\emph on
-make
-\emph default
- to build the whole Amiga side from scratch
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-set up a shared folder on your PC or NAS that could be reached from your
- real or emulated Amiga, as described 
-\begin_inset CommandInset ref
-LatexCommand vpageref
-reference "subsec:Shared-Folders-between"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-installed Visual Studio, at least 2010, but probably the latest 2017 Community
- edition, as described 
-\begin_inset CommandInset ref
-LatexCommand vpageref
-reference "subsec:Visual-Studio"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-installed Qt5, Qt Creator, and cdb debugger support, as described 
-\begin_inset CommandInset ref
-LatexCommand vpageref
-reference "subsec:Qt-Creator"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-and then double-checked that compiler, debugger, and Qt version were correctly
- set up as a 
-\emph on
-kit
-\emph default
-, as described 
-\begin_inset CommandInset ref
-LatexCommand vpageref
-reference "subsec:Kit-Setup"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-This is all that needed to be done, so you could now open our supplied example
- project files (*.pro) in the 
-\emph on
-/demo
-\emph default
- folder and start making Amiga demos on PC.
- 
-\end_layout
-
-\begin_layout Standard
-Enjoy!
 \begin_inset Newpage pagebreak
 \end_inset
 
@@ -2921,6 +3042,13 @@ Enjoy!
 
 \begin_layout Part
 Demomaking
+\begin_inset CommandInset label
+LatexCommand label
+name "part:Demomaking"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -5479,172 +5607,261 @@ g_currentPal
 Common Demo Functions
 \end_layout
 
-\begin_layout Itemize
-init() and release() stuff when putting demo together
+\begin_layout Standard
+When putting your effects together as a demo, you would naturally call their
+ 
+\emph on
+Init
+\emph default
+ and 
+\emph on
+Release
+\emph default
+ functions from the respective functions in the demo's main.c (here: 
+\emph on
+initDemo
+\emph default
+ and 
+\emph on
+deinitDemo
+\emph default
+).
+ Actually, in hellodemo, the init-functions are all grouped in another function
+ called 
+\emph on
+reloadDemo
+\emph default
+.
+ This will become useful later when starting to use the file-watcher and
+ auto-reload functionality.
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Subsubsection
 drawDemo()
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-initPart and drawPart
+\begin_layout Standard
+Then, when it is time to draw a frame, the demo needs to figure out which
+ effect (part) needs to be called, and if it had already been shown in the
+ previous frame.
+ If not, the part has to be enabled.
+ This is done like this:
 \end_layout
 
-\end_deeper
-\begin_layout Itemize
-updateDemo
+\begin_layout LyX-Code
+int prevPart=-1;
 \end_layout
 
-\begin_layout Subsection
-Audio
+\begin_layout LyX-Code
+[..]
 \end_layout
 
-\begin_layout Itemize
-getting your music in
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-music dependencies
+\begin_layout LyX-Code
+void drawDemo(int time) {
 \end_layout
 
 \begin_deeper
-\begin_layout Itemize
-rocket_bpm
+\begin_layout LyX-Code
+int curPart;
 \end_layout
 
-\begin_layout Itemize
-rocket_rpb
+\begin_layout LyX-Code
+[..]
 \end_layout
 
-\begin_layout Itemize
-rocket_row_rate
+\begin_layout LyX-Code
+curPart = (int) sync_get_val(rt_part, row);
 \end_layout
 
-\begin_layout Itemize
-stream player
+\begin_layout LyX-Code
+// init part
 \end_layout
 
-\begin_layout Itemize
-bass on PC
-\end_layout
-
-\begin_layout Itemize
-Kalms ADPCM on Amiga
-\end_layout
-
-\end_deeper
-\end_deeper
-\begin_layout Itemize
-Audio ADPCM Saving and determining BPM
-\end_layout
-
-\begin_layout Section
-Advanced Framework Functions
-\end_layout
-
-\begin_layout Itemize
-Notes:
+\begin_layout LyX-Code
+if ( (prevPart != curPart) | curPart==0) {
 \end_layout
 
 \begin_deeper
-\begin_layout Itemize
-profiler
-\end_layout
-
-\begin_layout Itemize
-file-watcher
-\end_layout
-
-\begin_layout Itemize
-cache simulator
-\end_layout
-
-\end_deeper
-\begin_layout Subsection
-Todo:
-\end_layout
-
-\begin_layout Itemize
-Guide to the document
-\end_layout
-
-\begin_layout Itemize
-run
+\begin_layout LyX-Code
+switch (curPart) {
 \end_layout
 
 \begin_deeper
-\begin_layout Itemize
-visual studio command prompt
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Quotes eld
-\end_inset
-
-nmake install
-\begin_inset Quotes erd
-\end_inset
-
- to get the required libraries to the folder
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Abstract:
+\begin_layout LyX-Code
+case 0:
 \end_layout
 
 \begin_deeper
-\begin_layout Itemize
-todo: prose for higher levels, (maybe up to prototype 1 and since then)
-\end_layout
-
-\begin_layout Itemize
-double-check: cross-compile, linking with c-code, make, wosqt-qtcreator,
- profiling, cache simulator, syncing with rocket
+\begin_layout LyX-Code
+pictureEffectOn(time); break;
 \end_layout
 
 \end_deeper
-\begin_layout Itemize
-mixasm
+\begin_layout LyX-Code
+case 1:
+\end_layout
+
+\begin_layout LyX-Code
+  starsEffectOn(time); break;
+\end_layout
+
+\begin_layout LyX-Code
+case 2:
+\end_layout
+
+\begin_layout LyX-Code
+  movetableEffectOn(time); break;
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout LyX-Code
+     default: break;
+\end_layout
+
+\begin_layout LyX-Code
+   };
+\end_layout
+
+\begin_layout LyX-Code
+} 
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+When it is verified that the part is enabled, it can be drawn like this:
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+// draw part
+\end_layout
+
+\begin_layout LyX-Code
+switch (curPart) {
 \end_layout
 
 \begin_deeper
-\begin_layout Itemize
-ace make all
+\begin_layout LyX-Code
+case 0:
+\end_layout
+
+\begin_layout LyX-Code
+   pictureEffectRender(ri_picture_id); break;
+\end_layout
+
+\begin_layout LyX-Code
+case 1:
+\end_layout
+
+\begin_layout LyX-Code
+   starsEffectRender(ri_star_time, rf_star_pers); break;
+\end_layout
+
+\begin_layout LyX-Code
+case 2:
+\end_layout
+
+\begin_layout LyX-Code
+   movetableEffectRender(ri_move_time, ri_move_xtab, 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+                         ri_move_ytab); break;
 \end_layout
 
 \end_deeper
-\begin_layout Itemize
-Screenmodes
+\begin_layout LyX-Code
+   default: break;
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-list of
+\begin_layout LyX-Code
+   };
+\end_layout
+
+\begin_layout Standard
+Finally, at the end of the draw function, the prevPart variable it prepared
+ for the next frame, and the current frame is displayed.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+prevPart = curPart;
+\end_layout
+
+\begin_layout LyX-Code
+wosDisplay(2); 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+wosDisplay
+\emph default
+ triggers the chunky to planar conversion, i.e.
+ the conversion of the byte-chunked 
+\emph on
+screenBuffer
+\emph default
+ (of 8 bit colour depth, as set previously with wosSetMode) into 8 seperate
+ bitplanes to be displayed by the Amiga AGA chipset.
+ Due to the slow speed of the chip memory, the Amiga will spend almost an
+ entire frame for this conversion in a typical low-res resolution.
+ It is generally unrealistic to expect to be able to draw 50 frames per
+ second (FPS).
+ Depending on the effect complexity, the target hardware, and the frame's
+ content, you would often be able to reach a framerate in the range of 25
+ to 40 frames per second.
+ But a stable motion at a fixed framerate looks smoother than one with varying
+ framerate.
+ Therefore, wosDisplay takes a frame-lock parameter:
 \end_layout
 
 \begin_layout Itemize
-example
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Credits for framework and components
+0 : no frame-lock, i.e.
+ run as fast as possible (possible faster than 50 FPS in very low resolutions)
 \end_layout
 
 \begin_layout Itemize
-Literature
+1 : frame-lock to every frame, i.e.
+ 50 FPS max
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
-https://www.doc.ic.ac.uk/lab/cplus/cstyle.html
+2 : frame-lock to every other frame, i.e.
+ 25 FPS max
 \end_layout
 
-\end_deeper
+\begin_layout Standard
+While 50 FPS can be achieved with some 160x90 screenmodes, you would generally
+ want to aim for 25 FPS with low-res 320x180 screenmodes.
+\end_layout
+
+\begin_layout Subsubsection
+updateDemo()
+\end_layout
+
+\begin_layout Standard
+While most screenmodes will not update in every frame, there is a possibilty
+ to run certain parts of the code at 50 FPS intervals by putting it in the
+ provided
+\emph on
+ updateDemo
+\emph default
+ function.
+ This is triggered by the vertical blank interrupt (VBI) from 
+\emph on
+assemly-bridge.s
+\emph default
+ and can be used for making quick changes, e.g.
+ to the colour palette when fading.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
@@ -5654,6 +5871,157 @@ https://www.doc.ic.ac.uk/lab/cplus/cstyle.html
 
 \begin_layout Part
 Annex
+\end_layout
+
+\begin_layout Section
+Credits
+\end_layout
+
+\begin_layout Subsection
+Framework
+\end_layout
+
+\begin_layout Standard
+The Haujobb Amiga Framework has been developed by Hellfire and Noname.
+\end_layout
+
+\begin_layout Itemize
+low-level hardware API 
+\emph on
+WickedOS
+\emph default
+ by Noname
+\end_layout
+
+\begin_layout Itemize
+high-level PC API counterpart 
+\emph on
+WOS Qt
+\emph default
+ by Hellfire
+\end_layout
+
+\begin_layout Itemize
+standard code in 
+\emph on
+/shared
+\emph default
+ by Hellfire
+\end_layout
+
+\begin_layout Itemize
+examples by Noname and Hellfire
+\end_layout
+
+\begin_layout Itemize
+documentation by Noname
+\end_layout
+
+\begin_layout Subsection
+Third party code
+\end_layout
+
+\begin_layout Standard
+Standing on the shoulders of giants.
+ With little modifications here and there.
+\end_layout
+
+\begin_layout Itemize
+system-friendly hardware startup by Piru
+\end_layout
+
+\begin_layout Itemize
+system-friendly interrupt example by Comrade J
+\end_layout
+
+\begin_layout Itemize
+Kickstart v39 sprites fix by Comrade J
+\end_layout
+
+\begin_layout Itemize
+Speedychip by Piru
+\end_layout
+
+\begin_layout Itemize
+C2P routines by Kalms
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+partially modified with inline-saturation code based on an idea from Blueberry
+ by Hellfire and Noname
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Further WickedOS components (currently not exposed through API)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Tracker Packer 3 by Crazy Crack
+\end_layout
+
+\begin_layout Itemize
+The Player 6.1 by Guru
+\end_layout
+
+\begin_layout Itemize
+old AHX/THX by Dexter
+\end_layout
+
+\begin_layout Itemize
+AHX by Dexter
+\end_layout
+
+\begin_layout Itemize
+Profiler by Bartman
+\end_layout
+
+\begin_layout Itemize
+CRM decruncher by Thomas Schwarz
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+ADPCM player in Hello Demo by Kalms (Amiga) and Ian Luck (PC)
+\end_layout
+
+\begin_layout Itemize
+Rocket sync-tracker and library by Kusma et al.
+\end_layout
+
+\begin_layout Subsection
+Artwork
+\end_layout
+
+\begin_layout Standard
+How would life be without artists? The following pieces have been bundled
+ with the release of our framework:
+\end_layout
+
+\begin_layout Itemize
+picture 
+\emph on
+Haujobb Forever
+\emph default
+ by Helge
+\end_layout
+
+\begin_layout Itemize
+picture 
+\emph on
+Androids Dream
+\emph default
+ by Acryl
+\end_layout
+
+\begin_layout Itemize
+movetable texture by JCS
+\end_layout
+
+\begin_layout Itemize
+music in Hello Demo by Muffler
 \end_layout
 
 \begin_layout Section
@@ -5712,6 +6080,13 @@ Individual Components -> Compiler, Buildtools and Runtimes.
 
 \begin_layout Section
 WickedOS
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:WickedOS"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -6394,7 +6769,6 @@ in Modes:
 \begin_layout Enumerate
 provide fitting block which adds exactly one bit to MODES (double the number
  of the previous) e.g.
- 
 \end_layout
 
 \begin_deeper
@@ -6434,7 +6808,7 @@ in file sub/wos_defines.i
 \end_layout
 
 \begin_layout Enumerate
-in struct after "Define the structure" comment 
+in struct after "Define the structure" comment
 \end_layout
 
 \begin_deeper
@@ -6450,7 +6824,7 @@ after "Set up the screen-dimensions" comment
 
 \begin_deeper
 \begin_layout Enumerate
-provide fitting MakeMode line to describe your screen dimensions 
+provide fitting MakeMode line to describe your screen dimensions
 \end_layout
 
 \begin_layout Enumerate
@@ -6497,15 +6871,13 @@ in file sub/chunky/sources/makefile
 add filename to 
 \noun on
 Sources
-\noun default
- 
 \end_layout
 
-\begin_layout Section
+\begin_layout Paragraph
 Schematic Overview
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph
 \begin_inset Graphics
 	filename amiga-toolchain-graph.png
 	width 100text%
@@ -6516,5 +6888,128 @@ Schematic Overview
 
 \end_layout
 
+\begin_layout Paragraph
+Todo:
+\end_layout
+
+\begin_layout Itemize
+Advanced Framework Functions
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+profiler
+\end_layout
+
+\begin_layout Itemize
+file-watcher
+\end_layout
+
+\begin_layout Itemize
+cache simulator
+\end_layout
+
+\begin_layout Itemize
+palette tool
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+run
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+visual studio command prompt
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+nmake install
+\begin_inset Quotes erd
+\end_inset
+
+ to get the required libraries to the folder
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+mixasm
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+ace make all
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Audio, getting your music in
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+music dependencies
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+rocket_bpm
+\end_layout
+
+\begin_layout Itemize
+rocket_rpb
+\end_layout
+
+\begin_layout Itemize
+rocket_row_rate
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+stream player
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+bass on PC
+\end_layout
+
+\begin_layout Itemize
+Kalms ADPCM on Amiga
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Audio ADPCM Saving and determining BPM
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Screenmodes
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+list of
+\end_layout
+
+\begin_layout Itemize
+example
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Literature
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+https://www.doc.ic.ac.uk/lab/cplus/cstyle.html
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
