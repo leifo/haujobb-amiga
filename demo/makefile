@@ -4,6 +4,7 @@ all:
 	(cd picture && cd build && $(MAKE))
 	(cd movetable && cd build && $(MAKE))
 	(cd hellodemo && cd build && $(MAKE))
+	(cd screenmodes && cd build && $(MAKE))
 	
 clean:
 	(cd helloworld && $(MAKE) clean)
@@ -11,3 +12,4 @@ clean:
 	(cd picture && cd build && $(MAKE) clean)
 	(cd movetable && cd build && $(MAKE) clean)
 	(cd hellodemo && cd build && $(MAKE) clean)
+	(cd screenmodes && cd build && $(MAKE) clean)
