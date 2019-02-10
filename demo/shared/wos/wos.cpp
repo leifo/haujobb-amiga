@@ -228,7 +228,6 @@ int wosCheckExit()
 void wosClearPlanes()
 {
    // ?
-   // meant to clear the bitplanes in chip-mem, e.g. when switching to fewer used bitplanes
 }
 
 void wosClearExit()
@@ -549,7 +548,7 @@ void WosQt::setMode(int mode)
       break;
 
       // copies bits 12345678
-      // 320x90 256 colors 8bit
+      // 160x90 256 colors 8bit
       case 10:
          for (i=0;i<8;i++) setBitplane(i,mC2PPlanes[i],320/8,0,180);
          mC2PFirstBit= 0;
@@ -562,20 +561,6 @@ void WosQt::setMode(int mode)
          mSaturate=256;
       break;
 
-      // copies bits ss123456
-      // 64 colors 6bit
-      case 14:
-         for (i=0;i<6;i++) setBitplane(i,mC2PPlanes[i],320/8,0,180);
-         setBitplane(6,0,0,0,0);
-         setBitplane(7,0,0,0,0);
-         mC2PTarget= 0;
-         mC2PFirstBit= 0;
-         mC2PLastBit=  6;
-         mScaleX= 1;
-         mScaleY= 1;
-         mSaturate= 64;
-      break;
-
       // copies bits ss12345x
       // 32 colors 5bit
       case 24:
@@ -584,24 +569,14 @@ void WosQt::setMode(int mode)
          setBitplane(6,0,0,0,0);
          setBitplane(7,0,0,0,0);
          mC2PTarget= 0;
-         mC2PFirstBit= 1;
-         mC2PLastBit=  6;
+         mC2PFirstBit= 0;
+         mC2PLastBit=  5;
+         mHamChannels = 0;
          mScaleX= 1;
          mScaleY= 1;
          mSaturate= 64;
       break;
 
-      // copies bits 12345xxx
-      // 32 colors 5bit
-      case 15:
-         for (i=0;i<3;i++) setBitplane(i,0, 0,0,0);
-         for (i=3;i<8;i++) setBitplane(i,mC2PPlanes[i],320/8,0,180);
-         mC2PTarget= 0;
-         mC2PFirstBit= 3;
-         mC2PLastBit=  8;
-         mScaleX= 1;
-         mScaleY= 1;
-      break;
 
       // copies bits oo123456
       // 640x180 ham8 brgb (truecolor 18bit 2x2 -> 160x90)
@@ -621,13 +596,71 @@ void WosQt::setMode(int mode)
          break;
       }
 
+      // copies bits 12345678
+      // 640x180 256 colors 8bit
+      case 12:
+         for (i=0;i<8;i++) setBitplane(i,mC2PPlanes[i],640/8,0,360);
+         mC2PFirstBit= 0;
+         mC2PLastBit= 8;
+         mC2PTarget= 0;
+         mSaturate= 256;
+         mHamChannels = 0;
+         mScaleX= 0;
+         mScaleY= 1;
+      break;
+
       // 640x360
       case 13:
          for (i=0;i<8;i++) setBitplane(i,mC2PPlanes[i],640/8,0,360);
          mC2PFirstBit= 0;
          mC2PLastBit= 8;
-         mScaleX= 1;
+         mC2PTarget= 0;
+         mSaturate= 256;
+         mHamChannels = 0;
+         mScaleX= 0;
          mScaleY= 0;
+      break;
+
+      // copies bits ss123456
+      // 64 colors 6bit
+      case 14:
+         for (i=0;i<6;i++) setBitplane(i,mC2PPlanes[i],320/8,0,180);
+         setBitplane(6,0,0,0,180);
+         setBitplane(7,0,0,0,180);
+         mC2PFirstBit= 0;
+         mC2PLastBit=  6;
+         mC2PTarget= 0;
+         mSaturate= 64;
+         mHamChannels = 0;
+         mScaleX= 1;
+         mScaleY= 1;
+      break;
+
+
+      // copies bits 12345xxx
+      // 32 colors 5bit
+      case 15:
+         for (i=0;i<5;i++) setBitplane(i,mC2PPlanes[i],320/8,0,180);
+         for (i=5;i<8;i++) setBitplane(i,0, 0,0,0);
+         mC2PFirstBit= 0;
+         mC2PLastBit=  5;
+         mC2PTarget= 0;
+         mHamChannels = 0;
+         mSaturate= 256;
+         mScaleX= 1;
+         mScaleY= 1;
+      break;
+
+      // 640x180 8bit 256 colors
+      case 16:
+         for (i=0;i<8;i++) setBitplane(i,mC2PPlanes[i],640/8,0,180);
+         mC2PFirstBit= 0;
+         mC2PLastBit= 8;
+         mC2PTarget= 0;
+         mHamChannels = 0;
+         mSaturate= 256;
+         mScaleX= 1;
+         mScaleY= 1;
       break;
 
       // 320x180 5bit, 25..31 copper
@@ -635,43 +668,41 @@ void WosQt::setMode(int mode)
          for (i=0;i<5;i++) setBitplane(i,mC2PPlanes[i],640/8,0,180);
          mC2PFirstBit= 0;
          mC2PLastBit= 5;
+         mC2PTarget= 0;
+         mHamChannels = 0;
+         mSaturate= 256;
          mScaleX= 1;
          mScaleY= 1;
       break;
 
-      // 640x180
-      case 16:
-         for (i=0;i<8;i++) setBitplane(i,mC2PPlanes[i],640/8,0,180);
-         mC2PFirstBit= 0;
-         mC2PLastBit= 8;
-         mScaleX= 1;
-         mScaleY= 1;
-      break;
 
       // copies bits 12345xxx
-      // 640x180 ham8 rgb (truecolor 18bit 3x1 -> 216x180)
+      // 640x180 ham8 rgb (truecolor 18bit 3x1 -> 220x180)
       case 17:
       {
          mScaleX= 1;
          mScaleY= 1;
+         mSaturate= 256;
 
          for (i=0;i<8;i++) setBitplane(i, mC2PPlanes[i], 640/8, 0, 180);
 
          SetupHam15Bit((unsigned int*)mC2PPlanes[0], (unsigned int*)mC2PPlanes[1], 180);
-         mC2PFirstBit= 3; // unterstes farbbit weglassen
+         mC2PFirstBit= 3; //
          mC2PLastBit= 8;
-         mC2PTarget= 3;  // untere 2bits sind ham control, unterstes farbbit wird nicht verwendet (5 anstatt 6bit)
+         mC2PTarget= 3;  // untere 2bits sind ham control, untere 6 farbbits in 2..7
          mHamChannels= 3;
          break;
       }
+/*
+*/
 
       // copies bits oo12345x
-      // 640x180 ham8 rgb (truecolor 18bit 3x1 -> 216x180)
+      // 640x180 ham8 rgb (truecolor 18bit 3x1 -> 220x180)
       case 18:
       {
          mScaleX= 1;
          mScaleY= 1;
-         mSaturate= 64;
+         mSaturate= 256;
 
          for (i=0;i<8;i++) setBitplane(i, mC2PPlanes[i], 640/8, 0, 180);
 
@@ -696,29 +727,31 @@ void WosQt::setMode(int mode)
          SetupHam15Bit((unsigned int*)mC2PPlanes[0], (unsigned int*)mC2PPlanes[1], 180);
          mC2PFirstBit= 1; // unterstes farbbit weglassen
          mC2PLastBit= 6;
-         mC2PTarget= 3;  // untere 2bits sind ham control, unterstes farbbit wird nicht verwendet (5 anstatt 6bit)
+         mC2PTarget= 3;  // untere 2bits (0..1) sind ham control, obere 5 farbbits in 3..7 (bitplane 2 bleibt leer)
+         mHamChannels= 3;
+         break;
+      }
+
+      // copies bits oo345678
+      // 640x180 ham8 rgb (truecolor 18bit 3x1 -> 220x180)
+      case 20:
+      {
+         mScaleX= 1;
+         mScaleY= 1;
+         mSaturate= 256;
+
+         for (i=0;i<8;i++) setBitplane(i, mC2PPlanes[i], 640/8, 0, 180);
+
+         SetupHam15Bit((unsigned int*)mC2PPlanes[0], (unsigned int*)mC2PPlanes[1], 180);
+         mC2PFirstBit= 2; // 2 unterste farbbits weglassen
+         mC2PLastBit= 8;
+         mC2PTarget= 2;  // untere 2bits (0..1) sind ham control, obere 6 farbbits in 2..7
          mHamChannels= 3;
          break;
       }
 
       // copies bits oo123456
-      // 640x180 ham8 rgb (truecolor 18bit 3x1 -> 216x180)
-      case 20:
-      {
-         mScaleX= 1;
-         mScaleY= 1;
-         mSaturate= 64;
-
-         for (i=0;i<8;i++) setBitplane(i, mC2PPlanes[i], 640/8, 0, 180);
-
-         SetupHam15Bit((unsigned int*)mC2PPlanes[0], (unsigned int*)mC2PPlanes[1], 180);
-         mC2PFirstBit= 1; // unterstes farbbit weglassen
-         mC2PLastBit= 6;
-         mC2PTarget= 3;  // untere 2bits sind ham control, unterstes farbbit wird nicht verwendet (5 anstatt 6bit)
-         mHamChannels= 3;
-         break;
-      }
-
+      // 640x180 ham8 rgb (truecolor 18bit 3x1 -> 220x180)
       case 21:
       {
          mScaleX= 1;
@@ -728,13 +761,15 @@ void WosQt::setMode(int mode)
          for (i=0;i<8;i++) setBitplane(i, mC2PPlanes[i], 640/8, 0, 180);
 
          SetupHam15Bit((unsigned int*)mC2PPlanes[0], (unsigned int*)mC2PPlanes[1], 180);
-         mC2PFirstBit= 0; // unterstes farbbit weglassen
+         mC2PFirstBit= 0; //
          mC2PLastBit= 6;
-         mC2PTarget= 2;  // untere 2bits sind ham control, unterstes farbbit wird nicht verwendet (5 anstatt 6bit)
+         mC2PTarget= 2;  // untere 2bits sind ham control, untere 6 farbbits in 2..7
          mHamChannels= 3;
          break;
       }
 
+      // copies bits oo123456
+      // 640x90 ham8 rgb (truecolor 18bit 3x1 -> 216x90)
       case 22:
       {
          mScaleX= 1;
@@ -744,13 +779,15 @@ void WosQt::setMode(int mode)
          for (i=0;i<8;i++) setBitplane(i, mC2PPlanes[i], 640/8, 0, 180);
 
          SetupHam15Bit((unsigned int*)mC2PPlanes[0], (unsigned int*)mC2PPlanes[1], 180);
-         mC2PFirstBit= 0; // unterstes farbbit weglassen
+         mC2PFirstBit= 0; // copy bits [0..6[
          mC2PLastBit= 6;
-         mC2PTarget= 2;  // untere 2bits sind ham control, unterstes farbbit wird nicht verwendet (5 anstatt 6bit)
+         mC2PTarget= 2;  // bits 0..1 sind ham control
          mHamChannels= 3;
          break;
       }
 
+      // copies bits oo123456
+      // 640x180 ham8 rgb (truecolor 18bit 3x1 -> 216x180)
       case 23:
       {
          mScaleX= 1;
@@ -762,7 +799,7 @@ void WosQt::setMode(int mode)
          SetupHam15Bit((unsigned int*)mC2PPlanes[0], (unsigned int*)mC2PPlanes[1], 180);
          mC2PFirstBit= 2; // unterstes farbbit weglassen
          mC2PLastBit= 6;
-         mC2PTarget= 4;  // untere 2bits sind ham control, unterstes farbbit wird nicht verwendet (5 anstatt 6bit)
+         mC2PTarget= 4;  // bits 0..1 sind ham control, unterste 6 farbbits in 2..7
          mHamChannels= 3;
          break;
       }
@@ -860,6 +897,9 @@ void WosQt::setBitplane(int id, unsigned char* buffer, int pitch, int starty, in
    if (id<0 || id>7)
       return; // wtf!!
 
+   if (!buffer)
+      memset(mC2PPlanes[id], 0, 640*180/8);
+
    Bitplane* bpl= &mBitplane[id];
 
    // make sure buffer and pitch are 16bit aligned
@@ -869,14 +909,15 @@ void WosQt::setBitplane(int id, unsigned char* buffer, int pitch, int starty, in
 
 //   pitch &= ~1;
 
-   for (i=0;i<starty;i++)
+   for (i=0; i<starty; i++)
    {
       bpl->line[i]= 0;
    }
    for (i=0; i<height; i++)
    {
       bpl->line[starty+i]= buffer;
-      buffer+=pitch;
+      if (buffer)
+         buffer+=pitch;
    }
    for (i=starty+height; i<512; i++)
    {
@@ -1066,13 +1107,13 @@ void WosQt::updateBuffer(unsigned char* src)
       {
          if (i>=mC2PFirstBit && i<mC2PLastBit)
             copyBitplaneRGB3(
-               mC2PPlanes[i+mC2PTarget],
+               mC2PPlanes[i+mC2PTarget-mC2PFirstBit],
                80, // 640 / 8bit
                src,
                220*4, //
                640,
                180,
-               i+mC2PFirstBit);
+               i);
       }
       else
       if (mHamChannels == 4)
@@ -1089,14 +1130,15 @@ void WosQt::updateBuffer(unsigned char* src)
       }
       else
       {
+         if (i>=mC2PFirstBit && i<mC2PLastBit)
          copyBitplane(
-            mC2PPlanes[i+mC2PTarget],
+            mC2PPlanes[i+mC2PTarget-mC2PFirstBit],
             320>>2,
             src,
-            320,
-            320,
-            180,
-            i+mC2PFirstBit);
+            640 >> mScaleX,
+            640 >> mScaleX,
+            360 >> mScaleY,
+            i);
       }
    }
 }
@@ -1108,8 +1150,9 @@ void WosQt::display8()
    unsigned int* dst= mBuffer;
    unsigned char used[256];
    memset(used, 0, 256);
+   const int height= 360 >> mScaleY;
 
-   for (y=0;y<180;y++)
+   for (y=0;y<height;y++)
    {
       unsigned int* copper= &mCopperColorData[y<<8];
       for (int sx=0; sx<640; sx++)
@@ -1152,7 +1195,11 @@ void WosQt::display8()
    glBindTexture(GL_TEXTURE_2D, mOffscreen);
    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 640, 360, 0, GL_BGRA, GL_UNSIGNED_BYTE, mBuffer);
 
-   float v= 0.5f / mScaleY;
+   float v;
+   if (mScaleY>0)
+      v= 0.5f / mScaleY;
+   else
+      v= 1.0f;
    // draw fullscreen quad with texture-coordinates to use 160x120 of 256x128 (texture size)
    glBegin(GL_QUADS);
    glTexCoord2f(1,0); glVertex2i( 640, 0 );
