@@ -53,7 +53,6 @@ unsigned char* AdpcmFileRight= 0;
 int timerC2P;
 int timerEffect;
 
-int part= 0;
 int prevPart=-1;
 int timeoffset=0;
 
@@ -321,8 +320,6 @@ void drawDemo(int time)
    };   
 
    prevPart = curPart;
-   part= curPart;
-
    
    wosDisplay(2);
    

@@ -90,86 +90,50 @@ The Haujobb Amiga Framework
 \end_layout
 
 \begin_layout Abstract
-This document describes how to setup and use the Haujobb Amiga Framework
+If you want to code Amiga AGA demos, are able to program, but don't know
+ how to get started on the Amiga, then this document is for you.
+ Also if you are already more experienced on Amiga and want to learn about
+ how we do our demos.
+ This document describes how to set up and use the Haujobb Amiga Framework
  on Amiga and PC.
- It guides you through setting up the required components in small steps
- with immediate incentives.
+ The framework allows for prototyping, debugging, and timing effects natively
+ on the PC (currently Windows mainly, but Mac and Linux should work as well);
+ and then cross-compiling for the Amiga.
+ We have used these exact codes and workflows for our demo 
+\emph on
+Beam Riders
+\emph default
+; and prior versions for 
+\emph on
+Last Train to Danzig
+\emph default
+ and 
+\emph on
+Prototype 1
+\emph default
+.
 \end_layout
 
 \begin_layout Abstract
-Source on GitHub: 
-\begin_inset CommandInset href
-LatexCommand href
-name "https://github.com/leifo/haujobb-amiga"
-target "https://github.com/leifo/haujobb-amiga"
-literal "false"
-
+This document guides you through setting up the required components in small
+ steps with immediate incentives – leading up to a complete example demo
+ with timing done via the Rocket editor.
+ To get started, first read the guide to the document section to find your
+ way around.
+ Then go and make a demo about it!
+\begin_inset VSpace bigskip
 \end_inset
 
 
-\end_layout
-
-\begin_layout Abstract
-Documentation at: 
-\begin_inset CommandInset href
-LatexCommand href
-name "http://www.dig-id.de/amiga/framework/"
-target "http://www.dig-id.de/amiga/framework/"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Abstract
-PDF at: 
-\begin_inset CommandInset href
-LatexCommand href
-name "http://www.dig-id.de/amiga/framework/haf.pdf"
-target "http://www.dig-id.de/amiga/framework/haf.pdf"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Abstract
-\begin_inset CommandInset ref
-LatexCommand nameref
-reference "subsec:Summary-(TL;DR)"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Phantom HPhantom
-status open
-
-\begin_layout Plain Layout
-\begin_inset Phantom HPhantom
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
+\begin_inset Newline newline
 \end_inset
 
 
 \begin_inset Graphics
 	filename haujobb.jpg
+	scale 87
+	BoundingBox 0bp 96bp 1024bp 669bp
+	clip
 
 \end_inset
 
@@ -194,13 +158,12 @@ LatexCommand tableofcontents
 \end_layout
 
 \begin_layout Part
-Overview and Setup
+Setup
 \end_layout
 
 \begin_layout Standard
 The Haujobb Amiga Framework facilitates modern Amiga demo making on several
  levels.
- 
 \end_layout
 
 \begin_layout Standard
@@ -209,8 +172,15 @@ el access to over 20 different chunky to planar based screenmodes, several
  music replayers, and interrupt hooks.
  You can choose from using a multi-tasking-friendly hardware abstraction
  layer, or a traditional multi-tasking-killer mode.
- WickedOS has been used in a number of our Amiga demos, ranging from Mnemonics
- to Beam Riders.
+ WickedOS has been used in a number of our Amiga demos, ranging from 
+\emph on
+Mnemonics
+\emph default
+ to 
+\emph on
+Beam Riders
+\emph default
+.
  By default it targets 
 \begin_inset Quotes eld
 \end_inset
@@ -223,8 +193,285 @@ todays
  having an FPU and at least a 68020 or better CPU in the target machine.
 \end_layout
 
+\begin_layout Standard
+On a higher level, the framework allows you to mix assembler and C-code.
+ Furthermore, it provides you with a reimplementation of the WickedOS-API
+ in Qt, This allows for developing and debugging effects natively on the
+ PC, before cross-compiling (and further optimizing) them for the Amiga.
+\end_layout
+
+\begin_layout Section
+Guide to the document
+\end_layout
+
+\begin_layout Standard
+This document tries to document to entire framework, which includes working
+ on the PC and well as on the Amiga (with different tools).
+\end_layout
+
+\begin_layout Standard
+If you just wanted to have a quick start on your PC, read the Quickstart
+ section 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Summary-(TL;DR)"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If you also wanted to set up assembler, C-compiler and linker on the Amiga,
+ start reading at that chapter 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:Assembler-and-Linker"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Please note that albeit those tools work perfectly fine on Amiga, we are
+ not supporting them fully with our makefiles.
+\end_layout
+
+\begin_layout Standard
+If you were really curious and also wanted to play around with WickedOS
+ using Asm-One and Devpac, you could read the corresponding section 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:WickedOS"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ in the annex.
+\end_layout
+
+\begin_layout Standard
+In any case, once you installed the assembler, compiler, linker and make
+ tools, you should first check out the Hello World example 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Example:-Hello-world"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, before following the rest of the examples, which are described in Part
+ II of this document, starting 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "part:Demomaking"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Resources
+\end_layout
+
+\begin_layout Standard
+The complete sources are available at 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://github.com/leifo/haujobb-amiga"
+target "https://github.com/leifo/haujobb-amiga"
+literal "false"
+
+\end_inset
+
+.
+ The documentation is hosted at 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://www.dig-id.de/amiga/framework/"
+target "http://www.dig-id.de/amiga/framework/"
+literal "false"
+
+\end_inset
+
+, PDF-version at 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://www.dig-id.de/amiga/framework/haf.pdf"
+target "http://www.dig-id.de/amiga/framework/haf.pdf"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Summary-(TL;DR)"
+
+\end_inset
+
+Quickstart (TL;DR)
+\end_layout
+
+\begin_layout Standard
+The Haujobb Amiga Framework supports development of Amiga demos on PC, and
+ then cross-compiling them for the Amiga.You probably didn't want to compile
+ and assemble on the Amiga anyway, so you just:
+\end_layout
+
+\begin_layout Itemize
+set up the vbcc cross-compiler for Windows using 
+\begin_inset CommandInset href
+LatexCommand href
+name "Install-VBCC.exe"
+target "http://server.owl.de/~frank/vbcc/2017-05-18/Install-VBCC.exe"
+literal "false"
+
+\end_inset
+
+ (to c:
+\backslash
+vbcc), as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:vbcc-setup-on"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+you could then 
+\emph on
+cd
+\emph default
+ to the root folder 
+\emph on
+haujobb-amiga
+\emph default
+ and type 
+\emph on
+make
+\emph default
+ to build the whole Amiga side from scratch
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+set up a shared folder on your PC or NAS that could be reached from your
+ real or emulated Amiga, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Shared-Folders-between"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+installed Visual Studio, at least 2010, but probably the latest 2017 Community
+ edition, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Visual-Studio"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+installed Qt5, Qt Creator, and cdb debugger support, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Qt-Creator"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+and then double-checked that compiler, debugger, and Qt version were correctly
+ set up as a 
+\emph on
+kit
+\emph default
+, as described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:Kit-Setup"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This is all that needed to be done, so you could now open our supplied example
+ project files (*.pro) in the 
+\emph on
+/demo
+\emph default
+ folder and start making Amiga demos on PC.
+ If you find any issues, please report them on 
+\begin_inset CommandInset href
+LatexCommand href
+name "GitHub"
+target "https://github.com/leifo/haujobb-amiga/issues"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Enjoy!
+\end_layout
+
 \begin_layout Section
 Assembler and Linker Setup
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Assembler-and-Linker"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -649,7 +896,7 @@ literal "false"
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -1341,6 +1588,13 @@ make
 
 \begin_layout Subsection
 Example: Hello world
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Example:-Hello-world"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2779,140 +3033,7 @@ literal "false"
  
 \end_layout
 
-\begin_layout Subsection
-\begin_inset CommandInset label
-LatexCommand label
-name "subsec:Summary-(TL;DR)"
-
-\end_inset
-
-Summary (TL;DR)
-\end_layout
-
 \begin_layout Standard
-The Haujobb Amiga Framework supports development of Amiga demos on PC, and
- then cross-compiling them for the Amiga.You probably didn't want to compile
- and assemble on the Amiga anyway, so you just:
-\end_layout
-
-\begin_layout Itemize
-set up the vbcc cross-compiler for Windows using 
-\begin_inset CommandInset href
-LatexCommand href
-name "Install-VBCC.exe"
-target "http://server.owl.de/~frank/vbcc/2017-05-18/Install-VBCC.exe"
-literal "false"
-
-\end_inset
-
- (to c:
-\backslash
-vbcc), as described 
-\begin_inset CommandInset ref
-LatexCommand vpageref
-reference "subsec:vbcc-setup-on"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-you could then 
-\emph on
-cd
-\emph default
- to the root folder 
-\emph on
-haujobb-amiga
-\emph default
- and type 
-\emph on
-make
-\emph default
- to build the whole Amiga side from scratch
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-set up a shared folder on your PC or NAS that could be reached from your
- real or emulated Amiga, as described 
-\begin_inset CommandInset ref
-LatexCommand vpageref
-reference "subsec:Shared-Folders-between"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-installed Visual Studio, at least 2010, but probably the latest 2017 Community
- edition, as described 
-\begin_inset CommandInset ref
-LatexCommand vpageref
-reference "subsec:Visual-Studio"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-installed Qt5, Qt Creator, and cdb debugger support, as described 
-\begin_inset CommandInset ref
-LatexCommand vpageref
-reference "subsec:Qt-Creator"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-and then double-checked that compiler, debugger, and Qt version were correctly
- set up as a 
-\emph on
-kit
-\emph default
-, as described 
-\begin_inset CommandInset ref
-LatexCommand vpageref
-reference "subsec:Kit-Setup"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-This is all that needed to be done, so you could now open our supplied example
- project files (*.pro) in the 
-\emph on
-/demo
-\emph default
- folder and start making Amiga demos on PC.
- 
-\end_layout
-
-\begin_layout Standard
-Enjoy!
 \begin_inset Newpage pagebreak
 \end_inset
 
@@ -2921,10 +3042,17 @@ Enjoy!
 
 \begin_layout Part
 Demomaking
+\begin_inset CommandInset label
+LatexCommand label
+name "part:Demomaking"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
-Examples
+Single Examples
 \end_layout
 
 \begin_layout Standard
@@ -3166,6 +3294,12 @@ Qt Creator session with project stars
 \end_layout
 
 \begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:StarsDiscussion"
+
+\end_inset
+
 Discussion
 \end_layout
 
@@ -3318,7 +3452,7 @@ on PC (WIN32)
 
 \begin_deeper
 \begin_layout Itemize
-mainDemo() immediately returns 
+mainDemo() immediately returns
 \end_layout
 
 \begin_layout Itemize
@@ -3678,7 +3812,6 @@ If you run this example on the Amiga (like the stars example), you will
  also fades in and out.
  This is often not the desired effect.
  To fix it, we need to have look at the palette.
- 
 \end_layout
 
 \begin_layout Standard
@@ -3686,7 +3819,7 @@ If you run this example on the Amiga (like the stars example), you will
 placement h
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -3771,7 +3904,6 @@ noprefix "false"
 \end_inset
 
 , left).
- 
 \end_layout
 
 \begin_deeper
@@ -4078,135 +4210,1658 @@ buildTunnel(), one
 Try out the other two!
 \end_layout
 
+\begin_layout Section
+Demo Example
+\end_layout
+
+\begin_layout Standard
+This chapter pulls all the strings together and provides a complete example
+ demo that comprises of the previously discussed component with some added
+ streaming music.
+ The effects' parameters are controlled via the excellent Rocket sync-tracker.
+ Although this approach to demo-syncing is quite common in the PC-scene
+ for many years, it is still fairly unknown in the Amiga-scene and only
+ used by very few demo-makers, like e.g.
+ Loonies.
+ In Haujobb, we have started using Rocket when developing the 
+\begin_inset CommandInset href
+LatexCommand href
+name "Beam Riders"
+target "https://www.pouet.net/prod.php?which=71976"
+literal "false"
+
+\end_inset
+
+demo.
+ We have previously spoken about our demo-making process in our Evoke 2018
+ talk 
+\begin_inset CommandInset href
+LatexCommand href
+name "Modern Amiga Demo Cross-Development (YouTube)"
+target "https://www.youtube.com/watch?v=s1lVS4tW33g"
+literal "false"
+
+\end_inset
+
+.
+ With the release of our Amiga demo framework, we are now publicly sharing
+ a complete and documented example of how to sync your Amiga demos with
+ Rocket.
+ This is how we did it.
+ And now you can do it, too!
+\end_layout
+
 \begin_layout Subsection
 Hello Demo
 \end_layout
 
+\begin_layout Subsubsection
+Overview
+\end_layout
+
 \begin_layout Itemize
-run
+Open, configure, build and run 
+\emph on
+hellodemo.pro
+\emph default
+ from the 
+\emph on
+/demo/hellodemo
+\emph default
+ folder
+\end_layout
+
+\begin_layout Itemize
+\noindent
+The demo will refuse to start with the error message: 
+\begin_inset Quotes eld
+\end_inset
+
+Could not connect to rocket editor!
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+This is because the source-code of hellodemo is configured
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-visual studio command prompt
+to require the Rocket editor on the PC
 \end_layout
 
 \begin_layout Itemize
-\begin_inset Quotes eld
-\end_inset
-
-nmake install
-\begin_inset Quotes erd
-\end_inset
-
- to get the required libraries to the folder
+and to play the demo from the stored parameters on the Amiga.
 \end_layout
 
-\begin_layout Itemize
-check 
-\begin_inset Quotes eld
-\end_inset
-
+\end_deeper
+\begin_layout Subsubsection
 SYNC_PLAYER
-\begin_inset Quotes erd
-\end_inset
-
- in main.c
 \end_layout
 
-\end_deeper
+\begin_layout Standard
+If you wanted to quickly check the example demo on the PC, you thus need
+ to configure the source-code to not require the Rocket editor on the PC.
+ This is done with the 
+\emph on
+SYNC_PLAYER
+\emph default
+ define in line 1 of main.c.
+ If it is defined, the demo will load the 
+\emph on
+*.rt
+\emph default
+ files from the /data directory and then play the demo with those parameters.
+ So uncomment that define and run hellodemo again.
+ It should start and show several effects timed to some music by Muffler.
+\end_layout
+
+\begin_layout Standard
+When you are done with that, comment that define-line out again, as you
+ usually would want to work in edit mode on PC.
+\end_layout
+
+\begin_layout Standard
+Note: the Amiga build gets the SYNC_PLAYER define injected via the makefile
+ (-DSYNC_PLAYER in CFLAGS, currently in line 40, c.f.
+ section 2.1 in 
+\begin_inset CommandInset href
+LatexCommand href
+name "VBCC docs"
+target "http://www.ibaug.de/vbcc/doc/vbcc.pdf"
+literal "false"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsubsection
+Good Practice Track Names
+\end_layout
+
+\begin_layout Standard
+Rocket track names are your interface to your demo.
+ For a typical demo, you will quickly have dozens of track names, so it
+ is a Good Idea TM to name them properly.
+ They also need to operate within certain limits:
+\end_layout
+
 \begin_layout Itemize
-discussion
+keep names short, meaningful and lowercase
+\end_layout
+
+\begin_layout Itemize
+all Rocket tracks are Floats by default
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-additional functions to handle screenmode and palette changes
-\end_layout
-
-\begin_layout Itemize
-parameters from rocket
+but you can cast them e.g.
+ to Int within your code
 \end_layout
 
 \end_deeper
 \begin_layout Itemize
-Rocket
+Furthermore they are also saved to disk with filenames comprising of a certain
+ scheme (we chose: sync_*.rt, where * is effectname_variablename, e.g.
+ sync_movetable(2)_time.rt) that will have to fit within the Amiga Fast File
+ System filename-length limit of 30 chars.
+\end_layout
+
+\begin_layout Standard
+From our own experience we can propose the following:
+\end_layout
+
+\begin_layout Itemize
+part : should be used as an Int to keep track of the currently visible part
+\end_layout
+
+\begin_layout Itemize
+brightness : Int for the current palette brightness (if applicable), 0 means
+ black, 256 is normal, >256 brighter
+\end_layout
+
+\begin_layout Itemize
+effects should expose their name plus their part number in brackets, e.g.
+ movetable(2), as some kind of namespace
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+effect variables are are appended to this namespace-name with a colon (
+\begin_inset Quotes eld
+\end_inset
+
+:
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+see the code from getSyncTracks() from main.c as an example
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+void getSyncTracks() { 
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+// rocket get tracks 
+\end_layout
+
+\begin_layout LyX-Code
+// general 
+\end_layout
+
+\begin_layout LyX-Code
+rt_part = sync_get_track(rocket, "part"); 
+\end_layout
+
+\begin_layout LyX-Code
+rt_brightness = sync_get_track(rocket, "brightness");
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+// pictures 
+\end_layout
+
+\begin_layout LyX-Code
+rt_picture_id = sync_get_track(rocket, "picture(0):id");
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+// stars 
+\end_layout
+
+\begin_layout LyX-Code
+rt_star_time = sync_get_track(rocket, "stars(1):time"); 
+\end_layout
+
+\begin_layout LyX-Code
+rt_star_pers = sync_get_track(rocket, "stars(1):perspective");
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+// movetable 
+\end_layout
+
+\begin_layout LyX-Code
+rt_move_time = sync_get_track(rocket, "movetable(2):time"); 
+\end_layout
+
+\begin_layout LyX-Code
+rt_move_xtab = sync_get_track(rocket, "movetable(2):xtab"); 
+\end_layout
+
+\begin_layout LyX-Code
+rt_move_ytab = sync_get_track(rocket, "movetable(2):ytab");
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+} 
+\end_layout
+
+\begin_layout Standard
+Adhering to such a scheme will make your life easier when wiring up the
+ internals in your code and when timing your demo.
+ So better stick to it.
 \end_layout
 
 \begin_layout Subsection
-More Examples
+Rocket Editor
 \end_layout
 
-\begin_layout Itemize
-Notes:
-\begin_inset Separator latexpar
+\begin_layout Standard
+
+\emph on
+Rocket is is an intuitive new way of...
+ bah, whatever.
+ It's a sync-tracker, a tool for synchronizing music and visuals in demoscene
+ productions.
+ It consists of a GUI editor (using Qt), and an ANSI C library that can
+ either communicate with the editor over a network socket, or play back
+ an exported data-set.
+
+\emph default
+ – from 
+\begin_inset CommandInset href
+LatexCommand href
+name "Rocket GitHub page"
+target "https://github.com/rocket/rocket"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To get started with using the Rocket editor, download the latest official
+ binaries from the GitHub 
+\begin_inset CommandInset href
+LatexCommand href
+name "Rocket releases"
+target "https://github.com/rocket/rocket/releases"
+literal "false"
+
+\end_inset
+
+.
+ The archives come readily bundled with the required libraries, so just
+ unpacking and starting
+\emph on
+ editor.exe
+\emph default
+ should work.
+ Since its inception, several ports of the Rocket editor have appeared.
+ All of them are listed on the 
+\begin_inset CommandInset href
+LatexCommand href
+name "Rocket GitHub page"
+target "https://github.com/rocket/rocket"
+literal "false"
+
+\end_inset
+
+.
+ We personally only worked with the original editor, but also quickly tested
+ the alternative 
+\begin_inset CommandInset href
+LatexCommand href
+name "OpenGL editor"
+target "https://github.com/emoon/rocket"
+literal "false"
+
+\end_inset
+
+ and can confirm that it works.
+\end_layout
+
+\begin_layout Standard
+On Windows, the Windows firewall would usually come up when starting your
+ chosen editor for the first time.
+ Just allow it to pass, as the editor will need to communicate with the
+ demo via network.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename hellodemo.png
+	width 100col%
+
 \end_inset
 
 
 \end_layout
 
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Rocket-editor-(left)"
+
+\end_inset
+
+Rocket editor (left) and hellodemo (right)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Once you started the editor, you can recompile (without SYNC_PLAYER defined)
+ and run the hellodemo project.
+ You should immediately see some magic happen in the editor.
+ As the demo and the editor already communicated about the available sync
+ tracks, the editor should show them neatly organised in tabs, here: 
+\emph on
+default
+\emph default
+, 
+\emph on
+picture(0)
+\emph default
+, 
+\emph on
+stars(1)
+\emph default
+, 
+\emph on
+movetable(2)
+\emph default
+.
+ The sync tracks still have no keyframes and interpolation methods assigned,
+ yet.
+ This is the typical state of how you would start with a clean slate once
+ you wired up your Rocket variables in your code.
+\end_layout
+
+\begin_layout Standard
+To get started with our example, load the provided file
+\emph on
+ hellodemo.rocket
+\emph default
+ from /data/hellodemo into your editor.
+ This should populate the sync-tracks with data (see 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:Rocket-editor-(left)"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ You can now start and stop playing the demo by pressing <SPACE> in the
+ editor.
+\end_layout
+
+\begin_layout Subsubsection
+Using the Editor
+\end_layout
+
+\begin_layout Standard
+Note: This section is copied from the official 
+\begin_inset CommandInset href
+LatexCommand href
+name "Rocket documentation"
+target "https://github.com/rocket/rocket"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The Rocket editor is laid out like a music-tracker; tracks (or columns)
+ and rows.
+ Each track represents a separate "variable" in the demo, over the entire
+ time-domain of the demo.
+ Each row represents a specific point in time, and consists of a set of
+ key frames.
+ The key frames are interpolated over time according to their interpolation
+ modes.
+\end_layout
+
+\begin_layout Paragraph
+Interpolation modes
+\end_layout
+
+\begin_layout Standard
+Each key frame has an interpolation mode associated with it, and that interpolat
+ion mode is valid until the next key frame is reached.
+ The different interpolation modes are the following:
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Step 
+\emph default
+: This is the simplest mode, and always returns the key's value.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Linear
+\emph default
+ : This does a linear interpolation between the current and the next key's
+ values.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Smooth
+\emph default
+ : This interpolates in a smooth fashion, the exact function is what is
+ usually called "smoothstep".
+ Do not confuse this mode with splines; this only interpolates smoothly
+ between two different values, it does not try to calculate tangents or
+ any such things.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Ramp
+\emph default
+ : This is similar to "Linear", but additionally applies an exponentiation
+ of the interpolation factor.
+\end_layout
+
+\begin_layout Paragraph
+Keyboard shortcuts
+\end_layout
+
+\begin_layout Standard
+Some of the Rocket editor's features are available through the menu and
+ some keyboard shortcut.
+ Here's a list of the supported keyboard shortcuts:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="21" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Shortcuts
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Action
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Up/Down/Left/Right
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Move cursor
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+PgUp/PgDn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Move cursor 16 rows up/down
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Home/End
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Move cursor to begining/end
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+Left/Right
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Move tracks
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Enter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Enter key frame values
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Del
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Delete key frame
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+i
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Enumerate interpolation mode
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+k
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Toggle row-bookmark
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Alt+PgUp/PgDn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Go to prev/next row-bookmark
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Space
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pause/Resume demo
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift+Up/Down/Left/Right
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Select
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+C
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Copy
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+V
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paste
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+Z
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Undo
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift+Ctrl+Z
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Redo
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl-B
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bias key frames
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift+Ctrl+Up/Down
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Quick-bias by +/- 0.1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+Up/Down
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Quick-bias by +/- 1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ctrl+PgUp/PgDn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Quick-bias by +/- 10
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift+Ctrl+PgUp/PgDn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Quick-bias by +/- 100
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Rocket editor shortcuts
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Wiring up your variables to Rocket
+\end_layout
+
+\begin_layout Standard
+Wiring up your code's internal variables to Rocket so that they can be modified
+ over the network connection with the Rocket editor is at the heart of working
+ with Rocket from a coder's perspective.
+ It is a straight forward process that you will quickly embrace once you
+ know what needs to be done.
+\end_layout
+
+\begin_layout Standard
+All of this is usually happening in your demo's main.c - the effects do not
+ know about Rocket at all.
+ For the purpose of this write-up, we are just handling the case of the
+ stars effect.
+ All other effects are handled in the same way and you can follow everything
+ in full detail in hellodemo's main.c.
+\end_layout
+
+\begin_layout Subsubsection
+Declarations
+\end_layout
+
+\begin_layout Standard
+Include Rocket definitions from:
+\end_layout
+
+\begin_layout LyX-Code
+#include "../shared/rocket/lib/sync.h"
+\end_layout
+
+\begin_layout Standard
+For working with Rocket, you always need a 
+\emph on
+sync_device
+\emph default
+:
+\end_layout
+
+\begin_layout LyX-Code
+struct sync_device *rocket; 
+\end_layout
+
+\begin_layout Standard
+You would then define multiple 
+\emph on
+sync_tracks
+\emph default
+, one for every variable that you want to animate:
+\end_layout
+
+\begin_layout LyX-Code
+const struct sync_track *rt_star_time;
+\end_layout
+
+\begin_layout LyX-Code
+const struct sync_track *rt_star_pers;
+\end_layout
+
+\begin_layout Standard
+Tracknames should start with 
+\begin_inset Quotes eld
+\end_inset
+
+rt_
+\begin_inset Quotes erd
+\end_inset
+
+.
+ It is suggested that you name them according to their namespace and variable
+ names, e.g.
+ rt_part or rt_star_time.
+\end_layout
+
+\begin_layout Subsubsection
+sync_get_track()
+\end_layout
+
+\begin_layout Standard
+Your internal sync_tracks are made known to the Rocket editor via the 
+\emph on
+sync_get_track
+\emph default
+ function.
+ Its invocation is also the place to provide the names that appear in the
+ editor and on disk for the saved tracks.
+ In hellodemo's main.c this is all done in getSyncTracks():
+\end_layout
+
+\begin_layout LyX-Code
+void getSyncTracks() {
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+// stars
+\end_layout
+
+\begin_layout LyX-Code
+rt_star_time = sync_get_track(rocket, "stars(1):time");
+\end_layout
+
+\begin_layout LyX-Code
+rt_star_pers = sync_get_track(rocket, "stars(1):perspective");
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout Standard
+Depending on the definition of SYNC_PLAYER, sync_get_tracks will either
+ connect to the editor, or try to load the tracks from disk.
+\end_layout
+
+\begin_layout Subsubsection
+sync_get_val()
+\end_layout
+
+\begin_layout Standard
+Getting variables out of Rocket is done via the 
+\emph on
+sync_get_val
+\emph default
+ function.
+ It takes the desired trackname and row-position as input and returns a
+ Float.
+ The calculation of 
+\emph on
+row
+\emph default
+ is based on the play-time of the music.
+ Implementation details can be found in drawDemo() and also in updateDemo().
+\end_layout
+
+\begin_layout Standard
+The code snippet below shows how we get the variables for the stars effect:
+\end_layout
+
+\begin_layout LyX-Code
+void drawDemo(int time) { 
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+int ri_star_time; 
+\end_layout
+
+\begin_layout LyX-Code
+float rf_star_pers;
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+// stars
+\end_layout
+
+\begin_layout LyX-Code
+ri_star_time = (int) sync_get_val(rt_star_time, row);
+\end_layout
+
+\begin_layout LyX-Code
+rf_star_pers = (float) sync_get_val(rt_star_pers, row);
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout Standard
+As per our convention, variables from Rocket that hold:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Float
+\emph default
+ values (the default) should be preceeded with 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+rf_
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Int
+\emph default
+ values (requiring an explicit cast) should be preceeded with 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+ri_
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Passing variables to an effect
+\end_layout
+
+\begin_layout Standard
+Once we have the time-based values for our variables from Rocket, we can
+ feed them to our effects.
+ As written above, the effects to not know of Rocket.
+ They just need to get their parameters when calling their render-function.
+ All effects take the variable 
+\emph on
+time
+\emph default
+ as their first and most imporant parameter.
+ They are required to render a frame according to 
+\emph on
+time
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+The stars effect additionally takes a perpective factor as a parameter.
+\end_layout
+
+\begin_layout LyX-Code
+void starsEffectRender(int time, float persfak);
+\end_layout
+
+\begin_layout Subsection
+Common Effect Functions
+\end_layout
+
+\begin_layout Standard
+As previously implicitly covered 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "subsec:StarsDiscussion"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, effects are expected to have typical functions when working our way.
+\end_layout
+
+\begin_layout Standard
+More explicitly, the minimum required functions when coding single effects
+ are:
+\end_layout
+
+\begin_layout LyX-Code
+void effectInit();
+\end_layout
+
+\begin_layout LyX-Code
+void effectRender(int time);
+\end_layout
+
+\begin_layout LyX-Code
+void effectRelease();
+\end_layout
+
+\begin_layout LyX-Code
+unsigned int* effectPalette();
+\end_layout
+
+\begin_layout Standard
+Init, Render and Release should be clear.
+ The Palette function is required, as the current palette will be used outside
+ the scope of the effect, e.g.
+ to support setting the brightness.
+\end_layout
+
+\begin_layout Standard
+To avoid name-clashes, it is good practice to preceed those names with the
+ actual effect name, e.g.
+ starsEffectInit().
+\end_layout
+
+\begin_layout Standard
+When putting the effects together as a demo, you need one additonal function:
+\end_layout
+
+\begin_layout LyX-Code
+void effectOn(int startTime);
+\end_layout
+
+\begin_layout Standard
+This is a very short function that basically sets the screenmode, palette
+ and dimensions (xres/yres) everytime an effect is called for the first
+ time.
+ This is required because you will want to have different effects that might
+ run in different screen modes.
+ Here is how the starsEffectOn() function looks like:
+\end_layout
+
+\begin_layout LyX-Code
+void starsEffectOn(int startTime) {
+\end_layout
+
 \begin_deeper
-\begin_layout Itemize
-profiler
+\begin_layout LyX-Code
+starsEffect_startTime=startTime;
 \end_layout
 
-\begin_layout Itemize
-cache simulator
+\begin_layout LyX-Code
+xres=320; 
 \end_layout
 
-\begin_layout Itemize
-msvc2017 include problem: stdio.h, stddef.h, memory.h
+\begin_layout LyX-Code
+yres=180;
+\end_layout
+
+\begin_layout LyX-Code
+wosSetMode(8, screenBuffer, starsPalette(), 0);
+\end_layout
+
+\begin_layout LyX-Code
+g_currentPal = starsPalette();
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+startTime
+\emph default
+ is not always used, but always required by convention.
+ 
+\emph on
+xres
+\emph default
+ and 
+\emph on
+yres
+\emph default
+ in this example are for a typical 16:9 low-res screen.
+ 
+\emph on
+wosSetMode
+\emph default
+ sets up the display for that mode (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:List-of-Screenmodes"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ for a list of available modes) to work from that frame-buffer 
+\emph on
+screenBuffer
+\emph default
+ and with the palette pointer obtained from 
+\emph on
+starsPalette()
+\emph default
+.
+ The initial brightness is set to 0 (black).
+ Finally, the palette pointer is stored in the global variable 
+\emph on
+g_currentPal
+\emph default
+.
+\end_layout
+
+\begin_layout Subsection
+Common Demo Functions
+\end_layout
+
+\begin_layout Standard
+When putting your effects together as a demo, you would naturally call their
+ 
+\emph on
+Init
+\emph default
+ and 
+\emph on
+Release
+\emph default
+ functions from the respective functions in the demo's main.c (here: 
+\emph on
+initDemo
+\emph default
+ and 
+\emph on
+deinitDemo
+\emph default
+).
+ Actually, in hellodemo, the init-functions are all grouped in another function
+ called 
+\emph on
+reloadDemo
+\emph default
+.
+ This will become useful later when starting to use the file-watcher and
+ auto-reload functionality.
+\end_layout
+
+\begin_layout Subsubsection
+drawDemo()
+\end_layout
+
+\begin_layout Standard
+Then, when it is time to draw a frame, the demo needs to figure out which
+ effect (part) needs to be called, and if it had already been shown in the
+ previous frame.
+ If not, the part has to be enabled.
+ This is done like this:
+\end_layout
+
+\begin_layout LyX-Code
+int prevPart=-1;
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+void drawDemo(int time) {
 \end_layout
 
 \begin_deeper
-\begin_layout Itemize
-https://stackoverflow.com/questions/42777424/visual-studio-2017-errors-on-standar
-d-headers
+\begin_layout LyX-Code
+int curPart;
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+curPart = (int) sync_get_val(rt_part, row);
+\end_layout
+
+\begin_layout LyX-Code
+// init part
+\end_layout
+
+\begin_layout LyX-Code
+if ( (prevPart != curPart) | curPart==0) {
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+switch (curPart) {
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+case 0:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+pictureEffectOn(time); break;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+case 1:
+\end_layout
+
+\begin_layout LyX-Code
+  starsEffectOn(time); break;
+\end_layout
+
+\begin_layout LyX-Code
+case 2:
+\end_layout
+
+\begin_layout LyX-Code
+  movetableEffectOn(time); break;
 \end_layout
 
 \end_deeper
 \end_deeper
-\begin_layout Itemize
-Abstract:
+\begin_layout LyX-Code
+     default: break;
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-todo: prose for higher levels, (maybe up to prototype 1 and since then)
+\begin_layout LyX-Code
+   };
 \end_layout
 
-\begin_layout Itemize
-double-check: cross-compile, linking with c-code, make, wosqt-qtcreator,
- profiling, cache simulator, syncing with rocket
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-mixasm
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-ace make all
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Hello Demo (small project without QTCreator)
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-without shadow build
-\end_layout
-
-\begin_layout Itemize
-with shadow build (because QtCreator/QMake would like to occupy that space)
+\begin_layout LyX-Code
+} 
 \end_layout
 
 \end_deeper
+\begin_layout Standard
+When it is verified that the part is enabled, it can be drawn like this:
+\end_layout
+
+\begin_layout LyX-Code
+[..]
+\end_layout
+
+\begin_layout LyX-Code
+// draw part
+\end_layout
+
+\begin_layout LyX-Code
+switch (curPart) {
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+case 0:
+\end_layout
+
+\begin_layout LyX-Code
+   pictureEffectRender(ri_picture_id); break;
+\end_layout
+
+\begin_layout LyX-Code
+case 1:
+\end_layout
+
+\begin_layout LyX-Code
+   starsEffectRender(ri_star_time, rf_star_pers); break;
+\end_layout
+
+\begin_layout LyX-Code
+case 2:
+\end_layout
+
+\begin_layout LyX-Code
+   movetableEffectRender(ri_move_time, ri_move_xtab, 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+                         ri_move_ytab); break;
+\end_layout
+
 \end_deeper
-\end_deeper
+\begin_layout LyX-Code
+   default: break;
+\end_layout
+
+\begin_layout LyX-Code
+   };
+\end_layout
+
+\begin_layout Standard
+Finally, at the end of the draw function, the prevPart variable it prepared
+ for the next frame, and the current frame is displayed.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+prevPart = curPart;
+\end_layout
+
+\begin_layout LyX-Code
+wosDisplay(2); 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+wosDisplay
+\emph default
+ triggers the chunky to planar conversion, i.e.
+ the conversion of the byte-chunked 
+\emph on
+screenBuffer
+\emph default
+ (of 8 bit colour depth, as set previously with wosSetMode) into 8 seperate
+ bitplanes to be displayed by the Amiga AGA chipset.
+ Due to the slow speed of the chip memory, the Amiga will spend almost an
+ entire frame for this conversion in a typical low-res resolution.
+ It is generally unrealistic to expect to be able to draw 50 frames per
+ second (FPS).
+ Depending on the effect complexity, the target hardware, and the frame's
+ content, you would often be able to reach a framerate in the range of 25
+ to 40 frames per second.
+ But a stable motion at a fixed framerate looks smoother than one with varying
+ framerate.
+ Therefore, wosDisplay takes a frame-lock parameter:
+\end_layout
+
+\begin_layout Itemize
+0 : no frame-lock, i.e.
+ run as fast as possible (possible faster than 50 FPS in very low resolutions)
+\end_layout
+
+\begin_layout Itemize
+1 : frame-lock to every frame, i.e.
+ 50 FPS max
+\end_layout
+
+\begin_layout Itemize
+2 : frame-lock to every other frame, i.e.
+ 25 FPS max
+\end_layout
+
+\begin_layout Standard
+While 50 FPS can be achieved with some 160x90 screenmodes, you would generally
+ want to aim for 25 FPS with low-res 320x180 screenmodes.
+\end_layout
+
+\begin_layout Subsubsection
+updateDemo()
+\end_layout
+
+\begin_layout Standard
+While most screenmodes will not update in every frame, there is a possibilty
+ to run certain parts of the code at 50 FPS intervals by putting it in the
+ provided
+\emph on
+ updateDemo
+\emph default
+ function.
+ This is triggered by the vertical blank interrupt (VBI) from 
+\emph on
+assemly-bridge.s
+\emph default
+ and can be used for making quick changes, e.g.
+ to the colour palette when fading.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
@@ -4216,6 +5871,157 @@ with shadow build (because QtCreator/QMake would like to occupy that space)
 
 \begin_layout Part
 Annex
+\end_layout
+
+\begin_layout Section
+Credits
+\end_layout
+
+\begin_layout Subsection
+Framework
+\end_layout
+
+\begin_layout Standard
+The Haujobb Amiga Framework has been developed by Hellfire and Noname.
+\end_layout
+
+\begin_layout Itemize
+low-level hardware API 
+\emph on
+WickedOS
+\emph default
+ by Noname
+\end_layout
+
+\begin_layout Itemize
+high-level PC API counterpart 
+\emph on
+WOS Qt
+\emph default
+ by Hellfire
+\end_layout
+
+\begin_layout Itemize
+standard code in 
+\emph on
+/shared
+\emph default
+ by Hellfire
+\end_layout
+
+\begin_layout Itemize
+examples by Noname and Hellfire
+\end_layout
+
+\begin_layout Itemize
+documentation by Noname
+\end_layout
+
+\begin_layout Subsection
+Third party code
+\end_layout
+
+\begin_layout Standard
+Standing on the shoulders of giants.
+ With little modifications here and there.
+\end_layout
+
+\begin_layout Itemize
+system-friendly hardware startup by Piru
+\end_layout
+
+\begin_layout Itemize
+system-friendly interrupt example by Comrade J
+\end_layout
+
+\begin_layout Itemize
+Kickstart v39 sprites fix by Comrade J
+\end_layout
+
+\begin_layout Itemize
+Speedychip by Piru
+\end_layout
+
+\begin_layout Itemize
+C2P routines by Kalms
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+partially modified with inline-saturation code based on an idea from Blueberry
+ by Hellfire and Noname
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Further WickedOS components (currently not exposed through API)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Tracker Packer 3 by Crazy Crack
+\end_layout
+
+\begin_layout Itemize
+The Player 6.1 by Guru
+\end_layout
+
+\begin_layout Itemize
+old AHX/THX by Dexter
+\end_layout
+
+\begin_layout Itemize
+AHX by Dexter
+\end_layout
+
+\begin_layout Itemize
+Profiler by Bartman
+\end_layout
+
+\begin_layout Itemize
+CRM decruncher by Thomas Schwarz
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+ADPCM player in Hello Demo by Kalms (Amiga) and Ian Luck (PC)
+\end_layout
+
+\begin_layout Itemize
+Rocket sync-tracker and library by Kusma et al.
+\end_layout
+
+\begin_layout Subsection
+Artwork
+\end_layout
+
+\begin_layout Standard
+How would life be without artists? The following pieces have been bundled
+ with the release of our framework:
+\end_layout
+
+\begin_layout Itemize
+picture 
+\emph on
+Haujobb Forever
+\emph default
+ by Helge
+\end_layout
+
+\begin_layout Itemize
+picture 
+\emph on
+Androids Dream
+\emph default
+ by Acryl
+\end_layout
+
+\begin_layout Itemize
+movetable texture by JCS
+\end_layout
+
+\begin_layout Itemize
+music in Hello Demo by Muffler
 \end_layout
 
 \begin_layout Section
@@ -4273,7 +6079,14 @@ Individual Components -> Compiler, Buildtools and Runtimes.
 \end_layout
 
 \begin_layout Section
-WickedOS 
+WickedOS
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:WickedOS"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4773,6 +6586,21 @@ But even if you don't plan to use ASM-One, you must at least provide the
 \end_layout
 
 \begin_layout Subsection
+List of Screenmodes
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:List-of-Screenmodes"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+todo
+\end_layout
+
+\begin_layout Subsection
 How to add a new screenmode 
 \end_layout
 
@@ -4941,7 +6769,6 @@ in Modes:
 \begin_layout Enumerate
 provide fitting block which adds exactly one bit to MODES (double the number
  of the previous) e.g.
- 
 \end_layout
 
 \begin_deeper
@@ -4981,7 +6808,7 @@ in file sub/wos_defines.i
 \end_layout
 
 \begin_layout Enumerate
-in struct after "Define the structure" comment 
+in struct after "Define the structure" comment
 \end_layout
 
 \begin_deeper
@@ -4997,7 +6824,7 @@ after "Set up the screen-dimensions" comment
 
 \begin_deeper
 \begin_layout Enumerate
-provide fitting MakeMode line to describe your screen dimensions 
+provide fitting MakeMode line to describe your screen dimensions
 \end_layout
 
 \begin_layout Enumerate
@@ -5044,15 +6871,13 @@ in file sub/chunky/sources/makefile
 add filename to 
 \noun on
 Sources
-\noun default
- 
 \end_layout
 
-\begin_layout Section
+\begin_layout Paragraph
 Schematic Overview
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph
 \begin_inset Graphics
 	filename amiga-toolchain-graph.png
 	width 100text%
@@ -5063,5 +6888,128 @@ Schematic Overview
 
 \end_layout
 
+\begin_layout Paragraph
+Todo:
+\end_layout
+
+\begin_layout Itemize
+Advanced Framework Functions
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+profiler
+\end_layout
+
+\begin_layout Itemize
+file-watcher
+\end_layout
+
+\begin_layout Itemize
+cache simulator
+\end_layout
+
+\begin_layout Itemize
+palette tool
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+run
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+visual studio command prompt
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+nmake install
+\begin_inset Quotes erd
+\end_inset
+
+ to get the required libraries to the folder
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+mixasm
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+ace make all
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Audio, getting your music in
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+music dependencies
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+rocket_bpm
+\end_layout
+
+\begin_layout Itemize
+rocket_rpb
+\end_layout
+
+\begin_layout Itemize
+rocket_row_rate
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+stream player
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+bass on PC
+\end_layout
+
+\begin_layout Itemize
+Kalms ADPCM on Amiga
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Audio ADPCM Saving and determining BPM
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Screenmodes
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+list of
+\end_layout
+
+\begin_layout Itemize
+example
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Literature
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+https://www.doc.ic.ac.uk/lab/cplus/cstyle.html
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
