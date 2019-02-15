@@ -55,7 +55,7 @@ LD       = vlink
 #INCDIR   := $(INCDIR) ./ "$(VBCC)/posix/include" "$(VBCC)/targets/m68k-amigaos/include"
 #LIBDIR   := $(LIBDIR) ./ "$(VBCC)/targets/m68k-amigaos/lib"
 INCDIR   := $(VBCC)/posix/include $(VBCC)/targets/m68k-amigaos/include $(INCDIR) ./ 
-LIBDIR   := C:\\VBCC/targets/m68k-amigaos/lib
+LIBDIR   := $(VBCC)/targets/m68k-amigaos/lib
 
 # Strip everything if there's no debug infos
 ifeq ($(findstring -g, $(CFLAGS)), -g)
