@@ -1,5 +1,5 @@
 #ifndef STARSEFFECT_H
-#define STARSFFECT_H
+#define STARSEFFECT_H
 
 void starsInit();
 void starsRender(int time);
