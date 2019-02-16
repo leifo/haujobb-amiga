@@ -38,7 +38,7 @@ void mainDemo()
 
    wosSetMode(8, screenBuffer, starsPalette(), 256);
 
-#ifndef WIN32
+#ifndef WOS_ON_PC
    while (wosCheckExit()==0)
    {
       time= g_vbitimer;

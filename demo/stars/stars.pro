@@ -19,6 +19,8 @@ MOC_DIR=.moc
 #MOC_DIR=R:/moc
 #PRECOMPILED_DIR=R:\
 
+DEFINES += WOS_ON_PC=1
+
 win32 {
    DEFINES += _USE_MATH_DEFINES=1
    DEFINES += _CRT_SECURE_NO_WARNINGS=1
@@ -34,7 +36,9 @@ INCLUDEPATH += $$(QTDIR)/include/QtGui
 INCLUDEPATH += $$(QTDIR)/include/QtNetwork
 INCLUDEPATH += $$(QTDIR)/include/QtOpenGL
 
-LIBS += -lopengl32
+win32 {
+    LIBS += -lopengl32
+}
 
 OTHER_FILES += \
     build/makefile
@@ -42,7 +46,6 @@ OTHER_FILES += \
 # source
 
 HEADERS += \
-    src/vertex.h \
     src/starseffect.h \
 
 SOURCES += \

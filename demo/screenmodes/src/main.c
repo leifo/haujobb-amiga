@@ -86,7 +86,7 @@ void mainDemo()
    int time= 0;
 
    //wosSetMode(8, screenBuffer, g_currentPal, 256);
-#ifndef WIN32
+#ifndef WOS_ON_PC
    while (wosCheckExit()==0)
    {
       time= g_vbitimer;
