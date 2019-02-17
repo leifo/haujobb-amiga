@@ -64,7 +64,6 @@ HEADERS += \
 SOURCES += \
     src/main.c \
     src/stars/starseffect.c \
-    src/main.c \
     src/movetable/movetableeffect.c \
     src/pictures/pictureeffect.c
 
