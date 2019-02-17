@@ -46,7 +46,6 @@ OTHER_FILES += \
 # source
 
 HEADERS += \
-    src/vertex.h \
     src/movetableeffect.h \
     ../shared/math/imath.h \
     ../shared/image/tga.h
