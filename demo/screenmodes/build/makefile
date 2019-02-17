@@ -32,7 +32,7 @@ VPATH = $(SRCDIR)
 #vpath %.c src
 #vpath %.asm src
 
-CFLAGS = -O=23999 -cpu=68060 -fpu=68060 -DAMIGA -speed -k
+CFLAGS = -O=23999 -cpu=68060 -fpu=68060 -DAMIGA -c99 -speed -k
 ASFLAGS =
 LDFLAGS =
 
@@ -54,8 +54,8 @@ LD       = vlink
 # Add includes and libraries.
 #INCDIR   := $(INCDIR) ./ "$(VBCC)/posix/include" "$(VBCC)/targets/m68k-amigaos/include"
 #LIBDIR   := $(LIBDIR) ./ "$(VBCC)/targets/m68k-amigaos/lib"
-INCDIR   := $(VBCC)/posix/include $(VBCC)/targets/m68k-amigaos/include $(INCDIR) ./ 
-LIBDIR   := C:\\VBCC/targets/m68k-amigaos/lib
+INCDIR   := $(VBCC)/posix/include $(VBCC)/targets/m68k-amigaos/include $(VBCC)/NDK39/Include/include_h $(INCDIR) ./ 
+LIBDIR   := $(VBCC)/targets/m68k-amigaos/lib
 
 # Strip everything if there's no debug infos
 ifeq ($(findstring -g, $(CFLAGS)), -g)

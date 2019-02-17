@@ -462,9 +462,9 @@ WosQt::~WosQt()
 
    waveOutReset(mHandle);
    waveOutClose(mHandle);
-#endif
 
    delete[] mAudioBuffer;
+#endif
 }
 
 void SetupHam15Bit(unsigned int* bp0, unsigned int* bp1, int rows)

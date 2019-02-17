@@ -12,6 +12,8 @@ CONFIG += console
 OBJECTS_DIR=.obj
 MOC_DIR=.moc
 
+DEFINES += WOS_ON_PC=1
+
 win32 {
    DEFINES += _USE_MATH_DEFINES=1
    DEFINES += _CRT_SECURE_NO_WARNINGS=1
@@ -62,7 +64,6 @@ HEADERS += \
 SOURCES += \
     src/main.c \
     src/stars/starseffect.c \
-    src/main.c \
     src/movetable/movetableeffect.c \
     src/pictures/pictureeffect.c
 

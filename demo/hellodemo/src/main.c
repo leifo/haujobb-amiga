@@ -378,7 +378,7 @@ void mainDemo()
    // 23: 220x180x12
    // 24: 320x180x5 (OCS)
     
-#if !defined (WIN32) && !defined(linux)
+#if !defined (WOS_ON_PC) && !defined (WIN32) && !defined(linux)
    g_vbitimer+=0 ;//66*50;
    while (wosCheckExit()==0)
    {

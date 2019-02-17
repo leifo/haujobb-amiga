@@ -13,7 +13,10 @@
 
 // windows
 #include <stdlib.h>
+
+#if defined (WIN32) || defined(linux)
 #include <malloc.h>
+#endif
 
 #endif
 

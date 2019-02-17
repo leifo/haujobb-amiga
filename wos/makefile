@@ -1,6 +1,6 @@
 AS = vasmm68k_mot
 
-ASFLAGS = -Fhunk -m68020 -m68882 -Ic:/vbcc/NDK39/Include/include_i 
+ASFLAGS = -Fhunk -m68020 -m68882 -I$(VBCC)/NDK39/Include/include_i 
 
 all:	subdir wickedlink.o wickedquicklink.o wostest
 	
