@@ -3,7 +3,7 @@
 
 #include "math/imath.h"
 
-#ifdef WIN32
+#if defined(WIN32) || defined(__APPLE__)
 #include <memory.h>
 #endif
 
